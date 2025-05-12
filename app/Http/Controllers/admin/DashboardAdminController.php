@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
+// CONTROLLER UNTUK DASHBOARD ADMIN
+// ShowUnverifiedUsers untuk menampilkan user yang belum diverifikasi
+// index untuk menampilkan data seluruh user
+// verifikasi untuk memverifikasi user yang baru mendaftar
+// hapus untuk menghapus atau membatalkan pendaftaran user yang tidak memenuhi syarat, ini juga menghapus bukti foto KTM di local dan string di database
 
 class DashboardAdminController extends Controller
 {
@@ -34,7 +39,7 @@ class DashboardAdminController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Hapus file KTM jika ada
+        // Hapus file KTM jika ada di storage local
         if ($user->ktm && Storage::disk('public')->exists($user->ktm)) {
             Storage::disk('public')->delete($user->ktm);
         }

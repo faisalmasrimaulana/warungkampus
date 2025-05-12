@@ -1,3 +1,5 @@
+<!-- INI ADALAH PARTIAL DARI NAVBAR, BISA DITAMBAHKAN DENGAN FITUR LAIN -->
+
 <header class="bg-green-600 text-white">
   <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 

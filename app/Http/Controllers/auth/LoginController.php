@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+//CONTROLLER UNTUK MENANGANI LOGIN USER
+//showLoginForm untuk menampilkan halaman login ketika dipanggil route
+//login menangani input dan mencocokannya dengan database
+//logout menghapus session user
+
 class LoginController extends Controller
 {
     // Menampilkan form login
@@ -20,7 +25,7 @@ class LoginController extends Controller
         // Validasi input dari user
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string|min:6', // sesuaikan panjang password jika perlu
+            'password' => 'required|string|min:6',
         ]);
 
         // Ambil data email dan password
@@ -38,7 +43,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
 
-                // Jika gagal login, kembalikan dengan pesan error
+            // Jika gagal login, kembalikan dengan pesan error
             return back()->withErrors([
                 'email' => 'Email atau password salah.',
             ]);

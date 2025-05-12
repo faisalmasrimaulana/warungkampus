@@ -7,6 +7,8 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardAdminController;
 
+//INI MENGATUR SETIAP ROUTE DI WEBSITE INI
+
 Route::get('/', function () {
     return view('home');
 });
@@ -40,9 +42,6 @@ Route::get('/loginadmin', [LoginAdminController::class, 'showLoginAdminForm'])->
 Route::post('/loginadmin', [LoginAdminController::class, 'loginadmin'])->name('loginadmin.submit');
 
 Route::middleware(['auth:admins'])->group(function () {
-    // Route::get('/dashboardadmin', function () {
-    //     return view('admin.dashboardadmin');
-    // });
     Route::get('/dashboardadmin', [DashboardAdminController::class, 'index'])->name('dashboardadmin');
     Route::get('/admin/verifikasi-user', [DashboardAdminController::class, 'showUnverifiedUsers'])->name('admin.verifikasi-user');
     Route::put('/admin/verifikasi/{id}', [DashboardAdminController::class, 'verifikasi'])->name('admin.verifikasi');

@@ -6,6 +6,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+//CONTROLLER UNTUK MENANGANI REGISTRASI USER
+//showRegisterForm untuk menampilkan halaman register ketika dipanggil route
+//register untuk menangani input dan menambahkannya ke database
+//logout menghapus session user
+
+
 class RegisController extends Controller
 {
     public function showRegisterForm()
@@ -20,6 +26,8 @@ class RegisController extends Controller
             'nim' => 'required|string|unique:users,nim',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            'whatsapp' => 'string',
+            'instagram' => 'string',
             'ktm' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -29,6 +37,8 @@ class RegisController extends Controller
             'nama' => $request->nama,
             'nim' => $request->nim,
             'email' => $request->email,
+            'whatsapp' => $request->whatsapp,
+            'instagram' => $request->instagram,
             'password' => Hash::make($request->password),
             'ktm' => $ktmPath,
         ]);

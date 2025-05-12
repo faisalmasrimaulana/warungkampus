@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+//MODEL ADMIN
+//mengontrol database admin
+
 class Admin extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */

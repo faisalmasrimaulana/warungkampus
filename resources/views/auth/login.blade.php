@@ -12,6 +12,8 @@
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
+
+    <!-- x-button merupakan sebuah komponen, untuk settingnya bisa di cek di views/component/button-->
     <body>
         <main class="flex justify-center h-dvh flex-col">
             <h1 class="text-center text-2xl font-semibold text-green-900 py-5">WarungKampus</h1>

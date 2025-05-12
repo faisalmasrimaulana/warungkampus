@@ -1,3 +1,5 @@
+<!-- untuk merubah type button bisa pakai type="tipe_button" untuk merubah gaya warna button bisa memakai color="warna sesuai colors di bawah ini", bisa ditambahkan dengan yang lain-->
+
 @props(['type' => 'button', 'color' => 'primary', 'href' => null])
 
 @php

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
+//MIDDLEWARE ADMIN
+//melindungi route yang hanya dapat diakses admin
+
 class AdminMiddleware
 {
     /**

@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// CONTROLLER UNTUK MENANGANI LOGIN ADMIN
+//showLoginAdminForm untuk menampilkan halaman loginadmin yang akan dipanggil oleh route loginadmin
+//loginadmin akan menangani input dan verifikasi database, kemudian diarahkan ke dashboard admin
+//logout akan menghapus session admin
+
 class LoginAdminController extends Controller
 {
     // Menampilkan form login

@@ -12,6 +12,8 @@
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
+
+    <!-- x-button merupakan sebuah komponen, untuk settingnya bisa di cek di views/component/button-->
     <body>
         <main>
             <h1 class="text-center text-2xl font-semibold text-green-900 py-5">WarungKampus</h1>
@@ -55,7 +57,7 @@
                     <label for="password_confirmation" class="text-sm text-green-900 font-semibold">Konfirmasi Kata Sandi</label>
                     <x-input type="password" name="password_confirmation" placeholder="Ulangi Kata Sandi"></x-input>
 
-
+                    <!-- Submit dan cancel button -->
                     <div class="loginButton inline-flex justify-end w-full gap-3">
                         <x-button type="submit" color="primary">Mendaftar</x-button>
                         <a href="{{'cancel'}}" ><x-button type="button" color="danger">Batal</x-button></a>

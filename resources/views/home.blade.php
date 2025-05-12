@@ -1,3 +1,4 @@
+<!-- DASHBOARD GUESS / HOME -->
 @extends('layouts.app')
 
 @section('content')
