@@ -69,6 +69,8 @@
             <img id="ktmImage" src="" alt="Preview KTM" class="w-full h-auto object-contain rounded">
         </div>
     </div>
+    @else
+     <div class="w-full flex h-full justify-center items-center"><h1 class="text-center">Tidak Ada User Di database</h1></div>
     @endif
 </div>
 
