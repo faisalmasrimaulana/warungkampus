@@ -1,0 +1,196 @@
+<!-- navbar-sidebar.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .floating-sidebar {
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.08);
+    }
+    .nav-button {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-button:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-button.home-active {
+      color: #9333ea;
+      font-weight: 500;
+    }
+    .nav-button.sell-active {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+    .nav-button.search-active {
+      color: #10b981;
+      font-weight: 500;
+    }
+    .nav-button.active::after {
+      transform: scaleX(1);
+    }
+    .profile-img {
+      transition: all 0.3s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 w-full bg-white shadow p-4 z-50 flex items-center justify-between px-8 py-5">
+  <div class="text-2xl font-bold text-[#1f2d4e] flex items-center">
+    <span class="text-blue-500">W</span>arung<span class="text-blue-500">K</span>ampus
+  </div>
+  <div class="space-x-4 flex items-center">
+    <button id="homeButton" class="nav-button px-4 py-2 text-gray-600 hover:text-purple-500">
+      Beranda
+    </button>
+    <a href="./posting.html">
+      <button id="sellButton" class="nav-button px-4 py-2 text-gray-600 hover:text-blue-500">
+        Mulai Jual
+      </button>
+    </a>
+    <a href="./pencarian.html">
+      <button id="searchButton" class="nav-button px-4 py-2 text-gray-600 hover:text-green-500">
+        Cari Produk
+      </button>
+    </a>
+    <!-- Profile Icon -->
+    <button id="profileButton" class="ml-4">
+      <img src="foto profil.jpg" alt="Profil" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
+    </button>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<div id="profileSidebar" class="fixed top-0 right-0 h-full w-72 bg-white floating-sidebar transform translate-x-full transition-transform duration-300 z-50">
+  <div class="p-6 h-full flex flex-col">
+    <div class="flex items-center mb-8">
+      <img src="foto profil.jpg" alt="Profil" class="w-12 h-12 rounded-full mr-3 border-2 border-blue-100">
+      <div>
+        <h3 class="font-semibold">M. Fauzi Gafar</h3>
+        <p class="text-sm text-gray-500">Mahasiswa</p>
+      </div>
+    </div>
+    <ul class="space-y-2 flex-grow">
+      <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Profil Saya </a></li>
+      <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Postingan Favorit </a></li>
+      <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Riwayat </a></li>
+      <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Bantuan </a></li>
+    </ul>
+    <div class="pt-4 border-t border-gray-100">
+      <a href="#" class="block px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition">Logout </a>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40"></div>
+
+<!-- Script -->
+<script>
+  // Sidebar toggle
+  const profileButton = document.getElementById('profileButton');
+  const profileSidebar = document.getElementById('profileSidebar');
+  const overlay = document.getElementById('overlay');
+
+  profileButton.addEventListener('click', () => {
+    profileSidebar.classList.remove('translate-x-full');
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  });
+
+  overlay.addEventListener('click', () => {
+    profileSidebar.classList.add('translate-x-full');
+    overlay.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  });
+
+  // Navigation logic
+  const homeButton = document.getElementById('homeButton');
+  const sellButton = document.getElementById('sellButton');
+  const searchButton = document.getElementById('searchButton');
+
+  homeButton.addEventListener('click', () => {
+    window.location.href = 'beranda.html';
+  });
+
+  sellButton.addEventListener('click', () => {
+    window.location.href = 'posting.html';
+  });
+
+  searchButton.addEventListener('click', () => {
+    window.location.href = 'pencarian.html';
+  });
+</script>
+
+<script src="https://unpkg.com/feather-icons"></script>
+  <script>
+    fetch('navbar-sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-placeholder').innerHTML = data;
+        feather.replace();
+
+        const profileButton = document.getElementById('profileButton');
+        const profileSidebar = document.getElementById('profileSidebar');
+        const overlay = document.getElementById('overlay');
+
+        profileButton.addEventListener('click', () => {
+          profileSidebar.classList.remove('translate-x-full');
+          overlay.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+
+        overlay.addEventListener('click', () => {
+          profileSidebar.classList.add('translate-x-full');
+          overlay.classList.add('hidden');
+          document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('homeButton').addEventListener('click', () => {
+          window.location.href = 'beranda.html';
+        });
+
+        document.getElementById('sellButton').addEventListener('click', () => {
+          window.location.href = 'posting.html';
+        });
+
+        document.getElementById('searchButton').addEventListener('click', () => {
+          window.location.href = 'pencarian.html';
+        });
+
+        // Tandai tombol pencarian aktif
+        document.getElementById('searchButton').classList.add('active');
+      })
+      .catch(err => {
+        console.error('Gagal load navbar:', err);
+      });
+  </script>
+
+</body>
+</html>

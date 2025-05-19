@@ -15,11 +15,11 @@
 
     <!-- x-button merupakan sebuah komponen, untuk settingnya bisa di cek di views/component/button-->
     <body>
-        <main class="flex justify-center h-dvh flex-col">
-            <h1 class="text-center text-2xl font-semibold text-green-900 py-5">WarungKampus</h1>
+        <main class="flex justify-center h-dvh flex-col items-center">
+            <x-logo></x-logo>
             <div class="flex justify-center items-center">
-                <form action="{{route('login.submit')}}" method="POST" class="w-1/3 bg-white  rounded-md relative p-4 drop-shadow-xl focus-within:drop-shadow-green-300 drop-shadow-black-400 mb-7">
-                    <h1 class="text-green-800 font-bold pb-4 text-center uppercase">Form Login</h1>
+                <form action="{{route('login.submit')}}" method="POST" class="w-1/3 bg-white  rounded-md relative p-4 drop-shadow-xl focus-within:drop-shadow-blue-300 drop-shadow-black-400 mb-7">
+                    <h1 class="text-blue-800 font-bold pb-4 text-center uppercase">Form Login</h1>
                     @csrf
 
                     @if ($errors->any())
@@ -32,10 +32,10 @@
                     </div>
                     @endif
 
-                    <label for="email" class="text-sm text-green-900 font-semibold">Email</label>
+                    <label for="email" class="text-sm text-blue-900 font-semibold">Email</label>
                     <x-input type="email" name="email" placeholder="email@gmail.com" class="lowercase" required></x-input>
 
-                    <label for="password" class="text-sm text-green-900 font-semibold">Kata Sandi</label>
+                    <label for="password" class="text-sm text-blue-900 font-semibold">Kata Sandi</label>
                     <x-input type="password" name="password" placeholder="12Wk1" required></x-input>
 
                     <div class="loginButton inline-flex justify-end w-full gap-3">

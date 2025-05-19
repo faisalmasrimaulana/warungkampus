@@ -1,7 +1,82 @@
-<!-- DASHBOARD GUESS / HOME -->
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WarungKampus - Marketplace Mahasiswa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8fafc;
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+    }
+    .floating-sidebar {
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.08);
+    }
+    .nav-button {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-button:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-button.home-active {
+      color: #9333ea;
+      font-weight: 500;
+    }
+    .nav-button.sell-active {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+    .nav-button.search-active {
+      color: #10b981;
+      font-weight: 500;
+    }
+    .nav-button.active::after {
+      transform: scaleX(1);
+    }
+    .feature-card {
+      transition: all 0.3s ease;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .glow-text {
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+    .profile-img {
+      transition: all 0.3s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+  </style>
+</head>
+<body>
 
-@section('content')
+<!-- Main Content -->
 <main class="hero-gradient min-h-screen py-16 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8 pt-24">
     <!-- Hero Section -->
@@ -61,7 +136,7 @@
       <div class="grid md:grid-cols-2 gap-8">
         <div class="bg-blue-50 p-6 rounded-xl">
           <div class="flex items-start mb-4">
-            <img src="{{ asset('./assets/testi1.jpg') }}" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
+            <img src="testi1.jpg" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
             <div>
               <h4 class="font-semibold">Faisal Masri Maulana</h4>
               <p class="text-sm text-gray-500">Mahasiswa Pendidikan Matematika</p>
@@ -72,7 +147,7 @@
         
         <div class="bg-green-50 p-6 rounded-xl">
           <div class="flex items-start mb-4">
-            <img src="{{ asset('./assets/testi2.jpg') }}" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
+            <img src="testi2.jpg" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
             <div>
               <h4 class="font-semibold">M. Fauzi Gafar</h4>
               <p class="text-sm text-gray-500">Mahasiswa Sistem Informasi </p>
@@ -102,41 +177,82 @@
 </main>
 
 <!-- Script -->
-<!-- <script>
-  // Sidebar toggle
-  const profileButton = document.getElementById('profileButton');
-  const profileSidebar = document.getElementById('profileSidebar');
-  const overlay = document.getElementById('overlay');
+<script>
+  // Load sidebar content
+  function loadSidebar() {
+    fetch('navbar-sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        const sidebarContainer = document.createElement('div');
+        sidebarContainer.innerHTML = data;
+        document.body.appendChild(sidebarContainer);
+        
+        // Initialize sidebar functionality
+        const profileButton = document.getElementById('profileButton');
+        const profileSidebar = document.getElementById('profileSidebar');
+        const overlay = document.getElementById('overlay');
 
-  profileButton.addEventListener('click', () => {
-    profileSidebar.classList.remove('translate-x-full');
-    overlay.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+        profileButton.addEventListener('click', () => {
+          profileSidebar.classList.remove('translate-x-full');
+          overlay.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+
+        overlay.addEventListener('click', () => {
+          profileSidebar.classList.add('translate-x-full');
+          overlay.classList.add('hidden');
+          document.body.style.overflow = 'auto';
+        });
+      })
+      .catch(error => console.error('Error loading sidebar:', error));
+  }
+
+  // Navigation buttons functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSidebar();
+    
+    const homeButton = document.getElementById('homeButton');
+    const sellButton = document.getElementById('sellButton');
+    const searchButton = document.getElementById('searchButton');
+
+    homeButton.addEventListener('click', () => {
+      window.location.href = 'beranda.html';
+      homeButton.classList.add('home-active');
+      sellButton.classList.remove('sell-active');
+      searchButton.classList.remove('search-active');
+    });
+
+    sellButton.addEventListener('click', () => {
+      window.location.href = 'posting.html';
+      homeButton.classList.remove('home-active');
+      sellButton.classList.add('sell-active');
+      searchButton.classList.remove('search-active');
+    });
+
+    searchButton.addEventListener('click', () => {
+      window.location.href = 'pencarian.html';
+      homeButton.classList.remove('home-active');
+      sellButton.classList.remove('sell-active');
+      searchButton.classList.add('search-active');
+    });
+
+    // Set active state for current page (home)
+    homeButton.classList.add('home-active');
+
+    // Feature cards hover effect
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-5px)';
+        card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.1)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.boxShadow = '';
+      });
+    });
   });
 
-  overlay.addEventListener('click', () => {
-    profileSidebar.classList.add('translate-x-full');
-    overlay.classList.add('hidden');
-    document.body.style.overflow = 'auto';
-  });
+</script>
 
-  // Navigation logic
-  const homeButton = document.getElementById('homeButton');
-  const sellButton = document.getElementById('sellButton');
-  const searchButton = document.getElementById('searchButton');
-
-  homeButton.addEventListener('click', () => {
-    window.location.href = 'beranda.html';
-  });
-
-  sellButton.addEventListener('click', () => {
-    window.location.href = 'posting.html';
-  });
-
-  searchButton.addEventListener('click', () => {
-    window.location.href = 'pencarian.html';
-  });
-</script> -->
-
-<!-- <script src="https://unpkg.com/feather-icons"></script> -->
-@endsection
+</body>
+</html>

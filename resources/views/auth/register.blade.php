@@ -15,46 +15,48 @@
 
     <!-- x-button merupakan sebuah komponen, untuk settingnya bisa di cek di views/component/button-->
     <body>
-        <main>
-            <h1 class="text-center text-2xl font-semibold text-green-900 py-5">WarungKampus</h1>
+        <main class="flex justify-center flex-col items-center">
+                  <div class="text-2xl mt-4 font-bold text-[#1f2d4e] flex items-center">
+        <span class="text-blue-500">W</span>arung<span class="text-blue-500">K</span>ampus
+      </div>
             <div class="flex justify-center items-center">
-                <form action="{{ route('register.store') }}" method="POST" class="w-1/3 bg-white  rounded-md relative p-4 drop-shadow-xl focus-within:drop-shadow-green-300 drop-shadow-black-400 mb-7" enctype="multipart/form-data">
-                    <h1 class="text-green-800 font-bold pb-4 text-center uppercase">Form Pendaftaran</h1>
+                <form action="{{ route('register.store') }}" method="POST" class="w-1/3 bg-white  rounded-md relative p-4 drop-shadow-xl focus-within:drop-shadow-blue-300 drop-shadow-black-400 mb-7" enctype="multipart/form-data">
+                    <h1 class="text-blue-800 font-bold pb-4 text-center uppercase">Form Pendaftaran</h1>
                     @csrf
                     <!-- NIM -->
-                    <label for="nim" class="text-sm text-green-900 font-semibold">NIM</label>
+                    <label for="nim" class="text-sm text-blue-900 font-semibold">NIM</label>
                     <x-input type="text" id="nim" name="nim" placeholder="Masukkan NIM" class="uppercase"></x-input>
 
                     <!-- Nama Lengkap -->
-                    <label for="nama" class="text-sm text-green-900 font-semibold">Nama Lengkap</label>
+                    <label for="nama" class="text-sm text-blue-900 font-semibold">Nama Lengkap</label>
                     <x-input type="text" name="nama" placeholder="Nama Anda" class="capitalize"></x-input>
 
                     <!-- email -->
-                    <label for="email" class="text-sm text-green-900 font-semibold">Email</label>
+                    <label for="email" class="text-sm text-blue-900 font-semibold">Email</label>
                     <x-input type="email" name="email" placeholder="email@gmail.com" class="lowercase"></x-input>
 
                     <!-- whatsapp -->
-                    <label for="whatsapp" class="text-sm text-green-900 font-semibold">Whatsapp</label>
+                    <label for="whatsapp" class="text-sm text-blue-900 font-semibold">Whatsapp</label>
                     <x-input type="tel" id="whatsapp" name="whatsapp" placeholder="08123456789"></x-input>
 
                     <!-- instagram -->
-                    <label for="instagram" class="text-sm text-green-900 font-semibold">Instagram</label>
+                    <label for="instagram" class="text-sm text-blue-900 font-semibold">Instagram</label>
                     <x-input type="text" name="instagram" placeholder="@instagram" class="lowercase"></x-input>
 
                     <!-- foto ktm -->
-                    <label for="ktm" class="text-sm text-green-900 font-semibold">KTM</label>
-                    <input type="file" accept="image/*" name="ktm" class="border text-sm p-2 rounded-md border-green-500 w-full mb-3"></input>
+                    <label for="ktm" class="text-sm text-blue-900 font-semibold">KTM</label>
+                    <input type="file" accept="image/*" name="ktm" class="border text-sm p-2 rounded-md border-blue-500 w-full mb-3"></input>
 
                     <!-- alamat -->
-                    <label for="alamat" class="text-sm text-green-900 font-semibold">Alamat</label>
+                    <label for="alamat" class="text-sm text-blue-900 font-semibold">Alamat</label>
                     <x-input type="text" name="alamat" placeholder="Muaro Jambi, Provinsi Jambi"></x-input>
 
                     <!-- password -->
-                    <label for="password" class="text-sm text-green-900 font-semibold">Kata Sandi</label>
+                    <label for="password" class="text-sm text-blue-900 font-semibold">Kata Sandi</label>
                     <x-input type="password" name="password" placeholder="12Wk1"></x-input>
 
                     <!-- konfirmasi password -->
-                    <label for="password_confirmation" class="text-sm text-green-900 font-semibold">Konfirmasi Kata Sandi</label>
+                    <label for="password_confirmation" class="text-sm text-blue-900 font-semibold">Konfirmasi Kata Sandi</label>
                     <x-input type="password" name="password_confirmation" placeholder="Ulangi Kata Sandi"></x-input>
 
                     <!-- Submit dan cancel button -->

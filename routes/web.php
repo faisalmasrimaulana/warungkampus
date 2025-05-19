@@ -49,3 +49,15 @@ Route::middleware(['auth:admins'])->group(function () {
 });
 
 Route::post('/logoutadmin', [LoginAdminController::class, 'logout'])->name('logoutadmin');
+
+Route::get('/daftarproduk', function(){
+    return view('daftarproduk');
+})->name('get.daftarproduk');
+
+Route::get('/postingproduk', function(){
+    return view('posting');
+})->name('get.posting');
+
+Route::get('/detailproduk', function(){
+    return view('detailproduk');
+})->name('get.detail');
