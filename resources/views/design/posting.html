@@ -73,7 +73,7 @@
             <p class="text-xs text-gray-500">Format: JPG, PNG (Maks. 5MB)</p>
             <input type="file" id="productImages" class="hidden" accept="image/*" multiple>
           </div>
-          <div id="previewContainer" class="mt-4 grid grid-cols-3 gap-3 hidden">
+          <div id="previewContainer" class="mt-4 gap-3 hidden">
             <!-- Preview images will be inserted here -->
           </div>
         </div>
@@ -181,11 +181,13 @@
       profileButton.addEventListener('click', () => {
         profileSidebar.classList.remove('translate-x-full');
         overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
         document.body.style.overflow = 'hidden';
       });
 
       overlay.addEventListener('click', () => {
         profileSidebar.classList.add('translate-x-full');
+        overlay.classList.remove('flex');
         overlay.classList.add('hidden');
         document.body.style.overflow = 'auto';
       });
@@ -261,7 +263,7 @@
             
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.className = 'w-full h-32 object-cover rounded-lg';
+            img.className = 'w-32 h-32 object-cover rounded-lg';
             
             const removeBtn = document.createElement('button');
             removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition';

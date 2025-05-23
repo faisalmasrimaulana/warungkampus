@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Product;
 
 // MODEL USER
 // mengontrol database User
@@ -30,7 +31,12 @@ class User extends Authenticatable
         'ktm',
         'alamat',
         'foto_profil',
+        'is_verified'
     ];
+
+    public function produk(){
+        return $this->hasMany(Product::class, 'mahasiswa_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -3,15 +3,15 @@
 use App\Http\Controllers\admin\LoginAdminController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisController;
-use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardAdminController;
+use App\Http\Controllers\ProductController;
 
 //INI MENGATUR SETIAP ROUTE DI WEBSITE INI
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
@@ -22,10 +22,6 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/regis', [RegisController::class, 'showRegisterForm'])->name('register');
 
 Route::post('/regis', [RegisController::class, 'register'])->name('register.store');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
@@ -46,18 +42,17 @@ Route::middleware(['auth:admins'])->group(function () {
     Route::get('/admin/verifikasi-user', [DashboardAdminController::class, 'showUnverifiedUsers'])->name('admin.verifikasi-user');
     Route::put('/admin/verifikasi/{id}', [DashboardAdminController::class, 'verifikasi'])->name('admin.verifikasi');
     Route::delete('/admin/hapus/{id}', [DashboardAdminController::class, 'hapus'])->name('admin.hapus');
+    Route::post('/logoutadmin', [LoginAdminController::class, 'logout'])->name('logoutadmin');
 });
 
-Route::post('/logoutadmin', [LoginAdminController::class, 'logout'])->name('logoutadmin');
 
-Route::get('/daftarproduk', function(){
-    return view('daftarproduk');
-})->name('get.daftarproduk');
+Route::middleware(['auth'])->group(function (){
+    Route::get('/postingproduk', function(){
+        return view('posting');
+    })->name('get.posting');
+    Route::post('/postingproduk', [ProductController::class, 'postProduct'])->name('post.produk');
+});
 
-Route::get('/postingproduk', function(){
-    return view('posting');
-})->name('get.posting');
+Route::get('/detailproduk/{id}', [ProductController::class, 'showDetail'])->name('get.detail');
 
-Route::get('/detailproduk', function(){
-    return view('detailproduk');
-})->name('get.detail');
+Route::get('/daftarproduk', [ProductController::class, 'daftarproduk'])->name('get.daftarproduk');

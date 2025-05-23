@@ -1,6 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .nav-button {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-button:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-button.active {
+      color: #8b5cf6;
+      font-weight: 500;
+    }
+    .nav-button.active::after {
+      transform: scaleX(1);
+    }
+    .profile-img {
+      transition: all 0.3s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+  </style>
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('hidden');
+    }
+  </script>
     <!-- Navbar akan dimuat di sini -->
     <div id="navbar-placeholder"></div>
 
@@ -63,33 +109,56 @@
 
   <!-- ./SIDEBAR -->
   <main class="p-6">
-    <a href="{{route('get.detail')}}">
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    @foreach($product as $prod)
+      <a href="{{ route('get.detail', ['id' => $prod->id]) }}">
         <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-transform hover:scale-[1.02]">
-          <img src="{{asset('./assets/sepatu.jpg')}}" alt="Sepatu" class="w-full h-32 object-cover">
+          <img src="{{ asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk ?? 'default.jpg')) }}" alt="{{ $prod->nama_produk }}" class="w-full h-32 object-cover">
           <div class="p-3">
-            <h3 class="text-sm font-semibold truncate">Sepatu Casual Unisex</h3>
-            <p class="text-xs text-gray-500">Fashion - Sepatu</p>
-            <p class="text-sm text-blue-700 font-bold mt-1">Rp 250.000</p>
+            <h3 class="text-sm font-semibold truncate">{{ $prod->nama_produk }}</h3>
+            <p class="text-xs text-gray-500">{{ $prod->kategori }}</p>
+            <p class="text-sm text-blue-700 font-bold mt-1">Rp {{ number_format($prod->harga, 0, ',', '.') }}</p>
           </div>
         </div>
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-transform hover:scale-[1.02]">
-          <img src="{{asset('./assets/tas.jpg')}}" alt="Tas" class="w-full h-32 object-cover">
-          <div class="p-3">
-            <h3 class="text-sm font-semibold truncate">Tas Kuliah Elegan</h3>
-            <p class="text-xs text-gray-500">Aksesoris - Tas</p>
-            <p class="text-sm text-blue-700 font-bold mt-1">Rp 320.000</p>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-transform hover:scale-[1.02]">
-          <img src="{{ asset('./assets/buku.jpg') }}" alt="Buku" class="w-full h-32 object-cover">
-          <div class="p-3">
-            <h3 class="text-sm font-semibold truncate">Buku Keren</h3>
-            <p class="text-xs text-gray-500">Sumber Bacaan</p>
-            <p class="text-sm text-blue-700 font-bold mt-1">Rp 50.000</p>
-          </div>
-        </div>
-      </div>
-    </a>
+      </a>
+    @endforeach
+
+</div>
+
   </main>
+    <script>
+    const hargaItems = document.querySelectorAll('.urut-harga');
+    hargaItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        hargaItems.forEach(i => i.classList.remove('bg-blue-200', 'text-white'));
+        item.classList.add('bg-blue-200', 'text-white');
+      });
+    });
+
+    const waktuItems = document.querySelectorAll('.urut-waktu');
+    waktuItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        waktuItems.forEach(i => i.classList.remove('bg-blue-200', 'text-white'));
+        item.classList.add('bg-blue-200', 'text-white');
+      });
+    });
+
+    const kategoriRadios = document.querySelectorAll('.kategori-radio');
+    kategoriRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        kategoriRadios.forEach(r => {
+          const label = r.closest('label');
+          label.classList.remove('bg-blue-200', 'text-white');
+        });
+        const selected = document.querySelector('.kategori-radio:checked');
+        if (selected) {
+          const label = selected.closest('label');
+          label.classList.add('bg-blue-200', 'text-white');
+        }
+      });
+    });
+  </script>
 @endsection

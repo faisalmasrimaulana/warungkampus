@@ -25,10 +25,13 @@ class RegisController extends Controller
             'nama' => 'required|string|max:255',
             'nim' => 'required|string|unique:users,nim',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-            'whatsapp' => 'string',
+            'password' => 'required|string|min:8|confirmed',
+            'whatsapp' => "string|regex:/^62\d{8,13}$/",
             'instagram' => 'string',
-            'ktm' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'ktm' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'alamat' => '|required|string',
+        ],[
+            'whatsapp.regex' => "Nomor Whatsapp dimulai dengan kode negara (ex:6281234567)"
         ]);
 
         $ktmPath = $request->file('ktm')->store('ktm', 'public');
@@ -41,6 +44,7 @@ class RegisController extends Controller
             'instagram' => $request->instagram,
             'password' => Hash::make($request->password),
             'ktm' => $ktmPath,
+            'alamat' => $request->alamat,
         ]);
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil. Silakan login.');

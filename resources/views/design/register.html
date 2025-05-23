@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Register</title>
-
-        <!-- Fonts -->
-         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - WarungKampus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -61,12 +59,8 @@
       text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
     }
   </style>
-        <!-- Styles / Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-
-    <!-- x-button merupakan sebuah komponen, untuk settingnya bisa di cek di views/component/button-->
-    <body class="register-gradient min-h-screen">
+</head>
+<body class="register-gradient min-h-screen">
 
     <div class="flex flex-col items-center justify-center min-h-screen py-8 px-4 sm:px-6 lg:px-8">
         <!-- TITLE -->
@@ -76,8 +70,7 @@
                     ✨ Marketplace Mahasiswa Pertama di Jambi ✨
                 </div>
                 <h2 class="text-3xl font-bold text-[#1f2d4e] glow-text">
-                    Buat<span class="text-blue-500"> Akun Baru</span> <br>
-                    <span class="text-blue-500">W</span>arung<span class="text-blue-500">K</span>ampus
+                    Buat<span class="text-blue-500"> Akun Baru</span> <br>     <span class="text-blue-500">W</span>arung<span class="text-blue-500">K</span>ampus
                 </h2>
                 <p class="mt-2 text-gray-600">
                     Lengkapi data berikut untuk mendaftar sebagai anggota di WarungKampus
@@ -89,10 +82,10 @@
         <form class="mt-6 space-y-5" action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @if ($errors->any())
-            <div class="p-4 rounded mb-4">
+            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
                 <ul class="list-disc pl-5">
                     @foreach ($errors->all() as $error)
-                        <li class=" text-red-500">{{ $error }}</li>
+                        <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -125,13 +118,13 @@
                 <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp*</label>
                 <input id="whatsapp" name="whatsapp" type="tel"
                         class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
-                        placeholder="Contoh: 6281234567890">
+                        placeholder="Contoh: 081234567890">
                 </div>
                 
                 <div>
                 <label for="instagram" class="block text-sm font-medium text-gray-700 mb-1">Username Instagram</label>
                 <div class="flex">
-                    <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">@
+                    <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                     </span>
                     <input id="instagram" name="instagram" type="text" 
                         class="input-field flex-1 rounded-none rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
@@ -196,10 +189,7 @@
                 </span>
                 Daftar Sekarang
             </button>
-          </div>
-            <a href="{{route('home')}}">
-                <x-button color="danger" class="w-full flex"><span class="justify-center w-full">Batal</span></x-button>
-            </a>
+            </div>
         </form>
         
         <div class="mt-6 text-center text-sm">
@@ -208,21 +198,23 @@
             <a href="{{route('login')}}" class="font-medium text-blue-600 hover:text-blue-500">
                 Masuk disini
             </a>
-          </p>
+            </p>
         </div>
         </div>
 
-    <script>
-    // Menampilkan nama file yang diunggah
-    document.getElementById('ktm').addEventListener('change', function(e) {
-        const fileName = document.getElementById('file-name');
-        if (this.files.length > 0) {
-        fileName.textContent = this.files[0].name;
-        } else {
-        fileName.textContent = '';
-        }
-    });
-    </script>
+<script>
+  // Menampilkan nama file yang diunggah
+  document.getElementById('ktm').addEventListener('change', function(e) {
+    const fileName = document.getElementById('file-name');
+    if (this.files.length > 0) {
+      fileName.textContent = this.files[0].name;
+    } else {
+      fileName.textContent = '';
+    }
+  });
+</script>
 
 </body>
+
+
 </html>

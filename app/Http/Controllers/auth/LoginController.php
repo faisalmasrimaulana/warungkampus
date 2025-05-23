@@ -43,11 +43,11 @@ class LoginController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
 
-            // Jika gagal login, kembalikan dengan pesan error
-            return back()->withErrors([
-                'email' => 'Email atau password salah.',
-            ]);
         }
+        // Jika gagal login, kembalikan dengan pesan error
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
     }
 
     // Proses logout

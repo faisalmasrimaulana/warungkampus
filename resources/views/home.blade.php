@@ -90,17 +90,16 @@
         Bergabunglah dengan mahasiswa-mahasiswi dalam jaringan WarungKampus dan rasakan sendiri manfaat yang sangat luar biasa.
       </p>
       <div class="flex justify-center space-x-4">
-        <button onclick="location.href='Posting.html'" id="ctaSellButton" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-blue-600 hover:to-blue-700">
+        <a href="{{route('get.posting')}}" id="ctaSellButton" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-blue-600 hover:to-blue-700">
           Mulai Jual Sekarang
-        </button>
-        <button onclick="location.href='pencarian.html'" id="ctaSearchButton" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-green-600 hover:to-green-700">
+        </a>
+        <a href="{{route('get.daftarproduk')}}" id="ctaSearchButton" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-green-600 hover:to-green-700">
           Jelajahi Produk
-        </button>
+        </a>
       </div>
     </section>
   </div>
 </main>
-
 <!-- Script -->
 <!-- <script>
   // Sidebar toggle

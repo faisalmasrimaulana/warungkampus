@@ -48,5 +48,5 @@ class DashboardAdminController extends Controller
         $user->delete();
 
         return back()->with('success', 'User berhasil dihapus.');
-        }
+    }
 }
