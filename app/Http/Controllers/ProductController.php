@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProductController extends Controller
@@ -21,18 +22,18 @@ class ProductController extends Controller
         "deskripsi_lengkap" => "required|string",
         "kondisi" => "required_if:kategori,barang|string|nullable",
         "productImages" => "required|array|max:5",
-        "productImages.*" => "image|mimes:jpg,png,jpeg|max:5120"
+        "productImages.*" => "image|mimes:jpg,png,jpeg|max:3072"
     ]);
 
-    $mahasiswaId = Auth::id();
-    $data = [
-        'nama_produk' => $validated['nama_produk'],
-        'kategori' => $validated['kategori'],
-        'harga' => $validated['harga'],
-        'deskripsi_singkat' => $validated['deskripsi_singkat'],
-        'deskripsi_lengkap' => $validated['deskripsi_lengkap'],
-        'mahasiswa_id' => $mahasiswaId,
-    ];
+        $mahasiswaId = Auth::id();
+        $data = [
+            'nama_produk' => $validated['nama_produk'],
+            'kategori' => $validated['kategori'],
+            'harga' => $validated['harga'],
+            'deskripsi_singkat' => $validated['deskripsi_singkat'],
+            'deskripsi_lengkap' => $validated['deskripsi_lengkap'],
+            'mahasiswa_id' => $mahasiswaId,
+        ];
 
     if ($validated['kategori'] === 'barang') {
         $data['kondisi'] = $validated['kondisi'];
@@ -43,12 +44,12 @@ class ProductController extends Controller
         foreach($request->file('productImages') as $image){
             $path = $image->store('produk', 'public');
 
-            fotoproduk::create([
-                'produk_id' => $product -> id,
+            FotoProduk::create([
+                'produk_id' => $product->id,
                 'path_fotoproduk' => $path,
             ]);
         }
-        return redirect()->route('get.detail', $product->id)->with('success', 'Produk dan gambar berhasil disimpan');
+        return redirect()->route('produk.detail', $product->id)->with('success', 'Produk Berhasil Diposting');
     }
 
     public function showDetail($id){
@@ -59,6 +60,145 @@ class ProductController extends Controller
     public function daftarproduk() {
         $product = Product::all();
         return view('daftarproduk', compact('product'));
+    }
+
+    public function filter(Request $request) {
+        $query = Product::query()->with('fotoproduk');
+
+        // Filter kategori
+        if ($request->filled('kategori')) {
+            $query->where('kategori', strtolower($request->kategori));
+        }
+
+        // Urut harga
+        match($request->input('harga')){
+            'Terendah' => $query->orderBy('harga', 'asc'),
+            'Tertinggi' => $query->orderBy('harga', 'desc'),
+            default => null,
+        };
+
+        // Urut waktu
+        if ($request->filled('waktu')) {
+            match($request->input('waktu')){
+                'Terbaru' => $query->orderBy('created_at', 'asc'),
+                'Terlama' => $query->orderBy('created_at', 'desc'),
+                default =>null,
+            };
+        }
+
+        $product = $query->get();
+
+        return view('daftarproduk', compact('product'));
+    }
+
+    public function cari(Request $request){
+        $query = Product::query();
+
+        if ($request->has('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_produk', 'like', '%' . $request->search . '%')
+                ->orWhere('deskripsi_singkat', 'like', '%' . $request->search . '%')
+                ->orWhere('deskripsi_lengkap', 'like', '%' . $request->search . '%')
+                ->orWhere('kondisi', 'like', '%' . $request->search . '%');
+            });
+        }
+        else{
+
+        }
+
+        $product = $query->get(); // atau ->get() kalau nggak pakai pagination
+        $keyword = $request->input('search', '');
+
+        return view('daftarproduk', ['product'=>$product, 'keyword'=> $keyword]);
+    }
+
+    public function deleteProduct($id){
+        $product = Product::find($id);
+
+        if(!$product){
+            return redirect()->back()->with('error', 'Produk tidak ditemukan');
+        }
+
+        $product->delete();
+
+        return redirect()->back()->with('success', 'Produk berhasil dihapus');
+    }
+
+    public function editProduct($id){
+        $product = Product::with('fotoproduk')->findOrFail($id);
+
+        if($product->mahasiswa_id != Auth::id()){
+            abort(403);
+        }
+        return view('editpost', compact('product'));
+    }
+
+    public function updateProduct(Request $request, $id){
+        $product = Product::with('fotoproduk')->findOrFail($id);
+
+        if($product->mahasiswa_id != Auth::id()){
+            abort(403);
+        }
+
+        $validated = $request->validate([
+        "nama_produk" => "required|string",
+        "kategori" => "required|string",
+        "harga" => "required",
+        "deskripsi_singkat" => "required|max:100|string",
+        "deskripsi_lengkap" => "required|string",
+        "kondisi" => "nullable|string",
+        "productImages" => "nullable|array|max:5",
+        "productImages.*" => "image|mimes:jpg,png,jpeg|max:5120"
+        ]);
+
+        $product->update([
+            'nama_produk' => $validated['nama_produk'],
+            'kategori' => $validated['kategori'],
+            'harga' => $validated['harga'],
+            'deskripsi_singkat' => $validated['deskripsi_singkat'],
+            'deskripsi_lengkap' => $validated['deskripsi_lengkap'],
+            'kondisi' => $validated['kategori']  === 'barang' ? $validated['kondisi'] : 'nocondition',
+        ]);
+
+        if ($request->hasFile('productImages') ){
+            foreach($request->file('productImages') as $image ){
+                $path = $image->store('produk', 'public');
+            }
+
+            Fotoproduk::create([
+                'produk_id' => $product->id,
+                'path_fotoproduk' => $path,
+            ]);
+        }
+
+        if ($request->has('deleted_fotos')) {
+            $deletedFotos = $request->input('deleted_fotos'); // array id foto yg mau dihapus
+            foreach ($deletedFotos as $fotoId) {
+                $foto = FotoProduk::find($fotoId);
+                if ($foto) {
+                    Storage::delete($foto->path_fotoproduk);
+                    // Hapus record di DB
+                    $foto->delete();
+                }
+            }
+        }
+
+
+        return redirect()->route('produk.detail', $product->id)->with('success', 'produk berhasil di update');
+    }
+
+    public function markAsSold($id){
+    $product = Product::findOrFail($id);
+    
+    // Pastikan user yang punya produk yang bisa update (cek otorisasi)
+    if ($product->mahasiswa_id != Auth::id()) {
+        abort(403, "Unauthorized");
+    }
+    
+    $product->is_sold = true;
+    $product->save();
+    
+    return redirect()->back()->with('success', 'Produk berhasil ditandai sebagai terjual!');
     }
 
 }

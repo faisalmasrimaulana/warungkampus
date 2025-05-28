@@ -29,7 +29,7 @@ class RegisController extends Controller
             'whatsapp' => "string|regex:/^62\d{8,13}$/",
             'instagram' => 'string',
             'ktm' => 'required|image|mimes:jpeg,png,jpg|max:5120',
-            'alamat' => '|required|string',
+            'alamat' => 'required|string',
         ],[
             'whatsapp.regex' => "Nomor Whatsapp dimulai dengan kode negara (ex:6281234567)"
         ]);
@@ -47,6 +47,6 @@ class RegisController extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return redirect()->route('login')->with('success', 'Registrasi berhasil. Silakan login.');
+        return redirect()->route('login.submit')->with('success', 'Registrasi berhasil. Silakan login.');
     }
 }

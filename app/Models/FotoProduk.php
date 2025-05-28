@@ -15,7 +15,7 @@ class FotoProduk extends Model
         'path_fotoproduk'
     ];
 
-    public function mahasiswa()
+    public function produk()
     {
         return $this->belongsTo(Product::class, 'produk_id');
     }

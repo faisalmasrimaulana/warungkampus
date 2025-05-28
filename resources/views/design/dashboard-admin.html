@@ -1,9 +1,55 @@
-@extends('layouts.app')
-
-@section('content')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin WarungKampus - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8fafc;
+    }
     .admin-gradient {
       background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+    }
+    .sidebar {
+      background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .nav-button {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-button:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-button.active {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+    .nav-button.active::after {
+      transform: scaleX(1);
     }
     .stat-card {
       transition: all 0.3s ease;
@@ -109,12 +155,25 @@
       background-color: #2563eb;
     }
   </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed right-0 top-0 h-full w-64 flex-shrink-0 text-black p-4 flex flex-col z-50">
+      <nav class="flex-1">
+    </div>
 
     <!-- KTM Modal -->
     <div id="ktmModal" class="ktm-modal">
       <div class="ktm-modal-content">
         <span class="ktm-modal-close">&times;</span>
-        <img id="ktmImage" src="" alt="KTM" class="w-120 h-auto">
+        <img id="ktmImage" src="" alt="KTM" class="ktm-image">
         <div class="ktm-info">
           <h3 id="ktmUserName"></h3>
           <p id="ktmUserEmail"></p>
@@ -124,14 +183,14 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="flex-1 overflow-y-auto admin-gradient p-6 mt-20">
+    <main class="flex-1 overflow-y-auto admin-gradient p-6">
       <!-- Stats Overview -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="stat-card rounded-xl p-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-500">Total Pengguna</p>
-              <h3 class="text-2xl font-bold text-gray-800">{{$users->sum('is_verified')}}</h3>
+              <h3 class="text-2xl font-bold text-gray-800">1,248</h3>
               <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 12.5% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-blue-100 text-blue-600">
@@ -144,7 +203,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-500">Posting Aktif</p>
-              <h3 class="text-2xl font-bold text-gray-800">{{ $users->sum(fn($user) => $user->produk->where('is_sold', '0')->count()) }}</h3>
+              <h3 class="text-2xl font-bold text-gray-800">3,756</h3>
               <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 8.3% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-green-100 text-green-600">
@@ -157,7 +216,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-500">Menunggu Verifikasi</p>
-              <h3 class="text-2xl font-bold text-gray-800">{{$users->filter(fn($user)=> $user->is_verified == 0)->count()}}</h3>
+              <h3 class="text-2xl font-bold text-gray-800">42</h3>
               <p class="text-sm text-red-500 mt-1"><i class="fas fa-arrow-down mr-1"></i> 5.2% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-purple-100 text-purple-600">
@@ -206,7 +265,7 @@
                 <p class="text-xs text-gray-400 mt-1">1 jam yang lalu</p>
               </div>
             </div>
-            <!-- <div class="flex items-start">
+            <div class="flex items-start">
               <div class="p-2 rounded-full bg-yellow-100 text-yellow-600 mr-4">
                 <i class="fas fa-exclamation-triangle"></i>
               </div>
@@ -215,7 +274,7 @@
                 <p class="text-xs text-gray-500">User melaporkan posting "Laptop second"</p>
                 <p class="text-xs text-gray-400 mt-1">3 jam yang lalu</p>
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
         
@@ -223,9 +282,8 @@
         <div class="bg-white rounded-xl shadow-sm p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-lg font-semibold text-gray-800">Verifikasi User</h2>
-            <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
+            <a href="#" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
-          @if(!$users->isEmpty())
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -237,26 +295,21 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($users->SortByDesc('created_at')->take(3) as $user )
                 <tr class="table-row">
                   <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center">
-                      <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="User">
+                      <img class="w-8 h-8 rounded-full mr-3" src="foto profil.jpg" alt="User">
                       <div>
-                        <p class="text-sm font-medium">{{$user->nama}}</p>
-                        <p class="text-xs text-gray-500">{{$user->email}}</p>
+                        <p class="text-sm font-medium">M. Fauzi Gafar</p>
+                        <p class="text-xs text-gray-500">fauzi@unja.ac.id</p>
                       </div>
                     </div>
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap">
-                    @if($user->is_verified==0)
                     <span class="badge badge-pending">Menunggu</span>
-                    @else
-                    <span class="badge badge-active">Terverifikasi</span>
-                    @endif
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap">
-                    <button class="view-ktm-btn" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at}}">
+                    <button class="view-ktm-btn" data-ktm="ktm1.jpg" data-name="M. Fauzi Gafar" data-email="fauzi@unja.ac.id" data-date="10 Mei 2023">
                       Lihat KTM
                     </button>
                   </td>
@@ -269,16 +322,68 @@
                     </button>
                   </td>
                 </tr>
-                @endforeach
+                <tr class="table-row">
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <img class="w-8 h-8 rounded-full mr-3" src="foto profil.jpg" alt="User">
+                      <div>
+                        <p class="text-sm font-medium">Ivan Goklas</p>
+                        <p class="text-xs text-gray-500">ivan@unja.ac.id</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <span class="badge badge-active">Aktif</span>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <button class="view-ktm-btn" data-ktm="ktm2.jpg" data-name="Ivan Goklas" data-email="ivan@unja.ac.id" data-date="15 April 2023">
+                      Lihat KTM
+                    </button>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
+                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-2" title="Detail">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="action-btn text-yellow-600 hover:text-yellow-900" title="Blokir">
+                      <i class="fas fa-ban"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr class="table-row">
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <img class="w-8 h-8 rounded-full mr-3" src="foto profil.jpg" alt="User">
+                      <div>
+                        <p class="text-sm font-medium">Bagas Alif</p>
+                        <p class="text-xs text-gray-500">bagas@unja.ac.id</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <span class="badge badge-rejected">Ditolak</span>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <button class="view-ktm-btn" data-ktm="ktm3.jpg" data-name="Bagas Alif" data-email="bagas@unja.ac.id" data-date="22 Maret 2023">
+                      Lihat KTM
+                    </button>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
+                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-2" title="Detail">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="action-btn text-green-600 hover:text-green-900" title="Aktifkan Kembali">
+                      <i class="fas fa-redo"></i>
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
-          @endif
         </div>
       </div>
 
       <!-- Reported Posts -->
-      <!-- <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-lg font-semibold text-gray-800">Posting Dilaporkan</h2>
           <a href="#" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
@@ -356,12 +461,85 @@
             </tbody>
           </table>
         </div>
-      </div> -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-8 w-full max-w-md">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Login Admin</h2>
+        <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form>
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <div class="mb-6">
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+          Masuk
+        </button>
+      </form>
     </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Sidebar toggle functionality
+      const profileButton = document.getElementById('profileButton');
+      const sidebar = document.getElementById('sidebar');
+      const closeSidebar = document.getElementById('closeSidebar');
+      const overlay = document.getElementById('overlay');
+      
+      profileButton.addEventListener('click', function() {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+      });
+      
+      closeSidebar.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+      
+      overlay.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+
+      // Show login modal (in a real app, this would be shown when not authenticated)
+      const loginModal = document.getElementById('loginModal');
+      const closeLoginModal = document.getElementById('closeLoginModal');
+      
+      // Uncomment this to show login modal by default
+      // loginModal.classList.remove('hidden');
+      
+      closeLoginModal.addEventListener('click', function() {
+        loginModal.classList.add('hidden');
+      });
+
+      // Navigation buttons
+      const navButtons = document.querySelectorAll('.nav-button');
+      
+      navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          navButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Close sidebar when a nav item is clicked
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+          
+          // In a real app, this would load different content based on the button clicked
+          // For now, we'll just show the dashboard content
+        });
+      });
 
       // Action buttons for user verification
       const approveButtons = document.querySelectorAll('[title="Setujui"]');
@@ -423,30 +601,21 @@
       const viewKtmButtons = document.querySelectorAll('.view-ktm-btn');
 
       // Open KTM modal
-      document.querySelectorAll('.view-ktm-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const ktmSrc = button.getAttribute('data-ktm');
-            const name = button.getAttribute('data-name');
-            const email = button.getAttribute('data-email');
-            const date = button.getAttribute('data-date');
-
-            // Set src gambar di modal, pakai asset kalau di Laravel
-            document.getElementById('ktmImage').src = "{{ asset('storage/' . $user->ktm) }}";
-
-            // Set info user di modal
-            document.getElementById('ktmUserName').textContent = name;
-            document.getElementById('ktmUserEmail').textContent = email;
-            document.getElementById('ktmUploadDate').textContent = date;
-
-            // Tampilkan modal
-            document.getElementById('ktmModal').style.display = 'flex';
-        })});
-
-        // Untuk tombol close modal
-        document.querySelector('.ktm-modal-close').addEventListener('click', () => {
-        document.getElementById('ktmModal').style.display = 'none';
+      viewKtmButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const ktmSrc = this.getAttribute('data-ktm');
+          const userName = this.getAttribute('data-name');
+          const userEmail = this.getAttribute('data-email');
+          const uploadDate = this.getAttribute('data-date');
+          
+          ktmImage.src = ktmSrc;
+          ktmUserName.textContent = userName;
+          ktmUserEmail.textContent = userEmail;
+          ktmUploadDate.textContent = `Diunggah pada: ${uploadDate}`;
+          
+          ktmModal.style.display = 'flex';
         });
-
+      });
 
       // Close KTM modal
       ktmModalClose.addEventListener('click', function() {
@@ -461,4 +630,5 @@
       });
     });
   </script>
-@endsection
+</body>
+</html>

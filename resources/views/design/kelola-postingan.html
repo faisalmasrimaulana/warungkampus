@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin WarungKampus - Manajemen Posting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8fafc;
+    }
+    .admin-gradient {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+    }
+    .sidebar {
+      background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+    }
+    .nav-button {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-button:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-button.active {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+    .nav-button.active::after {
+      transform: scaleX(1);
+    }
+    .stat-card {
+      transition: all 0.3s ease;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    .table-row:hover {
+      background-color: #f1f5f9;
+    }
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+    }
+    .badge-pending {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    .badge-active {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+    .badge-rejected {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+    .action-btn {
+      transition: all 0.2s ease;
+    }
+    .action-btn:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto admin-gradient p-6">
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+      <!-- Filter and Search -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div class="w-full md:w-1/3">
+            <input type="text" placeholder="Cari posting..." class="search-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+              <option value="">Semua Kategori</option>
+              <option value="barang">Barang</option>
+              <option value="jasa">Jasa</option>
+            </select>
+            <!-- <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+              <option value="">Semua Status</option>
+              <option value="active">Aktif</option>
+              <option value="pending">Menunggu</option>
+              <option value="expired">Kadaluarsa</option>
+            </select>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              <i class="fas fa-filter mr-2"></i>Filter
+            </button> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Posts Table -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between p-6 border-b">
+          <h2 class="text-lg font-semibold text-gray-800">Daftar Posting</h2>
+        </div>
+        
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posting</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr class="table-row">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-10 h-10 rounded mr-4" src="buku.jpg" alt="Product">
+                    <div>
+                      <p class="text-sm font-medium">Buku Kalkulus Edisi Terbaru</p>
+                      <p class="text-xs text-gray-500">ID: #PRD-2874</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-8 h-8 rounded-full mr-2" src="foto profil.jpg" alt="User">
+                    <span class="text-sm">Faisal Masri</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Barang</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">Rp 120.000</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12 Mei 2023</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="action-btn text-red-600 hover:text-red-900" title="Hapus">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr class="table-row">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-10 h-10 rounded mr-4" src="desain.jpg" alt="Product">
+                    <div>
+                      <p class="text-sm font-medium">Jasa Desain Grafis</p>
+                      <p class="text-xs text-gray-500">ID: #PRD-1562</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-8 h-8 rounded-full mr-2" src="foto profil.jpg" alt="User">
+                    <span class="text-sm">M. Fauzi G</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jasa</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">Rp 250.000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18 Mei 2023</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="action-btn text-green-600 hover:text-green-900 mr-3" title="Setujui">
+                    <i class="fas fa-check"></i>
+                  </button>
+                  <button class="action-btn text-red-600 hover:text-red-900" title="Tolak">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr class="table-row">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-10 h-10 rounded mr-4" src="sepatu.jpg" alt="Product">
+                    <div>
+                      <p class="text-sm font-medium">Sepatu</p>
+                      <p class="text-xs text-gray-500">ID: #PRD-3987</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-8 h-8 rounded-full mr-2" src="foto profil.jpg" alt="User">
+                    <span class="text-sm">Bagas  Alif</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Barang</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">Rp 4.500.000</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10 Mei 2023</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="action-btn text-gray-600 hover:text-gray-900" title="Arsipkan">
+                    <i class="fas fa-archive"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr class="table-row">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-10 h-10 rounded mr-4" src="kasur.jpg" alt="Product">
+                    <div>
+                      <p class="text-sm font-medium">Kasur</p>
+                      <p class="text-xs text-gray-500">ID: #PRD-5421</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-8 h-8 rounded-full mr-2" src="foto profil.jpg" alt="User">
+                    <span class="text-sm">Ivan Goklas</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Barang</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">Rp 75.000</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">22 Mei 2023</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="action-btn text-red-600 hover:text-red-900" title="Hapus">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="bg-white px-6 py-4 border-t border-gray-200">
+          <div class="flex flex-col sm:flex-row items-center justify-between">
+            <div class="mb-4 sm:mb-0">
+              <p class="text-sm text-gray-700">
+                Menampilkan <span class="font-medium">1</span> sampai <span class="font-medium">4</span> dari <span class="font-medium">124</span> hasil
+              </p>
+            </div>
+            <div class="flex space-x-2">
+              <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Sebelumnya
+              </button>
+              <button class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm font-medium">
+                1
+              </button>
+              <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                2
+              </button>
+              <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                3
+              </button>
+              <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Selanjutnya
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Post Detail Modal -->
+  <div id="postDetailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 w-full max-w-2xl">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Detail Posting</h2>
+        <button id="closePostDetailModal" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <img src="buku.jpg" alt="Post Image" class="w-full h-auto rounded-lg">
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Buku Kalkulus Edisi Terbaru</h3>
+          <p class="text-gray-600 mb-4">ID: #PRD-2874</p>
+          
+          <div class="mb-4">
+            <h4 class="font-medium text-gray-700">Deskripsi:</h4>
+            <p class="text-gray-600">Buku kalkulus edisi terbaru tahun 2023, kondisi baru belum pernah dipakai. Cocok untuk mahasiswa semester awal.</p>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <h4 class="font-medium text-gray-700">Kategori:</h4>
+              <p class="text-gray-600">Buku</p>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-700">Harga:</h4>
+              <p class="text-gray-600">Rp 120.000</p>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-700">Status:</h4>
+              <span class="badge badge-active">Aktif</span>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-700">Tanggal:</h4>
+              <p class="text-gray-600">12 Mei 2023</p>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <h4 class="font-medium text-gray-700">Pemilik:</h4>
+            <div class="flex items-center mt-2">
+              <img class="w-8 h-8 rounded-full mr-2" src="foto profil.jpg" alt="User">
+              <div>
+                <p class="text-sm font-medium">Faisal Masri</p>
+                <p class="text-xs text-gray-500">faisal@unja.ac.id</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 flex justify-end space-x-3">
+        <button id="closeModalBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+          Tutup
+        </button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          <i class="fas fa-edit mr-2"></i>Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Post detail modal functionality
+      const postDetailModal = document.getElementById('postDetailModal');
+      const closePostDetailModal = document.getElementById('closePostDetailModal');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const detailButtons = document.querySelectorAll('[title="Detail"]');
+      
+      detailButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          postDetailModal.classList.remove('hidden');
+        });
+      });
+      
+      closePostDetailModal.addEventListener('click', function() {
+        postDetailModal.classList.add('hidden');
+      });
+      
+      closeModalBtn.addEventListener('click', function() {
+        postDetailModal.classList.add('hidden');
+      });
+
+      // Approve and reject functionality
+      const approveButtons = document.querySelectorAll('[title="Setujui"]');
+      const rejectButtons = document.querySelectorAll('[title="Tolak"]');
+      const deleteButtons = document.querySelectorAll('[title="Hapus"]');
+      
+      approveButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const row = this.closest('tr');
+          const statusCell = row.querySelector('td:nth-child(5)');
+          statusCell.innerHTML = '<span class="badge badge-active">Aktif</span>';
+          
+          // Remove approve and reject buttons
+          const actionCell = row.querySelector('td:last-child');
+          actionCell.innerHTML = `
+            <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="action-btn text-red-600 hover:text-red-900" title="Hapus">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          `;
+          
+          // Re-attach event listeners to new buttons
+          attachEventListeners();
+        });
+      });
+      
+      rejectButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const row = this.closest('tr');
+          const statusCell = row.querySelector('td:nth-child(5)');
+          statusCell.innerHTML = '<span class="badge badge-rejected">Ditolak</span>';
+          
+          // Change action buttons
+          const actionCell = row.querySelector('td:last-child');
+          actionCell.innerHTML = `
+            <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="action-btn text-gray-600 hover:text-gray-900" title="Arsipkan">
+              <i class="fas fa-archive"></i>
+            </button>
+          `;
+          
+          // Re-attach event listeners to new buttons
+          attachEventListeners();
+        });
+      });
+      
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          if(confirm('Apakah Anda yakin ingin menghapus posting ini?')) {
+            const row = this.closest('tr');
+            row.remove();
+          }
+        });
+      });
+
+      // Function to re-attach event listeners after DOM changes
+      function attachEventListeners() {
+        // Re-attach detail button listeners
+        document.querySelectorAll('[title="Detail"]').forEach(button => {
+          button.addEventListener('click', function() {
+            postDetailModal.classList.remove('hidden');
+          });
+        });
+        
+        // Re-attach delete button listeners
+        document.querySelectorAll('[title="Hapus"]').forEach(button => {
+          button.addEventListener('click', function() {
+            if(confirm('Apakah Anda yakin ingin menghapus posting ini?')) {
+              const row = this.closest('tr');
+              row.remove();
+            }
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="hero-gradient min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+<div class="hero-gradient min-h-screen py-16 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8 pt-24">
     <!-- Hero Section -->
     <section class="text-center mb-20">
@@ -90,52 +90,15 @@
         Bergabunglah dengan mahasiswa-mahasiswi dalam jaringan WarungKampus dan rasakan sendiri manfaat yang sangat luar biasa.
       </p>
       <div class="flex justify-center space-x-4">
-        <a href="{{route('get.posting')}}" id="ctaSellButton" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-blue-600 hover:to-blue-700">
+        <a href="{{route('user.post')}}" id="ctaSellButton" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-blue-600 hover:to-blue-700">
           Mulai Jual Sekarang
         </a>
-        <a href="{{route('get.daftarproduk')}}" id="ctaSearchButton" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-green-600 hover:to-green-700">
+        <a href="{{route('produk.list')}}" id="ctaSearchButton" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-green-600 hover:to-green-700">
           Jelajahi Produk
         </a>
       </div>
     </section>
   </div>
-</main>
-<!-- Script -->
-<!-- <script>
-  // Sidebar toggle
-  const profileButton = document.getElementById('profileButton');
-  const profileSidebar = document.getElementById('profileSidebar');
-  const overlay = document.getElementById('overlay');
+</div>
 
-  profileButton.addEventListener('click', () => {
-    profileSidebar.classList.remove('translate-x-full');
-    overlay.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-  });
-
-  overlay.addEventListener('click', () => {
-    profileSidebar.classList.add('translate-x-full');
-    overlay.classList.add('hidden');
-    document.body.style.overflow = 'auto';
-  });
-
-  // Navigation logic
-  const homeButton = document.getElementById('homeButton');
-  const sellButton = document.getElementById('sellButton');
-  const searchButton = document.getElementById('searchButton');
-
-  homeButton.addEventListener('click', () => {
-    window.location.href = 'beranda.html';
-  });
-
-  sellButton.addEventListener('click', () => {
-    window.location.href = 'posting.html';
-  });
-
-  searchButton.addEventListener('click', () => {
-    window.location.href = 'pencarian.html';
-  });
-</script> -->
-
-<!-- <script src="https://unpkg.com/feather-icons"></script> -->
 @endsection

@@ -18,7 +18,7 @@
         <main class="flex justify-center h-dvh flex-col">
             <h1 class="text-center text-2xl font-semibold text-green-900 py-5">WarungKampus</h1>
             <div class="flex justify-center items-center">
-                <form action="{{route('loginadmin.submit')}}" method="POST" class="w-1/3 bg-white  rounded-md relative p-4 drop-shadow-xl focus-within:drop-shadow-green-300 drop-shadow-black-400 mb-7">
+                <form action="{{route('admin.login.submit')}}" method="POST" class="w-1/3 bg-white  rounded-md relative p-4 drop-shadow-xl focus-within:drop-shadow-green-300 drop-shadow-black-400 mb-7">
                     <h1 class="text-green-800 font-bold pb-4 text-center uppercase">Form Login Admin</h1>
                     @csrf
 
@@ -33,14 +33,14 @@
                     @endif
 
                     <label for="admin_id" class="text-sm text-green-900 font-semibold">Admin Id</label>
-                    <x-input type="text" name="admin_id" placeholder="admin000" class="lowercase" required></x-input>
+                    <x-input type="text" name="admin_id" class="lowercase" required></x-input>
 
                     <label for="password" class="text-sm text-green-900 font-semibold">Kata Sandi</label>
                     <x-input type="password" name="password" placeholder="12Wk1" required></x-input>
 
                     <div class="loginButton inline-flex justify-end w-full gap-3">
                         <x-button type="submit" color="primary">Masuk</x-button>
-                        <a href="{{'cancel'}}" ><x-button type="button" color="danger">Batal</x-button></a>
+                        <x-button href="{{'cancel'}}" type="button" color="danger">Batal</x-button>
                     </div>
                 </form>
             </div>

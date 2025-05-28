@@ -37,7 +37,7 @@ class LoginAdminController extends Controller
             $request->session()->regenerate();
 
             // Redirect ke halaman dashboard
-            return redirect()->intended('/dashboardadmin');
+            return redirect()->intended('admin/dashboard');
         }
 
         // Jika gagal login, kembalikan dengan pesan error

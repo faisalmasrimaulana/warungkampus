@@ -1,0 +1,52 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, rgb(240, 244, 255), rgb(230, 240, 255));
+}
+
+.register-gradient {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+}
+.register-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+.input-field {
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+.input-field:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+.register-btn {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+.register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+.file-input {
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+}
+.file-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: 1px dashed #cbd5e0;
+    border-radius: 0.5rem;
+    background-color: #f8fafc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.file-label:hover {
+    border-color: #3b82f6;
+    background-color: #f0f7ff;
+}
+.glow-text {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}

@@ -9,9 +9,9 @@
       <!-- Kolom Gambar -->
       <div class="md:col-span-1 bg-white rounded-xl shadow-md overflow-hidden flex items-center justify-center">
         @if($product->fotoproduk->isNotEmpty())
-          <img src="{{ asset('storage/' . $product->fotoproduk->first()->path_fotoproduk) }}" alt="gambar produk" class="w-full h-auto object-cover">
+          <img src="{{ asset('storage/' . $product->fotoproduk->first()->path_fotoproduk) }}" alt="gambar produk" class="w-full h-64 object-cover">
         @else
-          <img src="{{ asset('assets/sepatu.jpg') }}" alt="No Image" class="w-full h-auto object-cover" />
+          <img src="{{ asset('assets/sepatu.jpg') }}" alt="No Image" class="w-full h-80 object-cover" />
         @endif
       </div>
 
@@ -27,7 +27,10 @@
               <p class="text-sm text-gray-500 mb-3">{{$product->kategori}}</p>
               @endif
             </div>
-            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Tersedia</span>
+            <span class="text-xs px-2 py-1 rounded-full
+              {{ $product->is_sold ? 'bg-gray-300 text-gray-600' : 'bg-blue-100 text-blue-800' }}">
+              {{ $product->is_sold ? 'Terjual' : 'Tersedia' }}
+            </span>
           </div>
 
           <div class="mb-6">
@@ -39,11 +42,10 @@
             {{ $product->deskripsi_singkat }}
           </p>
 
-          <a href="https://wa.me/{{ $product->mahasiswa->whatsapp }}"
-            class="whatsapp-button bg-blue-500 text-center text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center space-x-2">
+          <x-button href="https://wa.me/{{ $product->mahasiswa->whatsapp }}"
+            class="whatsapp-button bg-blue-500 text-center text-white py-3 px-6 font-medium flex items-center justify-center space-x-2">
             <i data-feather="message-circle"></i>
-            Hubungi Penjual via WhatsApp
-          </a>
+            Hubungi Penjual via WhatsApp</x-button>
         </div>
       </div>
     </div>
@@ -53,7 +55,7 @@
       <h3 class="font-semibold text-lg mb-4">Tentang Penjual</h3>
       <div class="flex items-center space-x-4">
         @if($product->mahasiswa && $product->mahasiswa->foto_profil != 'fotoprofil.jpg')
-          <img src="{{ asset('storage/' . $product->mahasiswa->fotoprofil) }}" alt="Foto Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
+          <img src="{{$product->mahasiswa->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . $product->mahasiswa->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="Foto Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
         @else
           <img src="{{ asset('assets/fotoprofil.jpg') }}" alt="Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
         @endif

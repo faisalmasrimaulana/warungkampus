@@ -1,0 +1,30 @@
+body {
+font-family: 'Poppins', sans-serif;
+background-color: #f8fafc;
+}
+.login-gradient {
+background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+}
+.login-card {
+background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+.input-field {
+transition: all 0.3s ease;
+border: 1px solid #e2e8f0;
+}
+.input-field:focus {
+border-color: #3b82f6;
+box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+.login-btn {
+transition: all 0.3s ease;
+box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+.login-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+.glow-text {
+text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}

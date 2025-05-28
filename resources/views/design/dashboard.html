@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - WarungKampus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8fafc;
+    }
+    .dashboard-gradient {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+    }
+    .product-card {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    .status-badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+    }
+  </style>
+</head>
+<body class="dashboard-gradient min-h-screen">
+
+<!-- Main Content -->
+<main class="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto">
+<!-- Header Profil -->
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 bg-white rounded-2xl p-6 shadow-sm">
+      <div class="flex-1 mb-4 md:mb-0">
+        <div class="flex items-start">
+          <img src="PROFILLLLL.jpg" alt="Profil" class="w-16 h-16 rounded-full border-4 border-blue-100 mr-4">
+          <div class="flex-1">
+            <div class="flex items-center mb-2">
+              <h1 class="text-2xl font-bold text-gray-800 mr-3">Nama Lorem Ipsum</h1>
+              <span class="status-badge bg-blue-100 text-blue-800">Mahasiswa Aktif</span>
+            </div>
+            <p class="text-gray-600 mb-2">📚 Sistem Informasi - Universitas Jambi <br>Mahasiswa Sistem Informasi yang suka ngoding dan desain</p>
+            <p class="text-gray-600 mb-2">📍 Jl. Mendalo Asri Kos No 1 Muaro Jambi, Jambi</p>
+
+            <div class="flex items-center space-x-3">
+              <a href="#" class="text-blue-600 hover:text-blue-800 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+                </svg>
+                @loremipsum
+              </a>
+              <a href="#" class="text-green-600 hover:text-green-800 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                0812-3456-7890
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="location.href='edit_profil.html'" 
+              class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center self-start">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+        </svg>
+        Edit Profil
+      </button>
+    </div>
+
+    <!-- Kelola Produk -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold text-gray-800">Kelola Postingan Produk Anda</h2>
+        <button onclick="location.href='posting.html'" 
+                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          Tambah Produk Baru
+        </button>
+      </div>
+
+      <!-- List Produk -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Product 1 -->
+        <div class="product-card bg-white rounded-xl p-4">
+          <div class="relative mb-4">
+            <img src="desainlogo.png" alt="Produk" class="w-full h-48 object-cover rounded-lg">
+            <span class="status-badge bg-blue-100 text-blue-800 absolute top-2 left-2">Tersedia</span>
+          </div>
+          <div class="mb-4">
+            <h3 class="font-semibold text-lg mb-1">Jasa Design Logo</h3>
+            <p class="text-gray-600 text-sm mb-2">Rp 75.000</p>
+            <p class="text-xs text-gray-500">Diposting: 2 hari lalu</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <button onclick="editProduct('1')" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition">
+              Edit
+            </button>
+            <!-- button hapus -->
+            <button onclick="deleteProduct('1')" class="px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
+              Hapus
+            </button>
+            <button onclick="markAsSold('1')" class="px-3 py-1 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition">
+              Tandai Terjual
+            </button>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card bg-white rounded-xl p-4">
+          <div class="relative mb-4">
+            <img src="tas.jpg" alt="Produk" class="w-full h-48 object-cover rounded-lg">
+            <span class="status-badge bg-green-100 text-green-800 absolute top-2 left-2">Terjual</span>
+          </div>
+          <div class="mb-4">
+            <h3 class="font-semibold text-lg mb-1">Tas Cantik</h3>
+            <p class="text-gray-600 text-sm mb-2">Rp 150.000</p>
+            <p class="text-xs text-gray-500">Diposting: 1 minggu lalu</p>
+          </div>
+          <div class="flex justify-between items-center">
+            <button onclick="editProduct('2')" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition">
+              Edit
+            </button>
+            <!-- Button Hapus -->
+            <button onclick="deleteProduct('2')" class="px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
+              Hapus
+            </button>
+            <button disabled class="px-3 py-1 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed">
+              Terjual
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Konfirmasi Terjual -->
+<div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+  <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4">
+    <h3 class="text-lg font-semibold mb-4" id="modalTitle"></h3>
+    <p class="text-gray-600 mb-6" id="modalMessage"></p>
+    <div class="flex justify-end space-x-3">
+      <!-- Button batal -->
+      <button onclick="closeModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+        Batal
+      </button>
+      <button id="confirmAction" class="px-4 py-2 text-white rounded-lg">
+        Konfirmasi
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+  function loadNavbar() {
+    fetch('navbar-sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-placeholder').innerHTML = data;
+        initializeNavbar();
+      });
+  }
+
+  // Inisialisasi fungsi navbar
+  function initializeNavbar() {
+    const profileButton = document.getElementById('profileButton');
+    const profileSidebar = document.getElementById('profileSidebar');
+    const overlay = document.getElementById('overlay');
+
+    profileButton.addEventListener('click', () => {
+      profileSidebar.classList.remove('translate-x-full');
+      overlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+
+    overlay.addEventListener('click', () => {
+      profileSidebar.classList.add('translate-x-full');
+      overlay.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    });
+
+    // Update link "Profil Saya" di sidebar
+    const profileLink = document.querySelector('#profileSidebar a:first-child');
+    if(profileLink) {
+      profileLink.href = 'dashboard.html';
+    }
+  }
+
+  // Panggil fungsi load navbar saat halaman dimuat
+  window.addEventListener('DOMContentLoaded', loadNavbar);
+
+  // Fungsi untuk manajemen produk
+  function editProduct(productId) {
+    // Redirect ke halaman edit produk
+    window.location.href = `edit-produk.html?id=${productId}`;
+  }
+
+  function deleteProduct(productId) {
+    showModal(
+      'Hapus Produk',
+      'Apakah Anda yakin ingin menghapus produk ini?',
+      'bg-red-500 hover:bg-red-600',
+      () => {
+        console.log(`Produk ${productId} dihapus`);
+        closeModal();
+      }
+    );
+  }
+
+  function markAsSold(productId) {
+    showModal(
+      'Tandai Terjual',
+      'Apakah Anda yakin ingin menandai produk ini sebagai terjual?',
+      'bg-green-500 hover:bg-green-600',
+      () => {
+        console.log(`Produk ${productId} ditandai terjual`);
+        closeModal();
+      }
+    );
+  }
+
+  // Fungsi untuk konfirmasi
+  function showModal(title, message, buttonStyle, confirmCallback) {
+    const modal = document.getElementById('confirmationModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const confirmButton = document.getElementById('confirmAction');
+
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    confirmButton.className = `px-4 py-2 text-white rounded-lg ${buttonStyle}`;
+    confirmButton.onclick = confirmCallback;
+
+    modal.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('confirmationModal').classList.add('hidden');
+  }
+
+  // Navigasi sidebar
+  document.querySelectorAll('#profileSidebar a').forEach(link => {
+    if(link.textContent.includes('Profil Saya')) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'dashboard.html';
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

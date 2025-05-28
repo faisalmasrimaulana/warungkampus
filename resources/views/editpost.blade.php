@@ -29,11 +29,12 @@
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40"></div>
     <main class="container mx-auto px-4 py-8 mt-12">
       <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Posting Produk Baru</h1>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Update Produk</h1>
         
         <!-- FORM SECTION -->
-        <form id="productForm" class="space-y-6" method="POST" action="{{route('user.product.posting')}}" enctype="multipart/form-data">
+        <form id="productForm" class="space-y-6" method="POST" action="{{route('user.product.update', $product->id)}}" enctype="multipart/form-data">
           @csrf
+          @method ('PUT')
           @if ($errors->any())
           <div class="p-4 rounded mb-4">
               <ul class="list-disc pl-5">
@@ -56,6 +57,18 @@
             </div>
             <div id="previewContainer" class="mt-4 gap-3 flex justify-center">
               <!-- Preview images will be inserted here -->
+               @if($product->fotoproduk && count($product->fotoproduk))
+                  @foreach($product->fotoproduk as $foto)
+                    <div class="relative group inline-block">
+                      <img src="{{ asset('storage/'. $foto->path_fotoproduk) }}" class="w-64 h-64 object-cover border-black mb-2 rounded-lg">
+                     
+                      <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition" onclick="removeOldImage(this)">
+                        &times;
+                      </button>
+                      <input type="checkbox" name="deleted_fotos[]" value="{{ $foto->id }}" class="hidden delete-checkbox">
+                    </div>
+                  @endforeach
+                @endif
             </div>
           </div>
           <!-- ./Foto Produk -->
@@ -65,14 +78,14 @@
             <!-- Nama produk -->
             <div>
               <label for="nama_produk" class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-              <x-input type="text" name="nama_produk" id="productName" class="w-full px-4 py-2" placeholder="Contoh: Sepatu Sneakers Casual"/>
+              <x-input type="text" name="nama_produk" id="productName" class="w-full px-4 py-2" placeholder="Contoh: Sepatu Sneakers Casual" value="{{$product->nama_produk}}"/>
             </div>
             <!-- ./Nama Produk -->
 
             <!-- Harga Produk -->
             <div>
               <label for="harga" class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
-              <x-input type="number" name="harga" id="productPrice" class="w-full px-4 py-2" placeholder="Contoh: 250000"/>
+              <x-input type="number" name="harga" id="productPrice" class="w-full px-4 py-2" placeholder="Contoh: 250000" value="{{$product->harga}}"/>
             </div>
             <!-- ./Harga Produk -->
 
@@ -80,9 +93,9 @@
             <div>
               <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
               <select id="productCategory" name="kategori" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                <option value="" disabled selected>Pilih kategori</option>
-                <option value="barang">Barang</option>
-                <option value="jasa">Jasa</option>
+                <option value="" disabled selected {{old('kategori', $product->kategori) == '' ? 'selected' : ''}}>Pilih kategori</option>
+                <option value="barang" {{old('kategori', $product->kategori) == 'barang' ? 'selected' : ''}}>Barang</option>
+                <option value="jasa" {{old('kategori', $product->kategori) == 'jasa' ? 'selected' : ''}}>Jasa</option>
               </select>
             </div>
             <!-- ./Kategori Produk -->
@@ -91,8 +104,8 @@
             <div>
               <label for="kondisi" class="block text-sm font-medium text-gray-700 mb-1">Kondisi</label>
               <select id="productCondition" name="kondisi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                <option value="baru">Baru</option>
-                <option value="bekas" selected>Bekas</option>
+                <option value="baru" {{old('kondisi', $product->kondisi) == 'baru' ? 'selected' : ''}}>Baru</option>
+                <option value="bekas" {{old('kondisi', $product->kondisi) == 'bekas' ? 'selected' : ''}}>Bekas</option>
               </select>
             </div>
             <!-- product Condition -->
@@ -101,20 +114,20 @@
           <!-- Deskripsi -->
           <div>
             <label for="deskripsi_singkat" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Singkat</label>
-            <x-input type="text" name="deskripsi_singkat" id="shortDescription" class="w-full px-4 py-2" placeholder="Contoh: Sepatu casual warna hitam, ukuran 40, kondisi 90%" maxlength="100"/>
+            <x-input type="text" name="deskripsi_singkat" id="shortDescription" class="w-full px-4 py-2" placeholder="Contoh: Sepatu casual warna hitam, ukuran 40, kondisi 90%" maxlength="100" value="{{$product->deskripsi_singkat}}"/>
             <p class="text-xs text-gray-500 mt-1">Maksimal 100 karakter</p>
           </div>
   
           <div>
             <label for="deskripsi_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Lengkap</label>
-            <textarea id="fullDescription" name="deskripsi_lengkap" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Jelaskan detail produk, spesifikasi, kelebihan, dll." name="fullDescription">{{old('deskripsi_lengkap')}}</textarea>
+            <textarea id="fullDescription" name="deskripsi_lengkap" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Jelaskan detail produk, spesifikasi, kelebihan, dll." name="fullDescription">{{$product->deskripsi_lengkap}}</textarea>
           </div>
   
   
           <!-- Submit Button -->
           <div class="pt-4 flex justify-end gap-3">
             <x-button type="submit" color="primary">
-              Posting Produk
+              Update Produk
             </x-button>
             <x-button href="{{url()->previous()}}" color="danger">Batal</x-button>
           </div>
@@ -237,6 +250,15 @@
           kondisi.classList.remove('bg-gray-100', 'text-gray-400', 'cursor-not-allowed', 'border-gray-300');
         }
       })
+
+      function removeOldImage(button) {
+        const container = button.parentElement;
+        const checkbox = container.querySelector('.delete-checkbox');
+        if (checkbox) {
+          checkbox.checked = true; // tandai supaya backend hapus gambar ini
+        }
+        container.style.display = 'none'; // sembunyikan dari UI
+      }
   </script>
 </section>
 @endsection

@@ -1,0 +1,55 @@
+.nav-button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    }
+
+.nav-button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+    }
+
+.nav-button:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    }
+
+.nav-button.home-active {
+    color: #9333ea;
+    font-weight: 500;
+    }
+
+.nav-button.sell-active {
+    color: #3b82f6;
+    font-weight: 500;
+    }
+
+.nav-button.search-active {
+    color: #10b981;
+    font-weight: 500;
+    }
+
+.nav-button.active::after {
+    transform: scaleX(1);
+    }
+
+.profile-img {
+    transition: all 0.3s ease;
+    }
+    
+.profile-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+
+.floating-sidebar {
+box-shadow: -5px 0 25px rgba(0, 0, 0, 0.08);
+}

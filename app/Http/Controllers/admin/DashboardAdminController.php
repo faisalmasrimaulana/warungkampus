@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 // CONTROLLER UNTUK DASHBOARD ADMIN
-// ShowUnverifiedUsers untuk menampilkan user yang belum diverifikasi
 // index untuk menampilkan data seluruh user
 // verifikasi untuk memverifikasi user yang baru mendaftar
 // hapus untuk menghapus atau membatalkan pendaftaran user yang tidak memenuhi syarat, ini juga menghapus bukti foto KTM di local dan string di database
 
 class DashboardAdminController extends Controller
 {
+
     public function showUnverifiedUsers()
     {
         $users = User::where('is_verified', false)->get();
@@ -32,7 +32,7 @@ class DashboardAdminController extends Controller
         $user = User::findOrFail($id);
         $user->is_verified = true;
         $user->save();
-        return back()->with('success', 'User berhasil diverifikasi.');
+        return back()->with('success', 'Admin berhasil diverifikasi.');
     }
 
     public function hapus($id)
@@ -48,5 +48,10 @@ class DashboardAdminController extends Controller
         $user->delete();
 
         return back()->with('success', 'User berhasil dihapus.');
+    }
+
+    public function kelolaUser(){
+        $users = User::all();
+        return view('admin.kelolaUser', compact('users'));
     }
 }
