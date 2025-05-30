@@ -3,8 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use App\Models\FotoProduk;
+use App\Models\User;
+
+/**
+ * @property int $id
+ * @property string $nama_produk
+ * @property string $kategori
+ * @property string|null $kondisi
+ * @property float $harga
+ * @property string $deskripsi_singkat
+ * @property string $deskripsi_lengkap
+ * @property int $mahasiswa_id
+ */
 
 class Product extends Model
 {

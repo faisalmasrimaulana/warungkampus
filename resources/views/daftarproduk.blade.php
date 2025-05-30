@@ -31,7 +31,7 @@
     @include('partials.sidebarfilter')
     <main class="p-6">
 
-    @if($product-> count() > 0)
+    @if($products-> count() > 0)
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       @foreach($products as $prod)
         <a href="{{ route('produk.detail', ['id' => $prod->id]) }}">

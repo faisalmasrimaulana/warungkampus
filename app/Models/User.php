@@ -6,10 +6,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Product;
 
-// MODEL USER
-// mengontrol database User
+/**
+ * Model User
+ * @property int $id
+ * @property string $nama
+ * @property string $email
+ * @property string $password
+ * @property string $nim
+ * @property string|null $whatsapp
+ * @property string|null $instagram
+ * @property string $ktm
+ * @property string|null $alamat
+ * @property string|null $foto_profil
+ * @property bool $is_verified
+ */
 
 class User extends Authenticatable
 {

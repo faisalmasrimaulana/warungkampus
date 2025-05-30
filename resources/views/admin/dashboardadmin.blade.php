@@ -1,137 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-  <style>
-    .admin-gradient {
-      background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
-    }
-    .stat-card {
-      transition: all 0.3s ease;
-      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-    .stat-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-    .table-row:hover {
-      background-color: #f1f5f9;
-    }
-    .badge {
-      font-size: 0.75rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 9999px;
-    }
-    .badge-pending {
-      background-color: #fef3c7;
-      color: #92400e;
-    }
-    .badge-active {
-      background-color: #d1fae5;
-      color: #065f46;
-    }
-    .badge-rejected {
-      background-color: #fee2e2;
-      color: #991b1b;
-    }
-    .action-btn {
-      transition: all 0.2s ease;
-    }
-    .action-btn:hover {
-      transform: scale(1.1);
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 40;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-    .overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    /* KTM Modal Styles */
-    .ktm-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.8);
-      z-index: 100;
-      justify-content: center;
-      align-items: center;
-    }
-    .ktm-modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 90%;
-      max-height: 90%;
-      overflow: auto;
-      position: relative;
-    }
-    .ktm-modal-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 24px;
-      cursor: pointer;
-      color: #333;
-    }
-    .ktm-image {
-      max-width: 100%;
-      max-height: 80vh;
-      display: block;
-      margin: 0 auto;
-    }
-    .ktm-info {
-      margin-top: 15px;
-      text-align: center;
-    }
-    .view-ktm-btn {
-      background-color: #3b82f6;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      cursor: pointer;
-      margin-left: 5px;
-    }
-    .view-ktm-btn:hover {
-      background-color: #2563eb;
-    }
-  </style>
+    <!-- MODAL KTM USER -->
+    <x-modalktm/>
 
-    <!-- KTM Modal -->
-    <div id="ktmModal" class="ktm-modal">
-      <div class="ktm-modal-content">
-        <span class="ktm-modal-close">&times;</span>
-        <img id="ktmImage" src="" alt="KTM" class="w-120 h-auto">
-        <div class="ktm-info">
-          <h3 id="ktmUserName"></h3>
-          <p id="ktmUserEmail"></p>
-          <p id="ktmUploadDate"></p>
-        </div>
-      </div>
-    </div>
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 overflow-y-auto p-6 mt-20">
 
-    <!-- Main Content Area -->
-    <div class="flex-1 overflow-y-auto admin-gradient p-6 mt-20">
-      <!-- Stats Overview -->
+      <!-- STATISTIK DASHBOARD -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="stat-card rounded-xl p-6">
+        <!-- TOTAL PENGGUNA TERVERIFIKASI-->
+        <div class="bg-gradient-to-br from-white to-slate-100 shadow transition-all duration-300 hover:-translate-y-1 hover:shadow-lg rounded-xl p-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-500">Total Pengguna</p>
-              <h3 class="text-2xl font-bold text-gray-800">{{$users->sum('is_verified')}}</h3>
+              <h3 class="text-2xl font-bold text-gray-800">{{$totalUsers}}</h3>
               <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 12.5% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-blue-100 text-blue-600">
@@ -140,11 +23,12 @@
           </div>
         </div>
         
-        <div class="stat-card rounded-xl p-6">
+        <!-- POSTINGAN AKTIF PRODUK YANG TERSEDIA -->
+        <div class="rounded-xl p-6 bg-gradient-to-br from-white to-slate-100 shadow transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-500">Posting Aktif</p>
-              <h3 class="text-2xl font-bold text-gray-800">{{ $users->sum(fn($user) => $user->produk->where('is_sold', '0')->count()) }}</h3>
+              <h3 class="text-2xl font-bold text-gray-800">{{$totalActiveProduct}}</h3>
               <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 8.3% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-green-100 text-green-600">
@@ -153,11 +37,12 @@
           </div>
         </div>
         
-        <div class="stat-card rounded-xl p-6">
+        <!-- TOTAL USER YANG BELUM TERVERIFIKASI -->
+        <div class="rounded-xl p-6 bg-gradient-to-br from-white to-slate-100 shadow transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-500">Menunggu Verifikasi</p>
-              <h3 class="text-2xl font-bold text-gray-800">{{$users->filter(fn($user)=> $user->is_verified == 0)->count()}}</h3>
+              <h3 class="text-2xl font-bold text-gray-800">{{$totalUnverified}}</h3>
               <p class="text-sm text-red-500 mt-1"><i class="fas fa-arrow-down mr-1"></i> 5.2% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-purple-100 text-purple-600">
@@ -166,10 +51,11 @@
           </div>
         </div>
       </div>
+      <!-- ./STATISTIK DASHBOARD -->
 
-      <!-- Recent Activity and User Verification -->
+
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <!-- Recent Activity -->
+        <!-- AKTIVITAS TERKINI -->
         <div class="bg-white rounded-xl shadow-sm p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-lg font-semibold text-gray-800">Aktivitas Terkini</h2>
@@ -206,20 +92,11 @@
                 <p class="text-xs text-gray-400 mt-1">1 jam yang lalu</p>
               </div>
             </div>
-            <!-- <div class="flex items-start">
-              <div class="p-2 rounded-full bg-yellow-100 text-yellow-600 mr-4">
-                <i class="fas fa-exclamation-triangle"></i>
-              </div>
-              <div>
-                <p class="text-sm font-medium">Laporan baru</p>
-                <p class="text-xs text-gray-500">User melaporkan posting "Laptop second"</p>
-                <p class="text-xs text-gray-400 mt-1">3 jam yang lalu</p>
-              </div>
-            </div> -->
           </div>
         </div>
-        
-        <!-- User Verification -->
+        <!-- ./AKTIVITAS TERKINI -->
+
+        <!-- WAITING LIST UNVERIFIED USER -->
         <div class="bg-white rounded-xl shadow-sm p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-lg font-semibold text-gray-800">Verifikasi User</h2>
@@ -237,8 +114,8 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($users->SortByDesc('created_at')->take(3) as $user )
-                <tr class="table-row">
+                @foreach($users as $user )
+                <tr class="hover:bg-gray-100">
                   <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center">
                       <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="User">
@@ -250,24 +127,49 @@
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap">
                     @if($user->is_verified==0)
-                    <span class="badge badge-pending">Menunggu</span>
+                    <x-badge status="pending"></x-badge>
                     @else
-                    <span class="badge badge-active">Terverifikasi</span>
+                    <x-badge status="verified"></x-badge>
                     @endif
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap">
-                    <button class="view-ktm-btn" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at}}">
+                    <x-button class="view-ktm-btn" size="sm" data-ktm="{{asset('storage/' . $user->ktm)}}" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at->diffForHumans()}}">
                       Lihat KTM
-                    </button>
+                    </x-button>
                   </td>
-                  <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                    <button class="action-btn text-green-600 hover:text-green-900 mr-2" title="Setujui">
-                      <i class="fas fa-check"></i>
-                    </button>
-                    <button class="action-btn text-red-600 hover:text-red-900" title="Tolak">
-                      <i class="fas fa-times"></i>
-                    </button>
+                  @if(!$user->is_verified)
+                  <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
+                    @csrf
+                    @method('PUT')
+                        <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
+                        <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" type="submit" title="Tolak">
+                        <i class="fas fa-times"></i></button>
+                    </form>
                   </td>
+                  @else
+                  <td class="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="action-btn text-yellow-600 hover:text-red-900 mr-3" title="Blokir">
+                      <i class="fas fa-ban"></i>
+                    </button>
+                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="action-btn text-red-600 hover:text-red-900" title="Hapus" type="submit">
+                          <i class="fas fa-trash" ></i>
+                        </button>
+                    </form>
+                  </td>
+                  @endif
                 </tr>
                 @endforeach
               </tbody>
@@ -275,190 +177,6 @@
           </div>
           @endif
         </div>
+        <!-- ./WAITING LIST UNVERIFIED USER -->
       </div>
-
-      <!-- Reported Posts -->
-      <!-- <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-semibold text-gray-800">Posting Dilaporkan</h2>
-          <a href="#" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posting</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alasan</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pelapor</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr class="table-row">
-                <td class="px-4 py-3 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <img class="w-10 h-10 rounded mr-3" src="product1.jpg" alt="Product">
-                    <div>
-                      <p class="text-sm font-medium">Jasa pembuatan tugas akhir</p>
-                      <p class="text-xs text-gray-500">ID: #PRD-2874</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">M. Fauzi Gafar</td>
-                <td class="px-4 py-3 whitespace-nowrap">
-                  <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Melanggar aturan</span>
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <img class="w-6 h-6 rounded-full mr-2" src="reporter1.jpg" alt="Reporter">
-                    <span class="text-sm">Rina Andriani</span>
-                  </div>
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                  <button class="action-btn text-green-600 hover:text-green-900 mr-2" title="Abaikan">
-                    <i class="fas fa-check-circle"></i>
-                  </button>
-                  <button class="action-btn text-red-600 hover:text-red-900" title="Hapus">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr class="table-row">
-                <td class="px-4 py-3 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <img class="w-10 h-10 rounded mr-3" src="product2.jpg" alt="Product">
-                    <div>
-                      <p class="text-sm font-medium">Buku algoritma bekas</p>
-                      <p class="text-xs text-gray-500">ID: #PRD-1562</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Doni Pratama</td>
-                <td class="px-4 py-3 whitespace-nowrap">
-                  <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Deskripsi menipu</span>
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <img class="w-6 h-6 rounded-full mr-2" src="reporter2.jpg" alt="Reporter">
-                    <span class="text-sm">Faisal Masri</span>
-                  </div>
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                  <button class="action-btn text-green-600 hover:text-green-900 mr-2" title="Abaikan">
-                    <i class="fas fa-check-circle"></i>
-                  </button>
-                  <button class="action-btn text-red-600 hover:text-red-900" title="Hapus">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> -->
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-      // Action buttons for user verification
-      const approveButtons = document.querySelectorAll('[title="Setujui"]');
-      const rejectButtons = document.querySelectorAll('[title="Tolak"]');
-      
-      approveButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const row = this.closest('tr');
-          const statusCell = row.querySelector('td:nth-child(2)');
-          statusCell.innerHTML = '<span class="badge badge-active">Aktif</span>';
-          
-          // In a real app, this would send an API request to approve the user
-          alert('User telah disetujui!');
-        });
-      });
-      
-      rejectButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const row = this.closest('tr');
-          const statusCell = row.querySelector('td:nth-child(2)');
-          statusCell.innerHTML = '<span class="badge badge-rejected">Ditolak</span>';
-          
-          // In a real app, this would send an API request to reject the user
-          alert('User telah ditolak!');
-        });
-      });
-
-      // Action buttons for reported posts
-      const ignoreButtons = document.querySelectorAll('[title="Abaikan"]');
-      const deleteButtons = document.querySelectorAll('[title="Hapus"]');
-      
-      ignoreButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const row = this.closest('tr');
-          
-          // In a real app, this would send an API request to ignore the report
-          row.remove();
-          alert('Laporan telah diabaikan!');
-        });
-      });
-      
-      deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const row = this.closest('tr');
-          
-          // In a real app, this would send an API request to delete the post
-          row.remove();
-          alert('Posting telah dihapus!');
-        });
-      });
-
-      // KTM View Functionality
-      const ktmModal = document.getElementById('ktmModal');
-      const ktmModalClose = document.querySelector('.ktm-modal-close');
-      const ktmImage = document.getElementById('ktmImage');
-      const ktmUserName = document.getElementById('ktmUserName');
-      const ktmUserEmail = document.getElementById('ktmUserEmail');
-      const ktmUploadDate = document.getElementById('ktmUploadDate');
-      const viewKtmButtons = document.querySelectorAll('.view-ktm-btn');
-
-      // Open KTM modal
-      document.querySelectorAll('.view-ktm-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const ktmSrc = button.getAttribute('data-ktm');
-            const name = button.getAttribute('data-name');
-            const email = button.getAttribute('data-email');
-            const date = button.getAttribute('data-date');
-
-            // Set src gambar di modal, pakai asset kalau di Laravel
-            document.getElementById('ktmImage').src = "{{ asset('storage/' . $user->ktm) }}";
-
-            // Set info user di modal
-            document.getElementById('ktmUserName').textContent = name;
-            document.getElementById('ktmUserEmail').textContent = email;
-            document.getElementById('ktmUploadDate').textContent = date;
-
-            // Tampilkan modal
-            document.getElementById('ktmModal').style.display = 'flex';
-        })});
-
-        // Untuk tombol close modal
-        document.querySelector('.ktm-modal-close').addEventListener('click', () => {
-        document.getElementById('ktmModal').style.display = 'none';
-        });
-
-
-      // Close KTM modal
-      ktmModalClose.addEventListener('click', function() {
-        ktmModal.style.display = 'none';
-      });
-
-      // Close when clicking outside modal content
-      window.addEventListener('click', function(event) {
-        if (event.target === ktmModal) {
-          ktmModal.style.display = 'none';
-        }
-      });
-    });
-  </script>
 @endsection

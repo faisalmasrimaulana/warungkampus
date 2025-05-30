@@ -11,7 +11,9 @@ use App\Http\Controllers\User\EditUserController;
 
 //INI MENGATUR SETIAP ROUTE DI WEBSITE INI
 
-// GUEST OR ALL
+// =======================
+// ROUTE UNTUK TANPA AUTENTIKASI
+// =======================
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -40,7 +42,9 @@ Route::get('/cancel', function(){
     return redirect('/');
 })->name('cancel');
 
-// USERS OR MAHASISWA
+// =======================
+// ROUTE UNTUK USER/MAHASISWA
+// =======================
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/dashboard', [DashboardUserController::class, 'index'])->name('user.dashboard');
 
@@ -64,10 +68,12 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::get('/user/{user}/edit', [EditUserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{user}', [EditUserController::class, 'update'])->name('user.update');
-    Route::post('/password/update/{user}', [EditUserController::class, 'updatePassword'])->name('user.password.update');
+    Route::put('/password/update/{user}', [EditUserController::class, 'updatePassword'])->name('user.password.update');
 });
 
-// ADMINS
+// =======================
+// ROUTE UNTUK ADMIN
+// =======================
 Route::prefix('admin')->name('admin.')->middleware(['auth:admins'])->group(function () {
     Route::get('/dashboard', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/kelolaUser', [DashboardAdminController::class, 'kelolaUser'])->name('user.kelola');

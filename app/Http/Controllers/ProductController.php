@@ -23,7 +23,7 @@ class ProductController extends Controller
         [
             "nama_produk" => "required|string",
             "kategori" => "required|string",
-            "harga" => "required",
+            "harga" => "required|numeric|min:0",
             "deskripsi_singkat" => "required|max:100|string",
             "deskripsi_lengkap" => "required|string",
             "kondisi" => "required_if:kategori,barang|string|nullable",
@@ -40,7 +40,9 @@ class ProductController extends Controller
             "productImages.required" => 'Foto Produk wajib diisi',
             "deskripsi_singkat.max" => 'Deskripsi hanya boleh 100 karakter',
             "productImages.max" => 'Foto Produk maksimal 5 file',
-            "productImages.*.max" => 'Foto Produk maksimal 3 mb'
+            "productImages.*.max" => 'Foto Produk maksimal 3 mb',
+            'harga.numeric' => 'Harga harus berupa angka',
+            'harga.min' => 'harga minimal 0 rupiah'
         ]
         );
 

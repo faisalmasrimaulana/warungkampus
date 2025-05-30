@@ -23,7 +23,12 @@ class DashboardAdminController extends Controller
     public function dashboard()
     {
         $users = User::orderByDesc('created_at')->paginate(3);
-        return view('admin.dashboardadmin', compact('users'));
+        $totalUsers = User::count();
+        $totalUnverified = User::where('is_verified', 0)->count();
+        $totalActiveProduct = User::with('produk')->get()->sum(function ($user){
+            return $user->produk->where('is_sold', 0)->count();
+        });
+        return view('admin.dashboardadmin', compact('users', 'totalUsers', 'totalUnverified', 'totalActiveProduct'));
     }
 
     public function kelolaUser(){

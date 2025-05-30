@@ -4,7 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
-use Illuminate\Http\Request;
+
+/**
+ * Model untuk foto produk.
+ *
+ * @property int $produk_id
+ * @property string $path_fotoproduk
+ */
 
 class FotoProduk extends Model
 {
