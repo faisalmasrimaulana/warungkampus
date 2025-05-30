@@ -28,9 +28,9 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 
 Route::post('/register', [RegisterController::class, 'register'])->name('user.register.store');
 
-Route::get('/detailproduk/{id}', [ProductController::class, 'showDetail'])->name('produk.detail')->whereNumber('id');
+Route::get('/detailproduk/{id}', [ProductController::class, 'show'])->name('produk.detail')->whereNumber('id');
 
-Route::get('/daftarproduk', [ProductController::class, 'daftarproduk'])->name('produk.list');
+Route::get('/daftarproduk', [ProductController::class, 'index'])->name('produk.list');
 
 Route::get('/produk/filter', [ProductController::class, 'filter'])->name('produk.filter');
 
@@ -52,14 +52,14 @@ Route::middleware(['auth:web'])->group(function () {
         return view('user.langganan');
     })->name('user.langganan');
 
-    Route::post('/postingproduk', [ProductController::class, 'postProduct'])->name('user.product.posting');
+    Route::post('/postingproduk', [ProductController::class, 'store'])->name('user.product.posting');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
-    Route::delete('/produk/{id}', [ProductController::class, 'deleteProduct'])->name('user.product.delete');
+    Route::delete('/produk/{id}', [ProductController::class, 'destroy'])->name('user.product.delete');
 
-    Route::get('/produk/{id}/edit', [ProductController::class, 'editProduct'])->name('user.product.edit');
-    Route::put('/produk/{id}', [ProductController::class, 'updateProduct'])->name('user.product.update');
+    Route::get('/produk/{id}/edit', [ProductController::class, 'edit'])->name('user.product.edit');
+    Route::put('/produk/{id}', [ProductController::class, 'update'])->name('user.product.update');
     Route::post('/user/product/{id}/mark-sold', [ProductController::class, 'markAsSold'])->name('user.product.markAsSold');
 
     Route::get('/user/{user}/edit', [EditUserController::class, 'edit'])->name('user.edit');

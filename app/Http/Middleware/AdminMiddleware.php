@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-//MIDDLEWARE ADMIN
-//melindungi route yang hanya dapat diakses admin
+/**
+ * Middleware untuk membatasi akses hanya untuk admin.
+ */
 
 class AdminMiddleware
 {
@@ -20,7 +21,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('admins')->check()) {
-            return redirect('/admin/login');
+            return redirect('/admin/login')->with('error', 'Silakan login sebagai admin.');
         }
 
         return $next($request);

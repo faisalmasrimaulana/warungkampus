@@ -33,7 +33,7 @@
 
     @if($product-> count() > 0)
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      @foreach($product as $prod)
+      @foreach($products as $prod)
         <a href="{{ route('produk.detail', ['id' => $prod->id]) }}">
           <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-transform hover:scale-[1.02]">
             <img src="{{ asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk ?? 'default.jpg')) }}" alt="{{ $prod->nama_produk }}" class="w-full h-32 object-cover">
