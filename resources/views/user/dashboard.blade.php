@@ -74,11 +74,11 @@
 
       <!-- List Produk -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @if($product->isEmpty())
+        @if($products->isEmpty())
         <p>Tidak ada Produk</p>
         @else
         <!-- Product 1 -->
-         @foreach($product as $prod)
+         @foreach($products as $prod)
            <div class="product-card bg-white rounded-xl p-4">
             <a href="{{ route('produk.detail', ['id' => $prod->id]) }}">
              <div class="relative mb-4">

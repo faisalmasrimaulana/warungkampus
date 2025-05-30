@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 
+/**
+ * Controller untuk dashboard user.
+ * - Menampilkan produk milik user yang sedang login.
+ */
+
 class DashboardUserController extends Controller
 {
-    public function showUserProduct(){
-
+    public function index(){
         $user = Auth::user();
         $products = Product::where('mahasiswa_id', $user->id)->with('fotoproduk')->get();
-        return view('dashboard', ['product'=> $products]);
+        return view('user.dashboard', ['products'=> $products]);
     }
 }

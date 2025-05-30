@@ -18,12 +18,7 @@
 </style>
 
 <!-- POST PRODUCT -->
-<section class="bg-blue-50 min-h-screen">
-    <!-- Navbar will be loaded here -->
-    <div id="navbar-container"></div>
-  
-    <!-- Sidebar Profile will be loaded here -->
-    <div id="sidebar-profile-container"></div>
+<section class="bg-blue-50 min-h-screen mt-20">
   
     <!-- Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40"></div>

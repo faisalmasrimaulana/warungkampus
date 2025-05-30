@@ -6,13 +6,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-//CONTROLLER UNTUK MENANGANI REGISTRASI USER
-//showRegisterForm untuk menampilkan halaman register ketika dipanggil route
-//register untuk menangani input dan menambahkannya ke database
-//logout menghapus session user
+/**
+ * Controller untuk menangani registrasi user:
+ * - Menampilkan form registrasi
+ * - Memproses registrasi user
+ */
 
-
-class RegisController extends Controller
+class RegisterController extends Controller
 {
     public function showRegisterForm()
     {
@@ -26,16 +26,34 @@ class RegisController extends Controller
             'nim' => 'required|string|unique:users,nim',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'whatsapp' => "string|regex:/^62\d{8,13}$/",
-            'instagram' => 'string',
+            'whatsapp' => 'nullable|string|regex:/^62\d{8,13}$/',
+            'instagram' => 'nullable|string',
             'ktm' => 'required|image|mimes:jpeg,png,jpg|max:5120',
             'alamat' => 'required|string',
         ],[
+            'nama.required' => 'Nama wajib diisi',
+            'nim.required' => 'NIM wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'password.required' => 'Password wajib diisi',
+            'ktm.required' => 'Foto KTM wajib diunggah',
+            'email.email' => 'Format email salah',
+            'email.unique' => 'Email sudah digunakan',
+            'nim.unique' => 'NIM sudah digunakan',
+            'ktm.max' => 'Ukuran foto maksimal 5 mb',
+            'ktm.image' => 'File harus berupa foto',
+            'alamat.required' => 'Alamat wajib diisi',
             'whatsapp.regex' => "Nomor Whatsapp dimulai dengan kode negara (ex:6281234567)"
         ]);
 
-        $ktmPath = $request->file('ktm')->store('ktm', 'public');
+        if(!$request->hasFile('ktm')){
+            return back()->withErrors(['ktm' => 'File KTM wajib diunggah']);
+        }
 
+        $ktmPath = $request->file('ktm')->store('ktm', 'public');
+        
+        if (!$ktmPath) {
+        return back()->withErrors(['ktm' => 'Gagal mengunggah file KTM.']);
+}
         User::create([
             'nama' => $request->nama,
             'nim' => $request->nim,

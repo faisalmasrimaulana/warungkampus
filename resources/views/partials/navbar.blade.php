@@ -2,11 +2,11 @@
 
 <header class="bg-green-600 text-white">
       <!-- Navbar -->
-    
     <nav class="fixed top-0 left-0 w-full bg-white shadow p-4 z-50 flex items-center justify-between px-8 py-5">
-            <div class="text-2xl font-bold text-[#1f2d4e] flex items-center">
-              <x-logo></x-logo>
-            </div>
+      <div class="text-2xl font-bold text-[#1f2d4e] flex items-center">
+        <x-logo></x-logo>
+      </div>
+      @if(!Auth::guard('admins')->check())
       <div class="space-x-4 flex items-center">
         <a href="{{route('home')}}">       
           <button id="homeButton" class="nav-button px-4 py-2 text-gray-600 hover:text-purple-500 hover:cursor-pointer">
@@ -23,6 +23,7 @@
             Cari Produk
           </button>
         </a>
+      @endif
 
         <!-- Profile Icon -->
         @if(!Auth::guard('web')->check() && !Auth::guard('admins')->check())
@@ -35,7 +36,9 @@
         </button>
         @endauth
         @auth('admins')
-        <button id="profileButton" class="ml-4">
+        <p></p>
+        <button id="profileButton" class="ml-4 flex gap-3  items-center">
+          <p class="text-gray-600 ">{{Auth::guard('admins')->user()->nama}}</p>
           <img src="{{asset('assets/fotoprofil.jpg')}}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
         </button>
         @endauth
@@ -60,7 +63,7 @@
               <a href="{{route('user.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Profil Saya </a>
             </li>
             <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Whislist</a></li>
-            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Langganan</a></li>
+            <li><a href="{{route('user.langganan')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Langganan</a></li>
             <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Bantuan </a></li>
           </ul>
           <div class="pt-4 border-t border-gray-100">

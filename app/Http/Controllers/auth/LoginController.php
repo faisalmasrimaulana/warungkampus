@@ -6,32 +6,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-//CONTROLLER UNTUK MENANGANI LOGIN USER
-//showLoginForm untuk menampilkan halaman login ketika dipanggil route
-//login menangani input dan mencocokannya dengan database
-//logout menghapus session user
+/**
+ * Controller untuk menangani login user:
+ * - Menampilkan form login
+ * - Memproses login user
+ * - Logout user
+ */
 
 class LoginController extends Controller
 {
-    // Menampilkan form login
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Proses login
     public function login(Request $request)
     {
-        // Validasi input dari user
-        $request->validate([
+        $request->validate(
+            [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
-        ]);
+            ],
+            [
+                'email.required' => 'Email wajib diisi',
+                'email.email' => 'Format email harus benar',
+                'password.required' => 'Password harus diisi',
+                'password.min' => 'Password minimal 6 kata'
+            ]
+        );
 
-        // Ambil data email dan password
         $credentials = $request->only('email', 'password');
 
-        // Cek apakah kredensial valid
         if (Auth::attempt($credentials)) {
             if (!Auth::user()->is_verified) {
                 Auth::logout();
@@ -39,28 +44,23 @@ class LoginController extends Controller
                     'email' => 'Akun kamu belum diverifikasi oleh admin.',
                 ]);
             }
-
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
-
         }
-        // Jika gagal login, kembalikan dengan pesan error
+        
         return back()->withErrors([
             'email' => 'Email atau password salah.',
+            'password' => 'Email atau password salah.'
         ]);
     }
 
-    // Proses logout
     public function logout(Request $request)
     {
-        // Logout user
         Auth::logout();
 
-        // Hapus session dan token untuk keamanan
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Redirect ke halaman depan
         return redirect('/');
     }
 }
