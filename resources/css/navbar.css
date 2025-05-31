@@ -22,25 +22,6 @@
     transform-origin: left;
     }
 
-.nav-button.home-active {
-    color: #9333ea;
-    font-weight: 500;
-    }
-
-.nav-button.sell-active {
-    color: #3b82f6;
-    font-weight: 500;
-    }
-
-.nav-button.search-active {
-    color: #10b981;
-    font-weight: 500;
-    }
-
-.nav-button.active::after {
-    transform: scaleX(1);
-    }
-
 .profile-img {
     transition: all 0.3s ease;
     }

@@ -33,7 +33,7 @@
 
                     <!-- INPUT -->
                     <div class="space-y-4">
-                        <x-input id="email" label="Email" name="email" type="text" placeholder="Masukkan Email Anda" autocomplete="email"/>
+                        <x-input id="email" label="Email" name="email" type="text" placeholder="Masukkan Email Anda" autocomplete="email" :autofocus="true"/>
                         <x-input id="password" label="Password" name="password" type="password" autocomplete="current-password" placeholder="Masukkan kata sandi"/>
                     </div>
                      

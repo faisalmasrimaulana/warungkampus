@@ -3,14 +3,9 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-            @include('partials.head')
-        <style>
-            body{
-                background: linear-gradient(135deg, rgb(240, 244, 255), rgb(230, 240, 255));
-            }
-        </style> 
+        @include('partials.head')
     </head>
-    <body class="bg-blue-50">
+    <body class="bg-gradient-to-br from-blue-50 to-blue-100">
         @include('partials.navbar')   
 
         <main>

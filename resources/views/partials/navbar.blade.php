@@ -1,4 +1,4 @@
-<!-- INI ADALAH PARTIAL DARI NAVBAR, BISA DITAMBAHKAN DENGAN FITUR LAIN -->
+<!-- PARTIAL NAVIGATION-->
 
 <header class="bg-green-600 text-white">
       <!-- Navbar -->
@@ -8,20 +8,16 @@
       </div>
       @if(!Auth::guard('admins')->check())
       <div class="space-x-4 flex items-center">
-        <a href="{{route('home')}}">       
-          <button id="homeButton" class="nav-button px-4 py-2 text-gray-600 hover:text-purple-500 hover:cursor-pointer">
-            Beranda
-          </button>
+        <a href="{{route('home')}}" class="nav-button px-4 py-2 text-gray-600 hover:text-purple-500 hover:cursor-pointer">
+          Beranda
         </a>
-        <a href="{{route('user.post')}}">
-          <button id="sellButton" class="nav-button px-4 py-2 text-gray-600 hover:text-blue-500 hover:cursor-pointer">
-            Mulai Jual
-          </button>
+
+        <a href="{{route('user.post')}}" class="nav-button px-4 py-2 text-gray-600 hover:text-blue-500 hover:cursor-pointer">
+          Mulai Jual
         </a>
-        <a href="{{route('produk.list')}}">
-          <button id="searchButton" class="nav-button px-4 py-2 text-gray-600 hover:text-green-500 hover:cursor-pointer">
-            Cari Produk
-          </button>
+
+        <a href="{{route('produk.list')}}" class="nav-button px-4 py-2 text-gray-600 hover:text-green-500 hover:cursor-pointer">
+          Cari Produk
         </a>
       @endif
 
@@ -31,15 +27,14 @@
           <x-button href="{{route('user.register')}}" type="button" color="secondary">Register</x-button>
         @else
         @auth('web')
-        <button id="profileButton" class="ml-4">
-          <img src="{{ Auth::user()->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
+        <button id="profileButtonUser" class="ml-4">
+          <img src="{{ Auth::user()->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="Foto Profil {{ Auth::user()->nama ?? 'User' }}" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
         </button>
         @endauth
         @auth('admins')
-        <p></p>
-        <button id="profileButton" class="ml-4 flex gap-3  items-center">
+        <button id="profileButtonAdmin" class="ml-4 flex gap-3  items-center">
           <p class="text-gray-600 ">{{Auth::guard('admins')->user()->nama}}</p>
-          <img src="{{asset('assets/fotoprofil.jpg')}}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
+          <img src="https://ui-avatars.com/api/?background=3b82f6&color=fff" alt="Profil" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
         </button>
         @endauth
         @endif
@@ -47,12 +42,12 @@
     </nav>
 
     <!-- Sidebar -->
-    @if(!Auth::guard('web')->check() || !Auth::guard('admins')->check())
+    @if(Auth::guard('web')->check() || Auth::guard('admins')->check())
     @auth('web')
-    <div id="profileSidebar" class="fixed top-0 right-0 h-full w-72 bg-white floating-sidebar transform translate-x-full transition-transform duration-300 z-50">
+    <div id="profileSidebarUser" class="fixed top-0 right-0 h-full w-72 bg-white floating-sidebar transform translate-x-full transition-transform duration-300 z-50">
       <div class="p-6 h-full flex flex-col">
           <div class="flex items-center mb-8">
-            <img src="{{ Auth::user()->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="Profil" class="w-12 h-12 rounded-full mr-3 border-2 border-blue-100">
+            <img src="{{ Auth::user()->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="Foto Profil {{ Auth::user()->nama ?? 'User' }}" class="w-12 h-12 rounded-full mr-3 border-2 border-blue-100">
             <div>
               <h3 class="font-semibold text-black">{{Auth::user()->nama}}</h3>
               <p class="text-sm text-gray-500">Mahasiswa</p>
@@ -60,7 +55,7 @@
           </div>
           <ul class="space-y-2 flex-grow">
             <li>
-              <a href="{{route('user.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Profil Saya </a>
+              <a href="{{route('user.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Dashboard User</a>
             </li>
             <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Whislist</a></li>
             <li><a href="{{route('user.langganan')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Langganan</a></li>
@@ -75,11 +70,12 @@
       </div>
     </div>
     @endauth
+
     @auth('admins')
-    <div id="profileSidebar" class="fixed top-0 right-0 h-full w-72 bg-white floating-sidebar transform translate-x-full transition-transform duration-300 z-50">
+    <div id="profileSidebarAdmin" class="fixed top-0 right-0 h-full w-72 bg-white floating-sidebar transform translate-x-full transition-transform duration-300 z-50">
       <div class="p-6 h-full flex flex-col">
           <div class="flex items-center mb-8">
-            <img src="{{asset('assets/fotoprofil.jpg')}}" alt="Profil" class="w-12 h-12 rounded-full mr-3 border-2 border-blue-100">
+            <img src="https://ui-avatars.com/api/?background=3b82f6&color=fff" alt="Profil" class="w-12 h-12 rounded-full mr-3 border-2 border-blue-100">
             <div>
               <h3 class="font-semibold text-black">{{Auth::guard('admins')->user()->nama}}</h3>
               <p class="text-sm text-gray-500">Admin</p>
@@ -87,7 +83,7 @@
           </div>
           <ul class="space-y-2 flex-grow">
             <li>
-              <a href="{{route('admin.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Profil Saya </a>
+              <a href="{{route('admin.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Dashboard Admin</a>
             </li>
             <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Kelola Postingan</a></li>
             <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Langganan</a></li>

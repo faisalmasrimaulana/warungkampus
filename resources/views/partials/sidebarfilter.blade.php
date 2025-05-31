@@ -5,91 +5,114 @@ function toggleSidebar() {
 }
 </script>
 
-<div id="sidebar" class="hidden absolute z-10 top-[110px] left-8 w-64 bg-white border rounded shadow-lg p-4">
-    <div class="flex justify-end mb-4">
-    <button onclick="toggleSidebar()" class="text-sm text-red-600 hover:underline">✖</button>
-    </div>
-
-    <h2 class="text-lg font-semibold mb-2">Kategori</h2>
-    <ul id="kategori-list" class="space-y-2 mb-4 text-blue-800">
-    <li>
-        <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-100">
-        <input type="radio" name="kategori" class="kategori-radio hidden" value="Barang">
-        <span>barang</span>
-        </label>
-    </li>
-    <li>
-        <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-100">
-        <input type="radio" name="kategori" class="kategori-radio hidden" value="Jasa">
-        <span>jasa</span>
-        </label>
-    </li>
-    </ul>
-
-    <h2 class="text-lg font-semibold mb-2">Urutkan Harga</h2>
-    <ul id="harga-list" class="space-y-2 mb-4 text-blue-800">
-    <li><a href="#" data-value="Terendah" class="urut-harga block rounded px-2 py-1 hover:bg-blue-100 cursor-pointer">Terendah</a></li>
-    <li><a href="#" data-value="Tertinggi" class="urut-harga block rounded px-2 py-1 hover:bg-blue-100 cursor-pointer">Tertinggi</a></li>
-    </ul>
-
-    <h2 class="text-lg font-semibold mb-2">Urutkan Waktu</h2>
-    <ul id="waktu-list" class="space-y-2 text-blue-800 mb-4">
-    <li><a href="#" data-value="Terbaru" class="urut-waktu block rounded px-2 py-1 hover:bg-blue-100 cursor-pointer">Terbaru</a></li>
-    <li><a href="#" data-value="Terlama" class="urut-waktu block rounded px-2 py-1 hover:bg-blue-100 cursor-pointer">Terlama</a></li>
-    </ul>
-
-    <div class="flex justify-end space-x-2">
+<div class="flex justify-end space-x-2">
     <form id="filterForm" method="GET" action="{{ route('produk.filter') }}">
-    <!-- Kategori -->
-    <input type="hidden" name="kategori" id="filterKategori">
-    <!-- Urutan Harga -->
-    <input type="hidden" name="harga" id="filterHarga">
-    <!-- Urutan Waktu -->
-    <input type="hidden" name="waktu" id="filterWaktu">
+        <div id="sidebar" class="hidden absolute z-10 top-[110px] left-8 w-64 bg-white border rounded shadow-lg p-4">
+        <div class="flex justify-end mb-4">
+        <button onclick="toggleSidebar()" class="text-sm text-red-600 hover:underline hover:cursor-pointer" aria-label="Close">✖</button>
+        </div>
 
-    <div class="flex justify-end space-x-2">
-        <x-button type="button" onclick="toggleSidebar()" class="px-3 py-1" color="danger">Batal</x-button>
-        <x-button type="submit" color="primary">Oke</x-button>
-    </div>
-</form>
+        <!-- ALL -->
+        <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 mb-2 hover:bg-blue-400 hover:text-white">
+            <input type="radio" name="kategori" class="kategori-radio sr-only" value="" {{ request('kategori', '') == '' ? 'checked' : '' }}>
+            <span>Semua</span>
+        </label>
 
-    </div>
+        <!-- KATEGORI -->
+        <h2 class="text-lg font-semibold mb-2">Kategori</h2>
+        <ul id="kategori-list" class="space-y-2 mb-4 text-blue-800">
+            <li>
+                <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
+                    <input type="radio" name="kategori" class="kategori-radio sr-only" value="Barang" {{ request('kategori') == 'Barang' ? 'checked' : '' }}>
+                    <span>barang</span>
+                </label>
+            </li>
+            <li>
+                <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
+                    <input type="radio" name="kategori" class="kategori-radio sr-only" value="Jasa" {{ request('kategori') == 'Jasa' ? 'checked' : '' }}>
+                    <span>jasa</span>
+                </label>
+            </li>
+        </ul>
+
+        <!-- HARGA -->
+        <h2 class="text-lg font-semibold mb-2">Urutkan Harga</h2>
+        <ul id="harga-list" class="space-y-2 mb-4 text-blue-800">
+            <li>
+                <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
+                    <input type="radio" name="harga" class="harga-radio sr-only" value="Terendah" {{ request('harga') == 'Terendah' ? 'checked' : '' }}>
+                    <span>Terendah</span>
+                </label>
+            </li>
+            <li>
+                <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
+                    <input type="radio" name="harga" class="harga-radio sr-only" value="Tertinggi" {{ request('harga') == 'Tertinggi' ? 'checked' : '' }}>
+                    <span>Tertinggi</span>
+                </label>
+            </li>
+        </ul>
+
+        <!-- WAKTU -->
+        <h2 class="text-lg font-semibold mb-2">Urutkan Waktu</h2>
+        <ul id="waktu-list" class="space-y-2 text-blue-800 mb-4">
+            <li>
+                <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
+                    <input type="radio" name="waktu" class="waktu-radio sr-only" value="Terbaru" {{ request('waktu') == 'Terbaru' ? 'checked' : '' }}>
+                    <span>Terbaru</span>
+                </label>
+            </li>
+            <li>
+                <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
+                    <input type="radio" name="waktu" class="waktu-radio sr-only" value="Terlama" {{ request('waktu') == 'Terlama' ? 'checked' : '' }}>
+                    <span>Terlama</span>
+                </label>
+            </li>
+        </ul>
+
+        <div class="flex justify-end space-x-2">
+            <x-button type="button" onclick="toggleSidebar()" class="px-3 py-1" color="danger">Batal</x-button>
+            <x-button type="submit" color="primary">Oke</x-button>
+        </div>
+        </div>
+    </form>
 </div>
 
 <script>
-    const hargaItems = document.querySelectorAll('.urut-harga');
-    hargaItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            hargaItems.forEach(i => i.classList.remove('bg-blue-200', 'text-white'));
-            item.classList.add('bg-blue-200', 'text-white');
-            document.getElementById('filterHarga').value = item.dataset.value; // fix di sini
-        });
-    });
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('hidden');
+}
 
-    const waktuItems = document.querySelectorAll('.urut-waktu');
-    waktuItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            waktuItems.forEach(i => i.classList.remove('bg-blue-200', 'text-white'));
-            item.classList.add('bg-blue-200', 'text-white');
-            document.getElementById('filterWaktu').value = item.dataset.value; // fix di sini
-        });
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    setupRadioHighlight('.kategori-radio');
+    setupRadioHighlight('.harga-radio');
+    setupRadioHighlight('.waktu-radio');
+});
 
-    const kategoriRadios = document.querySelectorAll('.kategori-radio');
-    kategoriRadios.forEach(radio => {
+function setupRadioHighlight(selector) {
+    const radios = document.querySelectorAll(selector);
+    radios.forEach(radio => {
         radio.addEventListener('change', () => {
-            kategoriRadios.forEach(r => {
+            radios.forEach(r => {
                 const label = r.closest('label');
-                label.classList.remove('bg-blue-200', 'text-white');
+                if (label) label.classList.remove('bg-blue-200', 'bg-blue-600', 'text-white');
             });
-            const selected = document.querySelector('.kategori-radio:checked');
+            const selected = document.querySelector(selector + ':checked');
             if (selected) {
                 const label = selected.closest('label');
-                label.classList.add('bg-blue-200', 'text-white');
-                document.getElementById('filterKategori').value = selected.value; // fix di sini
+                if (label) label.classList.add('bg-blue-600', 'text-white');
             }
         });
     });
+    // Highlight default
+    const selected = document.querySelector(selector + ':checked');
+    if (selected) {
+        radios.forEach(r => {
+            const label = r.closest('label');
+            if (label) label.classList.remove('bg-blue-200', 'bg-blue-600', 'text-white');
+        });
+        const label = selected.closest('label');
+        if (label) label.classList.add('bg-blue-600', 'text-white');
+    }
+}
 </script>

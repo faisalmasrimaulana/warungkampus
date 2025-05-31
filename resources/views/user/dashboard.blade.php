@@ -98,7 +98,7 @@
               </a>
              <div class="flex justify-between items-center gap-3">
               <form action="{{route('user.product.edit', ['id' => $prod->id])}}" method="GET">
-               <x-button onclick="editProduct('1.edit')" type="submit" class="px-3 py-1" >
+               <x-button size="sm" onclick="editProduct('1.edit')" type="submit" class="px-3 py-1" >
                  Edit
                </x-button>
               </form>
@@ -107,7 +107,7 @@
                 @csrf
                 @method('DELETE')
                 
-                <x-button onclick="deleteProduct('{{ $prod->id }}')" type="button" color="danger">
+                <x-button size="sm" onclick="deleteProduct('{{ $prod->id }}')" type="button" color="danger">
                   Hapus
                 </x-button>
 
@@ -115,7 +115,7 @@
 
                <form action="{{ route('user.product.markAsSold', ['id' => $prod->id]) }}" method="POST" onsubmit="return confirm('Yakin mau tandai produk ini sebagai terjual?')">
                   @csrf
-                  <x-button type="submit" color="success">
+                  <x-button size="sm" type="submit" color="success">
                     Tandai Terjual
                   </x-button>
                 </form>
