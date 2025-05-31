@@ -1,7 +1,6 @@
 import './bootstrap';
 import '../css/navbar.css';
 import './sidebar';
-import '../css/loginUser.css';
 import '../css/registerUser.css';
 import './modalKtm';
 

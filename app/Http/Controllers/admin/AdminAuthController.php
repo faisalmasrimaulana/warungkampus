@@ -30,7 +30,7 @@ class AdminAuthController extends Controller
             ],
             [
                 'admin_id.required' => 'ID admin harus diisi',
-                'admin_id.exists' => 'ID admin tidak terdaftar',
+                'admin_id.exists' => 'ID admin tidak valid',
                 'password.required' => 'Password wajib diisi'
             ]
         );
@@ -45,7 +45,7 @@ class AdminAuthController extends Controller
         return back()->withErrors([
             'admin_id' => 'ID atau password salah.',
             'password' => 'ID atau password salah'
-        ]);
+        ])->withInput();
     }
 
     public function logout(Request $request)

@@ -9,3 +9,21 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, rgb(240, 244, 255), rgb(230, 240, 255));
+}
+
+.glow-text {
+text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.login-gradient {
+background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+}
+
+.login-card {
+background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}

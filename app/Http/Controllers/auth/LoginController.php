@@ -29,7 +29,7 @@ class LoginController extends Controller
             ],
             [
                 'email.required' => 'Email wajib diisi',
-                'email.email' => 'Format email harus benar',
+                'email.email' => 'Format email harus benar, pastikan ada @',
                 'password.required' => 'Password harus diisi',
                 'password.min' => 'Password minimal 6 kata'
             ]
