@@ -47,7 +47,7 @@
                 <tr class="table-row">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
-                      <img class="w-10 h-10 rounded-full mr-4" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="User">
+                      <img class="w-10 h-10 rounded-full mr-4" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) :'https://ui-avatars.com/api/?background=3b82f6&color=fff'" alt="User">
                       <div>
                         <p class="text-sm font-medium">{{$user->nama}}</p>
                       </div>

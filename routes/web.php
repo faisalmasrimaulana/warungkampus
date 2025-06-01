@@ -65,8 +65,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/produk/{id}/edit', [ProductController::class, 'edit'])->name('user.product.edit');
     Route::put('/produk/{id}', [ProductController::class, 'update'])->name('user.product.update');
     Route::post('/user/product/{id}/mark-sold', [ProductController::class, 'markAsSold'])->name('user.product.markAsSold');
-
-    Route::get('/user/{user}/edit', [EditUserController::class, 'edit'])->name('user.edit');
+    Route::get('/user/edit/{user}', [EditUserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{user}', [EditUserController::class, 'update'])->name('user.update');
     Route::put('/password/update/{user}', [EditUserController::class, 'updatePassword'])->name('user.password.update');
 });

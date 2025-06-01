@@ -9,7 +9,7 @@
         'success' => 'bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full shadow-lg hover:shadow-xl transition hover:from-green-600 hover:to-green-700 hover:cursor-pointer',
         'danger' => 'hover:shadow-xl bg-red-600 text-white text-center hover:cursor-pointer hover:bg-red-800 hover:text-white',
         'warning' => 'bg-yellow-500 text-white hover:bg-yellow-600',
-        'nonactive' => 'hover:shadow-xl bg-gray-200 text-white hover:bg-white hover:text-black hover:cursor-pointer'
+        'nonactive' => 'hover:shadow-xl bg-gray-700 text-white hover:bg-gray-800 hover:text-white hover:cursor-not-allowed'
     ];
 
     $sizes = [

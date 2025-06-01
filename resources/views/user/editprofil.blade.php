@@ -2,15 +2,6 @@
 
 @section('content')
 <style>
-    .profile-gradient {
-        background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
-    }
-
-    .profile-card {
-        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-
     .input-field {
         transition: all 0.3s ease;
         border: 1px solid #e2e8f0;
@@ -21,40 +12,11 @@
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
     }
 
-    .save-btn {
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    }
-
-    .save-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-    }
-
     .file-input {
         opacity: 0;
         width: 0.1px;
         height: 0.1px;
         position: absolute;
-    }
-
-    .file-label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        border: 2px dashed #cbd5e0;
-        border-radius: 1rem;
-        background-color: #f8fafc;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: center;
-    }
-
-    .file-label:hover {
-        border-color: #3b82f6;
-        background-color: #f0f7ff;
     }
 
     .profile-preview {
@@ -90,18 +52,19 @@
         color: white;
     }
 </style>
+
     <!-- Main Content -->
 <main class="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
-        <!-- Header Section -->
+        <!-- TITLE -->
         <div class="text-center mb-10">
             <h1 class="text-3xl font-bold text-[#1f2d4e] mb-3">Edit Profil</h1>
             <p class="text-gray-600">Kelola informasi profil dan pengaturan akun Anda</p>
         </div>
 
-        <!-- Profile Card -->
-        <div class="profile-card rounded-2xl p-6 md:p-8">
-            <!-- Tabs Navigation yang disederhanakan -->
+        <!-- PROFILE CARD -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+            <!--  SUBTITLE -->
             <div class="flex border-b border-gray-200 mb-6">
                 <button id="profileTab" class="tab-button active px-4 py-2 text-gray-600 mr-4">
                     Profil
@@ -111,26 +74,20 @@
                 </button>
             </div>
 
-            <!-- Profile Tab Content -->
+            <!-- EDIT PROFIL -->
             <div id="profileTabContent" class="space-y-6">
                 <form action="{{route('user.update', $user->id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method ('PUT')
+                    <!-- INPUT FOTO PROFIL -->
                     <div class="flex flex-col items-center mb-8">
                         <div class="relative mb-4">
-                            <img id="profilePreview" src="{{ Auth::user()->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="Profil"
+                            <img id="profilePreview" src="{{ Auth::user()->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="Profil"
                                 class="profile-preview w-32 h-32 rounded-full border-1 border-white shadow-lg">
                             <div class="absolute inset-[5px] top-2 right-2 rounded-full p-2 shadow cursor-pointer">
-                                <label for="foto_profil" class="cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
+                                <label for="foto_profil" class="cursor-pointer"><i class="fa-solid fa-camera fa-lg text-blue-500"></i>
                                     <input type="file" id="foto_profil" name="foto_profil" accept="image/*"
-                                        class="file-input">
+                                        class="file-input"/>
                                 </label>
                             </div>
                         </div>
@@ -139,47 +96,46 @@
                             Ganti Foto Profil
                         </label>
                     </div>
-    
-                    <!-- Basic Info Section -->
+                    <!-- ./INPUT FOTO PROFIL -->
+
+                    <!-- INFO PROFIL USER -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Nama -->
                         <div>
-                            <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama
-                                Lengkap*</label>
-                            <x-input id="nama" name="nama" type="text" value="{{$user->nama}}"/>
+                            <x-input label="Nama Lengkap*" id="nama" name="nama" type="text" value="{{$user->nama}}" placeholder="Masukkan Nama Lengkap Anda" :autofocus="true"/>
                         </div>
     
+                        <!-- Email -->
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email*</label>
-                            <x-input id="email" name="email" type="email" value="{{$user->email}}"/>
+                            <x-input placeholder="Masukkan Email Anda" label="Email*" id="email" name="email" type="email" value="{{$user->email}}"/>
                             <div class="mt-1 flex items-center">
-                                <span class="verification-badge text-xs px-2 py-1 rounded-full">Terverifikasi</span>
+                                <x-badge status="verified"></x-badge>
                                 <button class="ml-2 text-xs text-blue-600 hover:text-blue-800">Ganti Email</button>
                             </div>
                         </div>
     
+                        <!-- Whatsapp -->
                         <div>
-                            <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Nomor
-                                WhatsApp*</label>
-                            <x-input id="whatsapp" name="whatsapp" type="tel"  value="{{$user->whatsapp}}"/>
+                            <x-input label="Nomor Whatsapp*" id="whatsapp" name="whatsapp" type="tel"  value="{{$user->whatsapp}}" placeholder="6280122002"/>
                         </div>
                     </div>
     
-                    <!-- Additional Info Section -->
+                    <!-- Bio -->
                     <div>
                         <label for="bio" class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
-                        <textarea id="bio" name="bio" rows="3" class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" placeholder="Ceritakan sedikit tentang diri Anda">{{$user->bio}}</textarea>
+                        <textarea id="bio" name="bio" rows="2" class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" placeholder="Ceritakan sedikit tentang diri Anda">{{$user->bio}}</textarea>
                         <p class="mt-1 text-xs text-gray-500">Maksimal 150 karakter</p>
                     </div>
     
+                    <!-- Alamat -->
                     <div>
-                        <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat
-                            Lengkap*</label>
+                        <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap*</label>
                         <textarea id="alamat" name="alamat" rows="3" required
                             class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
                             placeholder="Alamat lengkap (termasuk asrama/kos jika ada)">{{$user->alamat }}</textarea>
                     </div>
     
-                    <!-- Social Media Section -->
+                    <!-- Instagram -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="instagram"
@@ -189,15 +145,24 @@
                                     class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                     @
                                 </span>
-                                <x-input id="instagram" name="instagram" type="text" placeholder="username" value="{{$user->instagram}}"/>
+                                <x-input id="instagram" name="instagram" type="text" placeholder="username instagram anda" value="{{$user->instagram}}"/>
                             </div>
                         </div>
                     </div>
 
                 <!-- Photo Upload Section -->
+                    <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-8">
+                        <x-button type="button" href="{{ route('user.dashboard') }}" color="danger">
+                            Batal
+                        </x-button>
+                        <x-button type="submit" color="primary">
+                            Simpan Perubahan
+                        </x-button>
+                    </div>
+                </form>
             </div>
-        <form action="{{route('user.password.update', ['id'=>$user->id]) }}">
-            <!-- Security Tab Content (Hidden by default) -->
+
+            <!-- EDIT PASSWORD -HIDDEN- -->
             <div id="securityTabContent" class="space-y-6 hidden">
                 <div>
                     <h3 class="text-lg font-medium text-gray-800 mb-4">Keamanan Akun</h3>
@@ -206,33 +171,19 @@
                             <div>
                                 <h4 class="font-medium text-gray-800">Kata Sandi</h4>
                             </div>
-                            <button type="button" onclick="openPasswordModal()"
-                                class="text-sm text-blue-600 hover:text-blue-800 font-medium">
-                                Ubah
-                            </button>
-
+                            <x-button type="button" onclick="openPasswordModal()" color="secondary">Ubah</x-button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Action Buttons -->
-            <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-8">
-                <x-button type="button" href="{{ route('user.dashboard') }}" color="danger">
-                    Batal
-                </x-button>
-                <x-button type="submit" color="primary">
-                    Simpan Perubahan
-                </x-button>
-            </div>
-         </form>
         </div>
     </div>
 </main>
 
-    <!-- Password Change Modal (Hidden by default) -->
+<!-- MODAL EDIT PASSWORD -HIDDEN- -->
 <div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
     <div class="bg-white rounded-2xl p-6 w-full max-w-md">
-        <div class="flex justify-between items-center mb-4">
+      <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-gray-800">Ubah Kata Sandi</h3>
             <button onclick="closePasswordModal()" class="text-gray-400 hover:text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -240,7 +191,7 @@
                 </svg>
             </button>
         </div>
-        <form action="{{ route('user.password.update', ['id' => $user->id]) }}" method="POST" class="space-y-4">
+        <form action="{{ route('user.password.update', ['user' => $user->id]) }}" method="POST" class="space-y-4">
             @csrf
             <div>
                 <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi Saat Ini</label>
