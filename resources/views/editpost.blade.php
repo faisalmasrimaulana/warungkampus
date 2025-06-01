@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+  <!-- IMAGE INPUT STYLE -->
   <style>
     .upload-area {
       border: 2px dashed #cbd5e0;
@@ -21,11 +21,7 @@
 <section class="min-h-screen">
 
       <!-- CARD -->
-      <!-- <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 mt-30 mb-10"> -->
-        <!-- FORM SECTION -->
-        <!-- <form id="productForm" class="space-y-6"> -->
-          <!-- JUDUL -->
-      <x-formcard  method="POST" action="{{route('user.product.update', $product->id)}}" enctype="multipart/form-data" class="max-w-xl mx-auto mt-30 mb-10">
+  <x-formcard  method="POST" action="{{route('user.product.update', $product->id)}}" enctype="multipart/form-data" class="max-w-4xl mx-auto mt-30 mb-10">
           <h1 class="text-2xl font-bold text-gray-800 mb-6">Update Produk</h1>
           @csrf
           @method ('PUT')
@@ -59,47 +55,46 @@
           <!-- ./EDIT FOTO PRODUK -->
 
           <!-- Informasi Dasar -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Nama produk -->
-            <div>
-              <label for="nama_produk" class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-              <x-input type="text" name="nama_produk" id="productName" class="w-full px-4 py-2" placeholder="Contoh: Sepatu Sneakers Casual" value="{{$product->nama_produk}}"/>
-            </div>
-            <!-- ./Nama Produk -->
-
-            <!-- Harga Produk -->
-            <div>
-              <label for="harga" class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
-              <x-input type="number" name="harga" id="productPrice" class="w-full px-4 py-2" placeholder="Contoh: 250000" value="{{$product->harga}}"/>
-            </div>
-            <!-- ./Harga Produk -->
-
-            <!-- Kategori Produk -->
-            <div>
-              <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-              <select id="productCategory" name="kategori" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                <option value="" disabled selected {{old('kategori', $product->kategori) == '' ? 'selected' : ''}}>Pilih kategori</option>
-                <option value="barang" {{old('kategori', $product->kategori) == 'barang' ? 'selected' : ''}}>Barang</option>
-                <option value="jasa" {{old('kategori', $product->kategori) == 'jasa' ? 'selected' : ''}}>Jasa</option>
-              </select>
-            </div>
-            <!-- ./Kategori Produk -->
-
-            <!-- product Condition -->
-            <div>
-              <label for="kondisi" class="block text-sm font-medium text-gray-700 mb-1">Kondisi</label>
-              <select id="productCondition" name="kondisi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                <option value="baru" {{old('kondisi', $product->kondisi) == 'baru' ? 'selected' : ''}}>Baru</option>
-                <option value="bekas" {{old('kondisi', $product->kondisi) == 'bekas' ? 'selected' : ''}}>Bekas</option>
-              </select>
-            </div>
-            <!-- product Condition -->
-          </div>
+           <div class="max-w-4xl mx-auto">
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <!-- Nama produk -->
+               <div>
+                 <x-input label="Nama Produk*" type="text" name="nama_produk" class="w-full px-4 py-2" placeholder="Contoh: Sepatu Sneakers Casual" value="{{$product->nama_produk}}"/>
+               </div>
+               <!-- ./Nama Produk -->
+   
+               <!-- Harga Produk -->
+               <div>
+                 <x-input label="Harga*" type="number" name="harga" id="productPrice" class="w-full px-4 py-2" placeholder="Contoh: 250000" value="{{$product->harga}}"/>
+               </div>
+               <!-- ./Harga Produk -->
+   
+               <!-- Kategori Produk -->
+               <div>
+                 <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                 <select id="productCategory" name="kategori" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                   <option value="" disabled selected {{old('kategori', $product->kategori) == '' ? 'selected' : ''}}>Pilih kategori</option>
+                   <option value="barang" {{old('kategori', $product->kategori) == 'barang' ? 'selected' : ''}}>Barang</option>
+                   <option value="jasa" {{old('kategori', $product->kategori) == 'jasa' ? 'selected' : ''}}>Jasa</option>
+                 </select>
+               </div>
+               <!-- ./Kategori Produk -->
+   
+               <!-- product Condition -->
+               <div>
+                 <label for="kondisi" class="block text-sm font-medium text-gray-700 mb-1">Kondisi</label>
+                 <select id="productCondition" name="kondisi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                   <option value="baru" {{old('kondisi', $product->kondisi) == 'baru' ? 'selected' : ''}}>Baru</option>
+                   <option value="bekas" {{old('kondisi', $product->kondisi) == 'bekas' ? 'selected' : ''}}>Bekas</option>
+                 </select>
+               </div>
+               <!-- product Condition -->
+             </div>
+           </div>
   
           <!-- Deskripsi -->
           <div>
-            <label for="deskripsi_singkat" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Singkat</label>
-            <x-input type="text" name="deskripsi_singkat" id="shortDescription" class="w-full px-4 py-2" placeholder="Contoh: Sepatu casual warna hitam, ukuran 40, kondisi 90%" maxlength="100" value="{{$product->deskripsi_singkat}}"/>
+            <x-input label="Deskripsi singkat*" type="text" name="deskripsi_singkat" id="shortDescription" class="w-full px-4 py-2" placeholder="Contoh: Sepatu casual warna hitam, ukuran 40, kondisi 90%" maxlength="100" value="{{$product->deskripsi_singkat}}"/>
             <p class="text-xs text-gray-500 mt-1">Maksimal 100 karakter</p>
           </div>
   
@@ -244,5 +239,6 @@
         container.style.display = 'none'; // sembunyikan dari UI
       }
   </script>
+
 </section>
 @endsection
