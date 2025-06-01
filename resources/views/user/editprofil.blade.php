@@ -19,14 +19,6 @@
         position: absolute;
     }
 
-    .profile-preview {
-        transition: all 0.3s ease;
-    }
-
-    .profile-preview:hover {
-        transform: scale(1.02);
-    }
-
     .tab-button {
         transition: all 0.3s ease;
         position: relative;
@@ -83,7 +75,7 @@
                     <div class="flex flex-col items-center mb-8">
                         <div class="relative mb-4">
                             <img id="profilePreview" src="{{ Auth::user()->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="Profil"
-                                class="profile-preview w-32 h-32 rounded-full border-1 border-white shadow-lg">
+                                class="transition hover:scale-105 w-32 h-32 rounded-full border-1 border-white shadow-lg">
                             <div class="absolute inset-[5px] top-2 right-2 rounded-full p-2 shadow cursor-pointer">
                                 <label for="foto_profil" class="cursor-pointer"><i class="fa-solid fa-camera fa-lg text-blue-500"></i>
                                     <input type="file" id="foto_profil" name="foto_profil" accept="image/*"
@@ -181,7 +173,7 @@
 </main>
 
 <!-- MODAL EDIT PASSWORD -HIDDEN- -->
-<div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+<div id="passwordModal" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
     <div class="bg-white rounded-2xl p-6 w-full max-w-md">
       <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-gray-800">Ubah Kata Sandi</h3>
@@ -193,35 +185,36 @@
         </div>
         <form action="{{ route('user.password.update', ['user' => $user->id]) }}" method="POST" class="space-y-4">
             @csrf
+            @method('PUT')
             <div>
-                <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi Saat Ini</label>
-                <input id="currentPassword" name="currentPassword" type="password" required
-                    class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm">
+                <x-input label="Kata Sandi Saat Ini" id="currentPassword" name="currentPassword" type="password" :autofocus="true"/>
             </div>
             <div>
-                <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi Baru</label>
-                <input id="newPassword" name="newPassword" type="password" required
-                    class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm">
+                <x-input label="Kata Sandi Baru" id="newPassword" name="newPassword" type="password"/>
                 <p class="mt-1 text-xs text-gray-500">Minimal 8 karakter, huruf besar, kecil, dan angka</p>
             </div>
             <div>
-                <label for="confirmNewPassword" class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Kata Sandi Baru</label>
-                <input id="confirmNewPassword" name="confirmNewPassword" type="password" required
-                    class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm">
+                <x-input id="confirmNewPassword" name="confirmNewPassword" type="password" label="Konfirmasi Kata Sandi Baru"/>
             </div>
             <div class="flex justify-end space-x-3 pt-4">
-                <button type="button" onclick="closePasswordModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                <x-button type="button" onclick="closePasswordModal()" color="secondary">
                     Batal
-                </button>
-                <button type="submit"
-                    class="save-btn px-4 py-2 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition">
+                </x-button>
+                <x-button type="submit" color="primary">
                     Simpan
-                </button>
+                </x-button>
             </div>
         </form>
     </div>
 </div>
+
+@if(session('showPasswordModal') || $errors->has('currentPassword') || $errors->has('newPassword') || $errors->has('confirmNewPassword'))
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        openPasswordModal();
+    });
+</script>
+@endif
 
 <script>
     // Tab switching

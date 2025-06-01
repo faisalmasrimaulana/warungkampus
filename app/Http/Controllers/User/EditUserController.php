@@ -63,39 +63,45 @@ class EditUserController extends Controller
         if ($request->hasFile('foto_profil')) {
             $image = $request->file('foto_profil');
 
-            if ($user->foto_profil && Storage::disk('public')->exists($user->foto_profil)) {
-                Storage::disk('public')->delete($user->foto_profil);
-            }
+            if ($user->foto_profil && $user->foto_profil !== 'fotoprofil.jpg' && Storage::disk('public')->exists($user->foto_profil)) {
+            Storage::disk('public')->delete($user->foto_profil);
+        }
 
             $path = $image->store('foto_profil', 'public');
             $user->foto_profil = $path;
         }
 
         $user->save();
-
+        Auth::login($user);
         return redirect()->route('user.dashboard')->with('success', 'Profil berhasil diperbarui!');
     }
 
     public function updatePassword(Request $request, User $user)
     {
-        $request->validate([
-            'currentPassword' => 'required',
-            'newPassword' => [
-                'required',
-                'min:8',
-                'different:currentPassword',
-            ],
-            'confirmNewPassword' => 'required|same:newPassword',
-        ], [
-            'newPassword.different' => 'Password baru tidak boleh sama dengan password lama.',
-        ]);
+        try{
+            $request->validate([
+                'currentPassword' => 'required',
+                'newPassword' => [
+                    'required',
+                    'min:8',
+                    'different:currentPassword',
+                ],
+                'confirmNewPassword' => 'required|same:newPassword',
+            ], [
+                'newPassword.different' => 'Password baru tidak boleh sama dengan password lama.',
+            ]);
+        }
+        catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors($e->errors())->with('showPasswordModal', true);
+        }
 
         if (!Hash::check($request->currentPassword, $user->password)) {
-            return back()->withErrors(['currentPassword' => 'Kata sandi lama salah.']);
+            return back()->withErrors(['currentPassword' => 'Kata sandi lama salah.'])->with('showPasswordModal', true);
         }
 
         $user->password = Hash::make($request->newPassword);
         $user->save();
+
 
         return redirect()->route('user.edit', $user->id)->with('success', 'Kata sandi berhasil diubah!');
     }
