@@ -39,4 +39,9 @@ class Product extends Model
     public function fotoproduk(){
         return $this->hasMany(FotoProduk::class, 'produk_id');
     }
+
+    public function getThumbnailAttribute()
+    {
+        return $this->fotoproduk->first()->path_fotoproduk ?? 'default.jpg';
+    }
 }

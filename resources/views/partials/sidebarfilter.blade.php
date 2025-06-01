@@ -7,7 +7,7 @@ function toggleSidebar() {
 
 <div class="flex justify-end space-x-2">
     <form id="filterForm" method="GET" action="{{ route('produk.filter') }}">
-        <div id="sidebar" class="hidden absolute z-10 top-[110px] left-8 w-64 bg-white border rounded shadow-lg p-4">
+        <div  id="sidebar" class="overflow-y-auto max-h-[70vh] hidden absolute z-10 top-[110px] left-8 w-64 bg-white rounded shadow-lg p-4">
         <div class="flex justify-end mb-4">
         <button onclick="toggleSidebar()" class="text-sm text-red-600 hover:underline hover:cursor-pointer" aria-label="Close">✖</button>
         </div>

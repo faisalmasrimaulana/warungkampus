@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index() {
-        $products = Product::paginate(24);
+        $products = Product::with('fotoproduk')->paginate(15);
         return view('daftarproduk', compact('products'));
     }
+
 
     public function store(Request $request){
         $validated = $request->validate(
@@ -101,13 +102,13 @@ class ProductController extends Controller
             };
         }
 
-        $products = $query->get();
+        $products = $query->paginate(15);
 
         return view('daftarproduk', compact('products'));
     }
 
     public function cari(Request $request){
-        $query = Product::query();
+        $query = Product::with('fotoproduk');
 
         if ($request->has('search')) {
             $query->where(function ($q) use ($request) {
@@ -118,7 +119,7 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->get();
+        $products = $query->paginate(15);
         $keyword = $request->input('search', '');
 
         return view('daftarproduk', ['products'=>$products, 'keyword'=> $keyword]);
