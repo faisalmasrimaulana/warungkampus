@@ -18,59 +18,44 @@
 </style>
 
 <!-- POST PRODUCT -->
-<section class="bg-blue-50 min-h-screen mt-20">
+<section class="min-h-screen mt-20">
   
-    <!-- Overlay -->
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40"></div>
-    <main class="container mx-auto px-4 py-8 mt-12">
-      <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+      <x-formcard method="POST" action="{{route('user.product.posting')}}" enctype="multipart/form-data" class="max-w-4xl mx-auto mt-30 mb-10">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Posting Produk Baru</h1>
-        
-        <!-- FORM SECTION -->
-        <form id="productForm" class="space-y-6" method="POST" action="{{route('user.product.posting')}}" enctype="multipart/form-data">
-          @csrf
-          @if ($errors->any())
-          <div class="p-4 rounded mb-4">
-              <ul class="list-disc pl-5">
-                  @foreach ($errors->all() as $error)
-                      <li class=" text-red-500">{{ $error }}</li>
-                  @endforeach
-              </ul>
+  
+        @csrf
+        <!-- Foto Produk -->
+        <div>
+          <label for="productImages" class="text-lg font-semibold text-gray-700 mb-3">Foto Produk</label>
+          <div id="uploadArea" class="upload-area rounded-lg p-6 text-center cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="mt-2 text-sm text-gray-600">Klik atau tarik gambar ke sini</p>
+            <p class="text-xs text-gray-500">Format: JPG, PNG (Maks. 5MB)</p>
+            <input type="file" id="productImages" class="hidden" name="productImages[]" accept="image/*" multiple>
           </div>
-          @endif
-          <!-- Foto Produk -->
-          <div>
-            <label for="productImages" class="text-lg font-semibold text-gray-700 mb-3">Foto Produk</label>
-            <div id="uploadArea" class="upload-area rounded-lg p-6 text-center cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <p class="mt-2 text-sm text-gray-600">Klik atau tarik gambar ke sini</p>
-              <p class="text-xs text-gray-500">Format: JPG, PNG (Maks. 5MB)</p>
-              <input type="file" id="productImages" class="hidden" name="productImages[]" accept="image/*" multiple>
-            </div>
-            <div id="previewContainer" class="mt-4 gap-3 flex justify-center">
-              <!-- Preview images will be inserted here -->
-            </div>
+          <div id="previewContainer" class="mt-4 gap-3 flex justify-center">
+            <!-- Preview images will be inserted here -->
           </div>
-          <!-- ./Foto Produk -->
+        </div>
+        <!-- ./Foto Produk -->
 
-          <!-- Informasi Dasar -->
+        <!-- Informasi Dasar -->
+        <div class="max-w-4xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Nama produk -->
             <div>
-              <label for="nama_produk" class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-              <x-input type="text" name="nama_produk" id="productName" class="w-full px-4 py-2" placeholder="Contoh: Sepatu Sneakers Casual"/>
+              <x-input label="Nama Produk*" type="text" name="nama_produk" id="productName" class="w-full px-4 py-2" placeholder="Contoh: Sepatu Sneakers Casual"/>
             </div>
             <!-- ./Nama Produk -->
-
+  
             <!-- Harga Produk -->
             <div>
-              <label for="harga" class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
-              <x-input type="number" name="harga" id="productPrice" class="w-full px-4 py-2" placeholder="Contoh: 250000"/>
+              <x-input label="Harga*" type="number" name="harga" id="productPrice" class="w-full px-4 py-2" placeholder="250000"/>
             </div>
             <!-- ./Harga Produk -->
-
+  
             <!-- Kategori Produk -->
             <div>
               <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
@@ -79,9 +64,12 @@
                 <option value="barang">Barang</option>
                 <option value="jasa">Jasa</option>
               </select>
+              @error('kategori')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
             </div>
             <!-- ./Kategori Produk -->
-
+  
             <!-- product Condition -->
             <div>
               <label for="kondisi" class="block text-sm font-medium text-gray-700 mb-1">Kondisi</label>
@@ -92,30 +80,34 @@
             </div>
             <!-- product Condition -->
           </div>
+              @error('kondisi')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Deskripsi -->
+        <div>
+          <x-input type="text" label="Deskripsi Singkat" name="deskripsi_singkat" id="shortDescription" class="w-full px-4 py-2" placeholder="Contoh: Sepatu casual warna hitam, ukuran 40, kondisi 90%" maxlength="100"/>
+          <p class="text-xs text-gray-500 mt-1">Maksimal 100 karakter</p>
+        </div>
+
+        <!-- Deskripsi Lengkap -->
+        <div>
+          <label for="deskripsi_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Lengkap</label>
+          <textarea id="fullDescription" name="deskripsi_lengkap" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Jelaskan detail produk, spesifikasi, kelebihan, dll." name="fullDescription">{{old('deskripsi_lengkap')}}</textarea>
+          @error('deskripsi_lengkap')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+          @enderror
+        </div>
   
-          <!-- Deskripsi -->
-          <div>
-            <label for="deskripsi_singkat" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Singkat</label>
-            <x-input type="text" name="deskripsi_singkat" id="shortDescription" class="w-full px-4 py-2" placeholder="Contoh: Sepatu casual warna hitam, ukuran 40, kondisi 90%" maxlength="100"/>
-            <p class="text-xs text-gray-500 mt-1">Maksimal 100 karakter</p>
-          </div>
-  
-          <div>
-            <label for="deskripsi_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Lengkap</label>
-            <textarea id="fullDescription" name="deskripsi_lengkap" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Jelaskan detail produk, spesifikasi, kelebihan, dll." name="fullDescription">{{old('deskripsi_lengkap')}}</textarea>
-          </div>
-  
-  
-          <!-- Submit Button -->
-          <div class="pt-4 flex justify-end gap-3">
-            <x-button type="submit" color="primary">
-              Posting Produk
-            </x-button>
-            <x-button href="{{url()->previous()}}" color="danger">Batal</x-button>
-          </div>
-        </form>
-      </div>
-    </main>
+        <!-- Submit Button -->
+        <div class="pt-4 flex justify-end gap-3">
+          <x-button type="submit" color="primary">
+            Posting Produk
+          </x-button>
+          <x-button href="{{url()->previous()}}" color="danger">Batal</x-button>
+        </div>
+      </x-formcard>
 
   <script>
 

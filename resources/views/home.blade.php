@@ -89,13 +89,13 @@
       <p class="text-gray-600 max-w-2xl mx-auto mb-8">
         Bergabunglah dengan mahasiswa-mahasiswi dalam jaringan WarungKampus dan rasakan sendiri manfaat yang sangat luar biasa.
       </p>
-      <div class="flex justify-center space-x-4">
-        <a href="{{route('user.post')}}" id="ctaSellButton" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-blue-600 hover:to-blue-700">
+      <div class="flex justify-center gap-20">
+        <x-button href="{{route('user.post')}}" color="primary" size="xl">
           Mulai Jual Sekarang
-        </a>
-        <a href="{{route('produk.list')}}" id="ctaSearchButton" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition hover:from-green-600 hover:to-green-700">
+        </x-button>
+        <x-button href="{{route('produk.list')}}" color="success" size="xl">
           Jelajahi Produk
-        </a>
+        </x-button>
       </div>
     </section>
   </div>
