@@ -118,7 +118,7 @@
                 <tr class="hover:bg-gray-100">
                   <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center">
-                      <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'" alt="User">
+                      <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
                       <div>
                         <p class="text-sm font-medium">{{$user->nama}}</p>
                         <p class="text-xs text-gray-500">{{$user->email}}</p>
