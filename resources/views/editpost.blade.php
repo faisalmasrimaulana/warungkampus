@@ -18,34 +18,19 @@
 </style>
 
 <!-- POST PRODUCT -->
-<section class="bg-blue-50 min-h-screen">
-    <!-- Navbar will be loaded here -->
-    <div id="navbar-container"></div>
-  
-    <!-- Sidebar Profile will be loaded here -->
-    <div id="sidebar-profile-container"></div>
-  
-    <!-- Overlay -->
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40"></div>
-    <main class="container mx-auto px-4 py-8 mt-12">
-      <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Update Produk</h1>
-        
+<section class="min-h-screen">
+
+      <!-- CARD -->
+      <!-- <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 mt-30 mb-10"> -->
         <!-- FORM SECTION -->
-        <form id="productForm" class="space-y-6" method="POST" action="{{route('user.product.update', $product->id)}}" enctype="multipart/form-data">
+        <!-- <form id="productForm" class="space-y-6"> -->
+          <!-- JUDUL -->
+      <x-formcard  method="POST" action="{{route('user.product.update', $product->id)}}" enctype="multipart/form-data" class="max-w-xl mx-auto mt-30 mb-10">
+          <h1 class="text-2xl font-bold text-gray-800 mb-6">Update Produk</h1>
           @csrf
           @method ('PUT')
-          @if ($errors->any())
-          <div class="p-4 rounded mb-4">
-              <ul class="list-disc pl-5">
-                  @foreach ($errors->all() as $error)
-                      <li class=" text-red-500">{{ $error }}</li>
-                  @endforeach
-              </ul>
-          </div>
-          @endif
-          <!-- Foto Produk -->
           <div>
+            <!-- EDIT FOTO PRODUK -->
             <label for="productImages" class="text-lg font-semibold text-gray-700 mb-3">Foto Produk</label>
             <div id="uploadArea" class="upload-area rounded-lg p-6 text-center cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,7 +56,7 @@
                 @endif
             </div>
           </div>
-          <!-- ./Foto Produk -->
+          <!-- ./EDIT FOTO PRODUK -->
 
           <!-- Informasi Dasar -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -131,9 +116,8 @@
             </x-button>
             <x-button href="{{url()->previous()}}" color="danger">Batal</x-button>
           </div>
-        </form>
-      </div>
-    </main>
+        <!-- </form> -->
+  </x-formcard>
 
   <script>
 

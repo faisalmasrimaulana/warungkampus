@@ -44,4 +44,9 @@ class Product extends Model
     {
         return $this->fotoproduk->first()->path_fotoproduk ?? 'default.jpg';
     }
+
+    public function getHargaFormatAttribute()
+    {
+        return 'Rp ' . number_format($this->harga, 0, ',', '.');
+    }
 }

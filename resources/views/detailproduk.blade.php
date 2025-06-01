@@ -1,7 +1,7 @@
   @extends('layouts.app')
 
   @section('content')
-  <!-- Tambahin stylesheet Swiper biar styling slider jalan -->
+  <!-- Swiper Link -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
   <div class="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8 pt-24">
@@ -9,7 +9,7 @@
       <!-- Kolom Gambar -->
       <div class="md:col-span-1 bg-white rounded-xl shadow-md overflow-hidden flex items-center justify-center">
         @if($product->fotoproduk->isNotEmpty())
-          <img src="{{ asset('storage/' . $product->fotoproduk->first()->path_fotoproduk) }}" alt="gambar produk" class="w-full h-64 object-cover">
+          <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="gambar produk" class="w-full h-64 object-cover">
         @else
           <img src="{{ asset('assets/sepatu.jpg') }}" alt="No Image" class="w-full h-80 object-cover" />
         @endif
@@ -21,20 +21,15 @@
           <div class="flex justify-between items-start">
             <div>
               <h1 class="text-2xl font-bold text-gray-800 mb-1">{{ $product->nama_produk }}</h1>
-              @if($product->kondisi != 'nocondition')
-              <p class="text-sm text-gray-500 mb-3">{{$product->kategori}} - {{$product->kondisi}}</p>
-              @else
-              <p class="text-sm text-gray-500 mb-3">{{$product->kategori}}</p>
-              @endif
+              <p class="text-sm text-gray-500 mb-3">
+                {{ $product->kategori }}{{ $product->kondisi != 'nocondition' ? ' - ' . $product->kondisi : '' }}
+              </p>
             </div>
-            <span class="text-xs px-2 py-1 rounded-full
-              {{ $product->is_sold ? 'bg-gray-300 text-gray-600' : 'bg-blue-100 text-blue-800' }}">
-              {{ $product->is_sold ? 'Terjual' : 'Tersedia' }}
-            </span>
+            <x-badge :status="$product->is_sold ? 'sold' : 'available'" />
           </div>
 
           <div class="mb-6">
-            <p class="text-3xl font-bold text-blue-600">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
+            <p class="text-3xl font-bold text-blue-600">{{$product->harga_format}}</p>
             <p class="text-sm text-gray-500 mt-1">Harga sudah termasuk pajak</p>
           </div>
 
@@ -42,9 +37,8 @@
             {{ $product->deskripsi_singkat }}
           </p>
 
-          <x-button href="https://wa.me/{{ $product->mahasiswa->whatsapp }}"
-            class="whatsapp-button bg-blue-500 text-center text-white py-3 px-6 font-medium flex items-center justify-center space-x-2">
-            <i data-feather="message-circle"></i>
+          <x-button href="https://wa.me/{{ $product->mahasiswa->whatsapp }}" class="gap-2 flex items-center justify-center">
+            <i class="fa-brands fa-lg fa-whatsapp"></i>
             Hubungi Penjual via WhatsApp</x-button>
         </div>
       </div>
