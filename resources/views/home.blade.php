@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="hero-gradient min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8 pt-24">
     <!-- Hero Section -->
     <section class="text-center mb-20">
@@ -21,21 +21,25 @@
     <!-- Features Section -->
     <section class="grid md:grid-cols-3 gap-8 mb-20">
       <div class="feature-card p-8 rounded-2xl">
-        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-        </div>
+        <a href="{{route('user.post')}}">
+          <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-5 hover:shadow-lg" title="Mulai Jualan">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+        </a>
         <h3 class="text-xl font-semibold mb-3 text-gray-800">Mulai Jualan</h3>
         <p class="text-gray-600">Tawarkan pada mahasiswa lain barang bekas atau jasa yang masih layak.</p>
       </div>
       
       <div class="feature-card p-8 rounded-2xl">
-        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
+        <a href="{{route('produk.list')}}">
+          <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-5 hover:shadow-lg" title="Temukan Produk">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </a>
         <h3 class="text-xl font-semibold mb-3 text-gray-800">Temukan Produk</h3>
         <p class="text-gray-600">Jelajahi berbagai produk yang bermanfaat untuk menunjang perkuliahanmu.</p>
       </div>

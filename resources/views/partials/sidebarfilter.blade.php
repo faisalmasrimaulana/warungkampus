@@ -9,11 +9,11 @@ function toggleSidebar() {
     <form id="filterForm" method="GET" action="{{ route('produk.filter') }}">
         <div  id="sidebar" class="overflow-y-auto max-h-[70vh] hidden absolute z-10 top-[110px] left-8 w-64 bg-white rounded shadow-lg p-4">
         <div class="flex justify-end mb-4">
-        <button onclick="toggleSidebar()" class="text-sm text-red-600 hover:underline hover:cursor-pointer" aria-label="Close">✖</button>
+        <button onclick="toggleSidebar()" class="text-sm text-black hover:cursor-pointer hover:text-red-600" aria-label="Close">✖</button>
         </div>
 
         <!-- ALL -->
-        <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 mb-2 hover:bg-blue-400 hover:text-white">
+        <label class="text-blue-800 cursor-pointer flex items-center space-x-2 rounded px-2 py-1 mb-2 hover:bg-blue-400 hover:text-white">
             <input type="radio" name="kategori" class="kategori-radio sr-only" value="" {{ request('kategori', '') == '' ? 'checked' : '' }}>
             <span>Semua</span>
         </label>
@@ -24,13 +24,13 @@ function toggleSidebar() {
             <li>
                 <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
                     <input type="radio" name="kategori" class="kategori-radio sr-only" value="Barang" {{ request('kategori') == 'Barang' ? 'checked' : '' }}>
-                    <span>barang</span>
+                    <span>Barang</span>
                 </label>
             </li>
             <li>
                 <label class="cursor-pointer flex items-center space-x-2 rounded px-2 py-1 hover:bg-blue-400 hover:text-white">
                     <input type="radio" name="kategori" class="kategori-radio sr-only" value="Jasa" {{ request('kategori') == 'Jasa' ? 'checked' : '' }}>
-                    <span>jasa</span>
+                    <span>Jasa</span>
                 </label>
             </li>
         </ul>
@@ -70,8 +70,8 @@ function toggleSidebar() {
         </ul>
 
         <div class="flex justify-end space-x-2">
-            <x-button type="button" onclick="toggleSidebar()" class="px-3 py-1" color="danger">Batal</x-button>
-            <x-button type="submit" color="primary">Oke</x-button>
+            <x-button  size="md" type="button" onclick="toggleSidebar()" class="px-3 py-1" color="danger">Batal</x-button>
+            <x-button size="md" type="submit" color="primary">Oke</x-button>
         </div>
         </div>
     </form>

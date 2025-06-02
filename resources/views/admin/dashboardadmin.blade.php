@@ -53,7 +53,6 @@
       </div>
       <!-- ./STATISTIK DASHBOARD -->
 
-
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- AKTIVITAS TERKINI -->
         <div class="bg-white rounded-xl shadow-sm p-6">

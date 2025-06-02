@@ -31,7 +31,9 @@
     @if($products->count() > 0)
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       @foreach($products as $prod)
-        <x-cardproduct :prod="$prod"></x-cardproduct>
+        @if(!$prod->is_sold)
+          <x-cardproduct :prod="$prod"></x-cardproduct>
+        @endif
       @endforeach
       </div>
       <div class="mt-2">{{ $products->appends(request()->except('page'))->links() }}</div>

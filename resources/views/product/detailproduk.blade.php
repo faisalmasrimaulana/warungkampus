@@ -40,25 +40,28 @@
           <x-button href="https://wa.me/{{ $product->mahasiswa->whatsapp }}" class="gap-2 flex items-center justify-center">
             <i class="fa-brands fa-lg fa-whatsapp"></i>
             Hubungi Penjual via WhatsApp</x-button>
-        </div>
+          </div>
+          <x-button class="mt-5 checkout-button"> Beli</x-button>
       </div>
     </div>
 
     <!-- Kolom Tentang Penjual -->
     <div class="md:col-span-3 bg-white rounded-xl shadow-md p-6 mt-8 seller-card">
       <h3 class="font-semibold text-lg mb-4">Tentang Penjual</h3>
-      <div class="flex items-center space-x-4">
-        @if($product->mahasiswa && $product->mahasiswa->foto_profil != 'fotoprofil.jpg')
-          <img src="{{$product->mahasiswa->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . $product->mahasiswa->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="Foto Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
-        @else
-          <img src="{{ asset('assets/fotoprofil.jpg') }}" alt="Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
-        @endif
-
-        <div>
-          <h4 class="font-medium text-black">{{ $product->mahasiswa->nama }}</h4>
-          <p class="text-sm text-gray-500">Mahasiswa Sistem Informasi</p>
+      <a href="{{Auth::check() && Auth::id() === $product->mahasiswa->id ? route('user.dashboard') :  route('user.publicprofile', ['user'=>$product->mahasiswa->id])}}">
+        <div class="flex items-center space-x-4">
+          @if($product->mahasiswa && $product->mahasiswa->foto_profil != 'fotoprofil.jpg')
+            <img src="{{$product->mahasiswa->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . $product->mahasiswa->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="Foto Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
+          @else
+            <img src="{{ asset('assets/fotoprofil.jpg') }}" alt="Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
+          @endif
+  
+          <div>
+            <h4 class="font-medium text-black">{{ $product->mahasiswa->nama }}</h4>
+            <p class="text-sm text-gray-500">Mahasiswa Sistem Informasi</p>
+          </div>
         </div>
-      </div>
+      </a>
       <div class="mt-4 pt-4 border-t border-gray-100">
         <div class="flex items-center text-sm text-gray-600 mb-2">
           <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>

@@ -5,6 +5,7 @@ use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardAdminController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\User\DashboardUserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\EditUserController;
@@ -14,10 +15,19 @@ use App\Http\Controllers\User\EditUserController;
 // =======================
 // ROUTE UNTUK TANPA AUTENTIKASI
 // =======================
+
+//REGULAR
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/cancel', function(){
+    return redirect('/');
+})->name('cancel');
+
+Route::get('/userprofile/{user}', [DashboardUserController::class, 'showPublic'])->name('user.publicprofile');
+
+// AUTH
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
@@ -30,6 +40,7 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 
 Route::post('/register', [RegisterController::class, 'register'])->name('user.register.store');
 
+//PRODUCT
 Route::get('/detailproduk/{id}', [ProductController::class, 'show'])->name('produk.detail')->whereNumber('id');
 
 Route::get('/daftarproduk', [ProductController::class, 'index'])->name('produk.list');
@@ -38,9 +49,7 @@ Route::get('/produk/filter', [ProductController::class, 'filter'])->name('produk
 
 Route::get('/produk/cari', [ProductController::class, 'cari'])->name('produk.cari');
 
-Route::get('/cancel', function(){
-    return redirect('/');
-})->name('cancel');
+Route::get('/payment', [PaymentController::class, 'createTransaction'])->name('payment');
 
 // =======================
 // ROUTE UNTUK USER/MAHASISWA
@@ -49,7 +58,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/dashboard', [DashboardUserController::class, 'index'])->name('user.dashboard');
 
     Route::get('/postingproduk', function(){
-        return view('posting');
+        return view('product.posting');
     })->name('user.post');
 
     Route::get('langganan', function(){

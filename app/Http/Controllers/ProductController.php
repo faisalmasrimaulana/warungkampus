@@ -15,7 +15,7 @@ class ProductController extends Controller
 {
     public function index() {
         $products = Product::with('fotoproduk')->paginate(15);
-        return view('daftarproduk', compact('products'));
+        return view('product.daftarproduk', compact('products'));
     }
 
 
@@ -75,7 +75,7 @@ class ProductController extends Controller
 
     public function show($id){
         $product = Product::with('fotoproduk', 'mahasiswa')->findOrFail($id);
-        return view('detailproduk', compact('product'));
+        return view('product.detailproduk', compact('product'));
     }
 
     public function filter(Request $request) {
@@ -104,7 +104,7 @@ class ProductController extends Controller
 
         $products = $query->paginate(15);
 
-        return view('daftarproduk', compact('products'));
+        return view('product.daftarproduk', compact('products'));
     }
 
     public function cari(Request $request){
@@ -122,7 +122,7 @@ class ProductController extends Controller
         $products = $query->paginate(15);
         $keyword = $request->input('search', '');
 
-        return view('daftarproduk', ['products'=>$products, 'keyword'=> $keyword]);
+        return view('product.daftarproduk', ['products'=>$products, 'keyword'=> $keyword]);
     }
 
     public function destroy($id){
@@ -147,7 +147,7 @@ class ProductController extends Controller
         if($product->mahasiswa_id != Auth::id()){
             abort(403);
         }
-        return view('editpost', compact('product'));
+        return view('product.editpost', compact('product'));
     }
 
     public function update(Request $request, $id){
