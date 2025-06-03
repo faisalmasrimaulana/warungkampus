@@ -102,9 +102,59 @@
           @endforeach
          @endif
       </div>
+
+    </div>
+
+    <div class="bg-white mt-5 rounded-2xl p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-gray-800">Kelola History Pembayaran Produk Anda</h2>
+        <div class=" payment">
+          @if($paymentHistories->isEmpty())
+            <p class="text-gray-500">Belum ada history pembayaran.</p>
+          @else
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white text-sm text-left border rounded-lg overflow-hidden">
+                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                  <tr>
+                    <th class="px-6 py-3">Produk</th>
+                    <th class="px-6 py-3">Pembeli</th>
+                    <th class="px-6 py-3">Harga</th>
+                    <th class="px-6 py-3">Waktu Transaksi</th>
+                    <th class="px-6 py-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  @foreach($paymentHistories as $history)
+                    <tr class="border-t">
+                      <td class="px-6 py-4">{{ $history->product->nama_produk ?? '-' }}</td>
+                      <td class="px-6 py-4">{{ $history->email_pembeli }}</td>
+                      <td class="px-6 py-4">Rp {{ number_format($history->harga, 0, ',', '.') }}</td>
+                      <td class="px-6 py-4">{{ \Carbon\Carbon::parse($history->created_at)->format('d M Y H:i') }}</td>
+                      <td class="px-6 py-4">
+                        @php
+                          $status = $history->status;
+                        @endphp
+
+                        @if($status === 'success')
+                          <span class="text-green-600 font-medium">Sukses</span>
+                        @elseif($status === 'pending')
+                          <span class="text-yellow-500 font-medium">Menunggu</span>
+                        @elseif(in_array($status, ['expire', 'cancel', 'deny', 'failure']))
+                          <span class="text-red-500 font-medium">Gagal</span>
+                        @else
+                          <span class="text-gray-500 font-medium">Tidak Diketahui</span>
+                        @endif
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          @endif
+        </div>
     </div>
   </div>
 </div>
+
 
 <!-- Konfirmasi Terjual -->
 <x-modalconfirm identity="confirmationModalDelete" title="Hapus Post" message="Apakah kamu yakin untuk menghapus postingan ini?">
@@ -125,6 +175,8 @@
         Tandai Terjual
       </x-button>
 </x-modalconfirm>
+
+
 
 <script>
 

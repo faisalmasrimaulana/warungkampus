@@ -217,4 +217,25 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil ditandai sebagai terjual!');
     }
 
+    protected $midtrans;
+
+    public function createTransaction()
+    {
+        $params = [
+            'transaction_details' => [
+                'order_id' => uniqid(),
+                'gross_amount' => 10000,
+            ],
+            'customer_details' => [
+                'first_name' => 'Budi',
+                'email' => 'budi.pra@example.com',
+                'phone' => '08111222333',
+            ],
+        ];
+
+        $snapToken = $this->midtrans->getSnapToken($params);
+
+        return view('payment.index', compact('snapToken'));
+    }
+
 }

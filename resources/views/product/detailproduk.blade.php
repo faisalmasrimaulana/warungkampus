@@ -3,6 +3,7 @@
   @section('content')
   <!-- Swiper Link -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
   <div class="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8 pt-24">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -125,6 +126,22 @@
     </div>
   </div>
 
+  <!-- Modal Checkout -->
+  <div id="checkoutModal" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center">
+      <form id="checkoutForm" class="bg-white rounded-lg p-6 space-y-4 w-96">
+        @csrf
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+        <input type="text" name="nama_pembeli" placeholder="Nama" required class="input-class">
+        <input type="email" name="email_pembeli" placeholder="Email" required class="input-class">
+        <input type="text" name="no_hp_pembeli" placeholder="No HP" required class="input-class">
+        <input type="text" name="alamat_pembeli" placeholder="Alamat" required class="input-class">
+        <input type="number" name="harga" value="{{ $product->harga }}" hidden>
+        <button type="button" id="pay-button" class="btn-class bg-blue-600 text-white px-4 py-2 rounded-md">Bayar Sekarang</button>
+      </form>
+
+  </div>
+    <!-- ./Modal -->
+
   <!-- Load Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
@@ -163,4 +180,48 @@
     });
 
   </script>
+  <script>
+      document.querySelector('.checkout-button').addEventListener('click', function(e) {
+    e.preventDefault(); // Cegah halaman reload
+    document.getElementById('checkoutModal').classList.remove('hidden');
+    document.getElementById('checkoutModal').classList.add('flex');
+  });
+  </script>
+<script>
+  document.getElementById('pay-button').addEventListener('click', function () {
+    const form = document.getElementById('checkoutForm');
+    const formData = new FormData(form);
+
+    fetch("{{ route('payment.process') }}", {
+      method: "POST",
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      window.snap.pay(data.snapToken, {
+        onSuccess: function(result){
+            console.log("Pembayaran sukses:", result);
+            // Redirect ke success dengan order_id sebagai query param
+            window.location.href = `/payment/success?order_id=${result.order_id}`;
+        },
+        onPending: function(result){
+          console.log("Menunggu pembayaran:", result);
+        },
+        onError: function(result){
+          console.error("Pembayaran error:", result);
+        },
+        onClose: function(){
+          alert("Kamu menutup pop-up sebelum selesai 😢");
+        }
+      });
+    })
+    .catch(err => console.error("Gagal fetch snapToken:", err));
+  });
+</script>
+
+
+  
   @endsection

@@ -5,10 +5,11 @@ use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardAdminController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\User\DashboardUserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\EditUserController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MidtransWebhookController;
 
 //INI MENGATUR SETIAP ROUTE DI WEBSITE INI
 
@@ -49,7 +50,14 @@ Route::get('/produk/filter', [ProductController::class, 'filter'])->name('produk
 
 Route::get('/produk/cari', [ProductController::class, 'cari'])->name('produk.cari');
 
-Route::get('/payment', [PaymentController::class, 'createTransaction'])->name('payment');
+// PAYMENT
+Route::post('/checkout', [PaymentController::class, 'process'])->name('payment.process');
+Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
+Route::post('/midtrans/callback', [MidtransWebhookController::class, 'callback']);
+Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+
+
+
 
 // =======================
 // ROUTE UNTUK USER/MAHASISWA
