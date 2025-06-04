@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentHistory extends Model
 {
-    protected $table = 'orders';
+    protected $table = 'payment_histories';
 
     protected $fillable = [
         'order_id',
@@ -15,6 +15,9 @@ class PaymentHistory extends Model
         'payment_type',
         'gross_amount',
         'transaction_time',
+        'buyer_name',
+        'buyer_email',
+        'buyer_phone',
     ];
 
     public function product()
@@ -22,8 +25,8 @@ class PaymentHistory extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function user()
+    public function order()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
     }
 }

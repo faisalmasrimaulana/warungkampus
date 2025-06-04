@@ -27,7 +27,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 10;
+      z-index: 5 ;
     }
     .carousel-control.prev {
       left: 10px;
@@ -172,21 +172,24 @@
 
 
     @if($products->count() > 0)
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    
       @foreach($products as $prod)
-        @if(!$prod->is_sold)
-          <x-cardproduct :prod="$prod"></x-cardproduct>
-        @endif
-      @endforeach
-      </div>
-      <div class="mt-2">{{ $products->appends(request()->except('page'))->links() }}</div>
-    @else
-      @if(!empty($keyword))
-      <p class="text-center text-gray-500 mt-4">Tidak ada produk yang cocok dengan kata kunci: <strong>{{ $keyword }}</strong> T-T</p>
-      @else
-      <p class="text-center text-gray-500 mt-4">Masukkan kata kunci untuk mencari produk 🔍</p>
+      @if(!$prod->is_sold)
+      <x-cardproduct :prod="$prod"></x-cardproduct>
       @endif
-    @endif
+      @endforeach
+      <div class="mt-2">{{ $products->appends(request()->except('page'))->links() }}</div>
+    @elseif($products->count()==0)
+      <div class="flex w-full items-center justify-center"><h1 class="font-bold text-xl">Belum ada produk yang diunggah</h1></div>
+      @else
+        @if(!empty($keyword))
+        <p class="text-center text-gray-500 mt-4">Tidak ada produk yang cocok dengan kata kunci: <strong>{{ $keyword }}</strong> T-T</p>
+        @else
+        <p class="text-center text-gray-500 mt-4">Masukkan kata kunci untuk mencari produk 🔍</p>
+        @endif
+      @endif
+    </div>
   </main>
 
   <script>

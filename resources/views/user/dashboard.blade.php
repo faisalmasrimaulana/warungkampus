@@ -13,7 +13,6 @@
           <div class="flex-1">
             <div class="flex items-center mb-2">
               <h1 class="text-2xl font-bold text-gray-800 mr-3">{{Auth::user()->nama}}</h1>
-              <x-badge status="active"></x-badge>
             </div>
 
             <!-- BIO -->
@@ -117,6 +116,7 @@
                   <tr>
                     <th class="px-6 py-3">Produk</th>
                     <th class="px-6 py-3">Pembeli</th>
+                    <th class="px-6 py-3">Catatan</th>
                     <th class="px-6 py-3">Harga</th>
                     <th class="px-6 py-3">Waktu Transaksi</th>
                     <th class="px-6 py-3">Status</th>
@@ -127,6 +127,7 @@
                     <tr class="border-t">
                       <td class="px-6 py-4">{{ $history->product->nama_produk ?? '-' }}</td>
                       <td class="px-6 py-4">{{ $history->email_pembeli }}</td>
+                      <td class="px-6 py-4">{{ $history->catatan }}</td>
                       <td class="px-6 py-4">Rp {{ number_format($history->harga, 0, ',', '.') }}</td>
                       <td class="px-6 py-4">{{ \Carbon\Carbon::parse($history->created_at)->format('d M Y H:i') }}</td>
                       <td class="px-6 py-4">

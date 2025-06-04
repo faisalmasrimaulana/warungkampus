@@ -15,6 +15,7 @@ class Order extends Model
         'product_id',
         'harga',
         'status',
+        'catatan',
     ];
 
         public function product()
@@ -22,5 +23,9 @@ class Order extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function paymentHistories()
+    {
+        return $this->hasMany(PaymentHistory::class, 'order_id', 'order_id');
+    }
     
 }

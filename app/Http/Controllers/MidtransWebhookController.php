@@ -18,7 +18,7 @@ class MidtransWebhookController extends Controller
         Config::$isProduction = config('midtrans.is_production', false);
 
         try {
-            $notif = new Notification(); // dapetin notif valid langsung dari Midtrans
+            $notif = new Notification();
 
             $transaction = $notif->transaction_status;
             $type = $notif->payment_type;
@@ -64,10 +64,8 @@ class MidtransWebhookController extends Controller
         }
     }
 
-    // Optional: Kalau mau hapus function callback() juga boleh
     public function callback(Request $request)
     {
-        // Sama aja kayak handle(), bisa kamu hapus atau redirect ke handle()
         return $this->handle($request);
     }
 }

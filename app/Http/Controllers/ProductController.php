@@ -26,7 +26,7 @@ class ProductController extends Controller
             "kategori" => "required|string",
             "harga" => "required|numeric|min:0",
             "deskripsi_singkat" => "required|max:100|string",
-            "deskripsi_lengkap" => "required|string",
+            "deskripsi_lengkap" => "nullable|string",
             "kondisi" => "required_if:kategori,barang|string|nullable",
             "productImages" => "required|array|max:5",
             "productImages.*" => "image|mimes:jpg,png,jpeg|max:3072"
@@ -36,7 +36,6 @@ class ProductController extends Controller
             "kategori.required" => 'Kategori wajib diisi',
             "harga.required" => 'Harga Produk wajib diisi',
             "deskripsi_singkat.required" => 'Deskripsi Singkat Produk wajib diisi',
-            "deskripsi_lengkap.required" => 'Deskripsi Panjang Produk wajib diisi',
             "kondisi.required" => 'Kondisi Produk wajib diisi',
             "productImages.required" => 'Foto Produk wajib diisi',
             "deskripsi_singkat.max" => 'Deskripsi hanya boleh 100 karakter',
@@ -53,7 +52,7 @@ class ProductController extends Controller
             'kategori' => $validated['kategori'],
             'harga' => $validated['harga'],
             'deskripsi_singkat' => $validated['deskripsi_singkat'],
-            'deskripsi_lengkap' => $validated['deskripsi_lengkap'],
+            'deskripsi_lengkap' => empty($validated['deskripsi_lengkap']) ? $validated['deskripsi_singkat'] : $validated['deskripsi_lengkap'],
             'mahasiswa_id' => $mahasiswaId,
         ];
 
@@ -162,7 +161,7 @@ class ProductController extends Controller
         "kategori" => "required|string",
         "harga" => "required",
         "deskripsi_singkat" => "required|max:100|string",
-        "deskripsi_lengkap" => "required|string",
+        "deskripsi_lengkap" => "nullable|string",
         "kondisi" => "nullable|string",
         "productImages" => "nullable|array|max:5",
         "productImages.*" => "image|mimes:jpg,png,jpeg|max:3072"
@@ -173,7 +172,7 @@ class ProductController extends Controller
             'kategori' => $validated['kategori'],
             'harga' => $validated['harga'],
             'deskripsi_singkat' => $validated['deskripsi_singkat'],
-            'deskripsi_lengkap' => $validated['deskripsi_lengkap'],
+            'deskripsi_lengkap' => empty($validated['deskripsi_lengkap']) ? $validated['deskripsi_singkat'] : $validated['deskripsi_lengkap'],
             'kondisi' => $validated['kategori']  === 'barang' ? $validated['kondisi'] : 'nocondition',
         ]);
 

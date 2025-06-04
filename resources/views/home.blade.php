@@ -20,38 +20,38 @@
     
     <!-- Features Section -->
     <section class="grid md:grid-cols-3 gap-8 mb-20">
-      <div class="feature-card p-8 rounded-2xl">
-        <a href="{{route('user.post')}}">
+      <a href="{{route('user.post')}}">
+        <div class="transition-all duration-300 ease-in-out bg-gradient-to-br from-white to-slate-50 p-8 hover:-translate-y-1 hover:shadow:xl shadow-lg rounded-2xl">
           <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-5 hover:shadow-lg" title="Mulai Jualan">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
           </div>
-        </a>
-        <h3 class="text-xl font-semibold mb-3 text-gray-800">Mulai Jualan</h3>
-        <p class="text-gray-600">Tawarkan pada mahasiswa lain barang bekas atau jasa yang masih layak.</p>
-      </div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-800">Mulai Jualan</h3>
+          <p class="text-gray-600">Tawarkan pada mahasiswa lain barang bekas atau jasa yang masih layak.</p>
+        </div>
+      </a>
       
-      <div class="feature-card p-8 rounded-2xl">
-        <a href="{{route('produk.list')}}">
+      <a href="{{route('produk.list')}}">
+        <div class="transition-all duration-300 ease-in-out bg-gradient-to-br from-white to-slate-50 p-8 hover:-translate-y-1 hover:shadow:xl shadow-lg rounded-2xl">
           <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-5 hover:shadow-lg" title="Temukan Produk">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-        </a>
-        <h3 class="text-xl font-semibold mb-3 text-gray-800">Temukan Produk</h3>
-        <p class="text-gray-600">Jelajahi berbagai produk yang bermanfaat untuk menunjang perkuliahanmu.</p>
-      </div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-800">Temukan Produk</h3>
+          <p class="text-gray-600">Jelajahi berbagai produk yang bermanfaat untuk menunjang perkuliahanmu.</p>
+        </div>
+      </a>
       
-      <div class="feature-card p-8 rounded-2xl">
+      <div class="transition-all duration-300 ease-in-out bg-gradient-to-br from-white to-slate-50 p-8 hover:-translate-y-1 hover:shadow:xl shadow-lg rounded-2xl">
         <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-5">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
         </div>
-        <h3 class="text-xl font-semibold mb-3 text-gray-800">Mahasiswa Cerdas</h3>
-        <p class="text-gray-600">Bergabung dengan berbagai mahasiswa yang peduli dengan sesama.</p>
+        <h3 class="text-xl font-semibold mb-3 text-gray-800">Hubungi Kami</h3>
+        <p class="text-gray-600">Punya pertanyaan atau laporan? Kami siap membantu.</p>
       </div>
     </section>
     

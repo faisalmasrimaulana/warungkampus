@@ -132,23 +132,30 @@
   </div>
 
   <!-- Modal Checkout -->
-  <div id="checkoutModal" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center">
-    <form id="checkoutForm" class="bg-white rounded-lg p-6 space-y-4 w-96">
-        <h1 class="text-black font-semibold text-center capitalize">Informasi Pelanggan</h1>
-        @csrf
-        <input type="hidden" name="product_id" value="{{ $product->id }}"/>
-        <x-input type="text" name="nama_pembeli" placeholder="Nama" required class="input-class"/>
-        <x-input type="email" name="email_pembeli" placeholder="Email" required class="input-class"/>
-        <x-input type="text" name="no_hp_pembeli" placeholder="No HP" required class="input-class"/>
-        <x-input type="text" name="alamat_pembeli" placeholder="Alamat" required class="input-class"/>
-        <x-input type="text" name="catatan" placeholder="Informasi lain" required class="input-class"/>
-        <input type="number" name="harga" value="{{ $product->harga }}" hidden>
-        <div class="flex justify-between">
-          <x-button size="md" type="button" id="pay-button" color="primary">Bayar Sekarang</x-button>
-          <x-button size="md" type="button" id="close-button" color="danger">Batalkan</x-button>
-        </div>
-      </form>
-  </div>
+  <!-- Modal Checkout -->
+<div id="checkoutModal" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center">
+  <form id="checkoutForm" class="bg-white rounded-lg p-6 space-y-4 w-96">
+      <h1 class="text-black font-semibold text-center capitalize">Informasi Pelanggan</h1>
+      @csrf
+      <input type="hidden" name="product_id" value="{{ $product->id }}"/>
+      <x-input name="nama_pembeli" placeholder="Nama Pembeli" />
+      <p class="text-red-500 text-sm mt-1 error-message" data-field="nama_pembeli"></p>
+      <x-input name="email_pembeli" placeholder="Email" />
+      <p class="text-red-500 text-sm mt-1 error-message" data-field="email_pembeli"></p>
+      <x-input name="no_hp_pembeli" placeholder="No HP" />
+      <p class="text-red-500 text-sm mt-1 error-message" data-field="no_hp_pembeli"></p>
+      <x-input name="alamat_pembeli" placeholder="Alamat" />
+      <p class="text-red-500 text-sm mt-1 error-message" data-field="alamat_pembeli"></p>
+      <x-input name="catatan" placeholder="Catatan untuk penjual (opsional)" />
+      <p class="text-red-500 text-sm mt-1 error-message" data-field="catatan"></p>
+      <input type="number" name="harga" value="{{ $product->harga }}" hidden>
+      <div class="flex justify-between">
+        <x-button size="md" type="button" id="pay-button" color="primary">Bayar Sekarang</x-button>
+        <x-button size="md" type="button" id="close-button" color="danger">Batalkan</x-button>
+      </div>
+  </form>
+</div>
+
     <!-- ./Modal -->
 
   <!-- Load Swiper JS -->
@@ -188,54 +195,75 @@
       }
     });
 
+  
   </script>
+  
+  <!-- Checkout modal -->
   <script>
       document.querySelector('.checkout-button').addEventListener('click', function(e) {
     e.preventDefault(); // Cegah halaman reload
     document.getElementById('checkoutModal').classList.remove('hidden');
     document.getElementById('checkoutModal').classList.add('flex');
-  });
+    });
     document.getElementById('close-button').addEventListener('click', function(e){
       e.preventDefault();
       document.getElementById('checkoutModal').classList.remove('flex');
       document.getElementById('checkoutModal').classList.add('hidden');
     })
   </script>
-<script>
-  document.getElementById('pay-button').addEventListener('click', function () {
-    const form = document.getElementById('checkoutForm');
-    const formData = new FormData(form);
 
-    fetch("{{ route('payment.process') }}", {
-      method: "POST",
-      headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      },
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      window.snap.pay(data.snapToken, {
-        onSuccess: function(result){
-            console.log("Pembayaran sukses:", result);
-            // Redirect ke success dengan order_id sebagai query param
-            window.location.href = `/payment/success?order_id=${result.order_id}`;
+  <script>
+    document.getElementById('pay-button').addEventListener('click', function () {
+      const form = document.getElementById('checkoutForm');
+      const formData = new FormData(form);
+
+      // Reset error messages dulu
+      document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+      fetch("{{ route('payment.process') }}", {
+        method: "POST",
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        onPending: function(result){
-          console.log("Menunggu pembayaran:", result);
-        },
-        onError: function(result){
-          console.error("Pembayaran error:", result);
-        },
-        onClose: function(){
-          alert("Kamu menutup pop-up sebelum selesai 😢");
+        body: formData
+      })
+      .then(async response => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          if (errorData.errors) {
+            for (const field in errorData.errors) {
+              const errorEl = document.querySelector(`.error-message[data-field="${field}"]`);
+              if (errorEl) {
+                errorEl.textContent = errorData.errors[field][0];
+              }
+            }
+          }
+          throw new Error("Validasi gagal");
         }
+
+        return response.json();
+      })
+      .then(data => {
+        window.snap.pay(data.snapToken, {
+          onSuccess: function(result){
+            console.log("Pembayaran sukses:", result);
+            window.location.href = `/payment/success?order_id=${result.order_id}`;
+          },
+          onPending: function(result){
+            console.log("Menunggu pembayaran:", result);
+          },
+          onError: function(result){
+            console.error("Pembayaran error:", result);
+          },
+          onClose: function(){
+            alert("Kamu menutup pop-up sebelum selesai 😢");
+          }
+        });
+      })
+      .catch(err => {
+        console.error("Terjadi error saat fetch:", err);
       });
-    })
-    .catch(err => console.error("Gagal fetch snapToken:", err));
-  });
-</script>
-
-
+    });
+  </script>
   
   @endsection
