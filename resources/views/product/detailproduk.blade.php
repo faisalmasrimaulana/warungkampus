@@ -38,16 +38,21 @@
             {{ $product->deskripsi_singkat }}
           </p>
 
-          <x-button href="https://wa.me/{{ $product->mahasiswa->whatsapp }}" class="gap-2 flex items-center justify-center">
-            <i class="fa-brands fa-lg fa-whatsapp"></i>
-            Hubungi Penjual via WhatsApp</x-button>
+          <div class="grid grid-cols-2 space-x-2">
+            <div class="grid">
+              <x-button class="checkout-button flex justify-center" color="primary"> Beli</x-button>
+            </div>
+            <div class="">
+              <x-button href="https://wa.me/{{ $product->mahasiswa->whatsapp }}" class="gap-2 flex items-center justify-center" color="secondary">
+                <i class="fa-brands fa-lg fa-whatsapp"></i>
+                Hubungi Penjual via WhatsApp</x-button>
+            </div>
           </div>
-          <x-button class="mt-5 checkout-button"> Beli</x-button>
       </div>
     </div>
 
     <!-- Kolom Tentang Penjual -->
-    <div class="md:col-span-3 bg-white rounded-xl shadow-md p-6 mt-8 seller-card">
+    <div class="md:col-span-3 bg-white rounded-xl shadow-md p-6 seller-card">
       <h3 class="font-semibold text-lg mb-4">Tentang Penjual</h3>
       <a href="{{Auth::check() && Auth::id() === $product->mahasiswa->id ? route('user.dashboard') :  route('user.publicprofile', ['user'=>$product->mahasiswa->id])}}">
         <div class="flex items-center space-x-4">
@@ -76,7 +81,7 @@
     </div>
 
     <!-- Foto Produk (Swiper Slider) -->
-      <div class="md:col-span-3 bg-white rounded-xl shadow-md p-6 mt-8">
+      <div class="md:col-span-3 bg-white rounded-xl shadow-md p-6">
         @if($product->fotoproduk->isNotEmpty())
         <div class="flex items-center justify-center gap-4 ">
           @foreach($product->fotoproduk->take(5) as $index => $foto)
@@ -116,7 +121,7 @@
     <!-- ./Foto Produk -->
 
     <!-- Deskripsi Lengkap -->
-    <div class="mt-8 bg-white rounded-xl shadow-md p-6">
+    <div class="md:col-span-3 bg-white rounded-xl shadow-md p-6">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Deskripsi Produk</h2>
       <div class="prose max-w-none text-gray-700">
         <p>
@@ -128,17 +133,21 @@
 
   <!-- Modal Checkout -->
   <div id="checkoutModal" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center">
-      <form id="checkoutForm" class="bg-white rounded-lg p-6 space-y-4 w-96">
+    <form id="checkoutForm" class="bg-white rounded-lg p-6 space-y-4 w-96">
+        <h1 class="text-black font-semibold text-center capitalize">Informasi Pelanggan</h1>
         @csrf
-        <input type="hidden" name="product_id" value="{{ $product->id }}">
-        <input type="text" name="nama_pembeli" placeholder="Nama" required class="input-class">
-        <input type="email" name="email_pembeli" placeholder="Email" required class="input-class">
-        <input type="text" name="no_hp_pembeli" placeholder="No HP" required class="input-class">
-        <input type="text" name="alamat_pembeli" placeholder="Alamat" required class="input-class">
+        <input type="hidden" name="product_id" value="{{ $product->id }}"/>
+        <x-input type="text" name="nama_pembeli" placeholder="Nama" required class="input-class"/>
+        <x-input type="email" name="email_pembeli" placeholder="Email" required class="input-class"/>
+        <x-input type="text" name="no_hp_pembeli" placeholder="No HP" required class="input-class"/>
+        <x-input type="text" name="alamat_pembeli" placeholder="Alamat" required class="input-class"/>
+        <x-input type="text" name="catatan" placeholder="Informasi lain" required class="input-class"/>
         <input type="number" name="harga" value="{{ $product->harga }}" hidden>
-        <button type="button" id="pay-button" class="btn-class bg-blue-600 text-white px-4 py-2 rounded-md">Bayar Sekarang</button>
+        <div class="flex justify-between">
+          <x-button size="md" type="button" id="pay-button" color="primary">Bayar Sekarang</x-button>
+          <x-button size="md" type="button" id="close-button" color="danger">Batalkan</x-button>
+        </div>
       </form>
-
   </div>
     <!-- ./Modal -->
 
@@ -186,6 +195,11 @@
     document.getElementById('checkoutModal').classList.remove('hidden');
     document.getElementById('checkoutModal').classList.add('flex');
   });
+    document.getElementById('close-button').addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('checkoutModal').classList.remove('flex');
+      document.getElementById('checkoutModal').classList.add('hidden');
+    })
   </script>
 <script>
   document.getElementById('pay-button').addEventListener('click', function () {

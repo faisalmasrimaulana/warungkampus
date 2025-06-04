@@ -27,12 +27,12 @@
           <x-button href="{{route('user.register')}}" type="button" color="secondary">Register</x-button>
         @else
         @auth('web')
-        <button id="profileButtonUser" class="ml-4">
-          <img src="{{ Auth::user()->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="Foto Profil {{ Auth::user()->nama ?? 'User' }}" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
+        <button id="profileButtonUser" class="ml-4 hover:cursor-pointer">
+          <img src="{{ Auth::user()->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . Auth::user()->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="Foto Profil {{ Auth::user()->nama ?? 'User' }}" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img"/>
         </button>
         @endauth
         @auth('admins')
-        <button id="profileButtonAdmin" class="ml-4 flex gap-3  items-center">
+        <button id="profileButtonAdmin" class="ml-4 flex gap-3  items-center hover:cursor-pointer">
           <p class="text-gray-600 ">{{Auth::guard('admins')->user()->nama}}</p>
           <img src="https://ui-avatars.com/api/?background=3b82f6&color=fff" alt="Profil" class="w-10 h-10 rounded-full border-2 border-blue-100 profile-img">
         </button>

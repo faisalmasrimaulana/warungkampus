@@ -106,10 +106,10 @@
     </div>
 
     <div class="bg-white mt-5 rounded-2xl p-6 shadow-sm">
-      <h2 class="text-xl font-semibold text-gray-800">Kelola History Pembayaran Produk Anda</h2>
+      <h2 class="text-xl font-semibold text-gray-800">Kelola History Pembelian Produk Anda</h2>
         <div class=" payment">
           @if($paymentHistories->isEmpty())
-            <p class="text-gray-500">Belum ada history pembayaran.</p>
+            <p class="text-gray-500">Belum ada history pembelian.</p>
           @else
             <div class="overflow-x-auto">
               <table class="min-w-full bg-white text-sm text-left border rounded-lg overflow-hidden">
@@ -149,7 +149,8 @@
                 </tbody>
               </table>
             </div>
-          @endif
+            <div class="mt-4">{{ $paymentHistories->links() }}</div>
+            @endif
         </div>
     </div>
   </div>

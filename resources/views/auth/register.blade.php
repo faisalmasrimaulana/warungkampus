@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Register</title>
-
+        <link rel="icon" type="image/x-icon" href="{{ asset('WK.ico') }}">
         <!-- Fonts -->
          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <!-- Styles / Scripts -->
@@ -82,7 +82,8 @@
                     <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat*</label>
                     <textarea id="alamat" name="alamat" rows="2"
                                 class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
-                                placeholder="Alamat lengkap (termasuk asrama/kos jika ada)">{{old('alamat')}}</textarea>
+                                placeholder="Alamat lengkap (termasuk asrama/kos jika ada)">{{old('alamat')}}
+                    </textarea>
                     @error('alamat')
                         <p class="text-xs text-red-500">{{$message}}</p>
                     @enderror

@@ -25,7 +25,7 @@ class DashboardUserController extends Controller
         // Ambil semua payment history dari produk yang dimiliki user
         $paymentHistories = Order::whereHas('product', function ($query) use ($user) {
         $query->where('mahasiswa_id', $user->id);
-    })->orderBy('created_at', 'desc')->get();
+    })->orderBy('created_at', 'desc')->paginate(5);
 
         return view('user.dashboard', [
             'products' => $products,
