@@ -14,37 +14,12 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index() {
-        $products = Product::with('fotoproduk')->paginate(15);
+        $products = Product::with('fotoproduk')->latest()->paginate(15);
         return view('product.daftarproduk', compact('products'));
     }
 
-
     public function store(Request $request){
-        $validated = $request->validate(
-        [
-            "nama_produk" => "required|string",
-            "kategori" => "required|string",
-            "harga" => "required|numeric|min:0",
-            "deskripsi_singkat" => "required|max:100|string",
-            "deskripsi_lengkap" => "nullable|string",
-            "kondisi" => "required_if:kategori,barang|string|nullable",
-            "productImages" => "required|array|max:5",
-            "productImages.*" => "image|mimes:jpg,png,jpeg|max:3072"
-        ],
-        [
-            "nama_produk.required" => 'Nama Produk wajib diisi',
-            "kategori.required" => 'Kategori wajib diisi',
-            "harga.required" => 'Harga Produk wajib diisi',
-            "deskripsi_singkat.required" => 'Deskripsi Singkat Produk wajib diisi',
-            "kondisi.required" => 'Kondisi Produk wajib diisi',
-            "productImages.required" => 'Foto Produk wajib diisi',
-            "deskripsi_singkat.max" => 'Deskripsi hanya boleh 100 karakter',
-            "productImages.max" => 'Foto Produk maksimal 5 file',
-            "productImages.*.max" => 'Foto Produk maksimal 3 mb',
-            'harga.numeric' => 'Harga harus berupa angka',
-            'harga.min' => 'harga minimal 0 rupiah'
-        ]
-        );
+        $validated = $request->validated();
 
         $mahasiswaId = Auth::id();
         $data = [
@@ -78,54 +53,49 @@ class ProductController extends Controller
     }
 
     public function filter(Request $request) {
-        $query = Product::query()->with('fotoproduk');
-
-        // Filter kategori
-        if ($request->filled('kategori')) {
+        $products = Product::with('fotoproduk')
+        ->when($request->filled('kategori'), function ($query) use ($request) {
             $query->where('kategori', strtolower($request->kategori));
-        }
-
-        // Urut harga
-        match($request->input('harga')){
-            'Terendah' => $query->orderBy('harga', 'asc'),
-            'Tertinggi' => $query->orderBy('harga', 'desc'),
-            default => null,
-        };
-
-        // Urut waktu
-        if ($request->filled('waktu')) {
-            match($request->input('waktu')){
-                'Terbaru' => $query->orderBy('created_at', 'desc'),
-                'Terlama' => $query->orderBy('created_at', 'asc'),
-                default =>null,
-            };
-        }
-
-        $products = $query->paginate(15);
+        })
+        ->when($request->filled('harga'), function ($query) use ($request) {
+            if ($request->harga === 'Terendah') {
+                $query->orderBy('harga','asc');
+            } elseif ($request->harga === 'Tertinggi') {
+                $query->orderByDesc('harga');
+            }
+        })
+        ->when($request->filled('waktu'), function ($query) use ($request) {
+            if ($request->waktu === 'Terbaru') {
+                $query->orderByDesc('created_at');
+            } elseif ($request->waktu === 'Terlama') {
+                $query->orderBy('created_at', 'asc');
+            }
+        })
+        ->paginate(15);
 
         return view('product.daftarproduk', compact('products'));
     }
 
+
     public function cari(Request $request){
-        $query = Product::with('fotoproduk');
-
-        if ($request->has('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('nama_produk', 'like', '%' . $request->search . '%')
-                ->orWhere('deskripsi_singkat', 'like', '%' . $request->search . '%')
-                ->orWhere('deskripsi_lengkap', 'like', '%' . $request->search . '%')
-                ->orWhere('kondisi', 'like', '%' . $request->search . '%');
-            });
-        }
-
-        $products = $query->paginate(15);
         $keyword = $request->input('search', '');
 
-        return view('product.daftarproduk', ['products'=>$products, 'keyword'=> $keyword]);
+        $products = Product::with('fotoproduk')
+        ->when($keyword, function($query, $keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama_produk', 'like', "%{$keyword}%")
+                  ->orWhere('deskripsi_singkat', 'like', "%{$keyword}%")
+                  ->orWhere('deskripsi_lengkap', 'like', "%{$keyword}%")
+                  ->orWhere('kondisi', 'like', "%{$keyword}%");
+            });
+        })
+        ->paginate(15);
+
+        return view('product.daftarproduk', compact('products', 'keyword'));
     }
 
     public function destroy($id){
-        $product = Product::find($id);
+        $product = Product::with('fotoproduk')->find($id);
 
         if(!$product){
             return redirect()->back()->with('error', 'Produk tidak ditemukan');
@@ -135,6 +105,7 @@ class ProductController extends Controller
             Storage::disk('public')->delete($foto->path_fotoproduk);
             $foto->delete();
         }
+
         $product->delete();
 
         return redirect()->back()->with('success', 'Produk berhasil dihapus');
@@ -228,7 +199,6 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Produk berhasil diaktifkan kembali!');
     }
-
 
     protected $midtrans;
 

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Model User
@@ -71,4 +71,24 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function verifikasi(){
+        $this->update(['is_verified' => true]);
+    }
+
+    public function block(){
+        $this->update((['is_blocked' => true]));
+    }
+
+    public function unblock(){
+        $this-> update(['is_blocked' => false]);
+    }
+
+    public function deleteKtm()
+    {
+        if ($this->ktm && Storage::disk('public')->exists($this->ktm)) {
+            Storage::disk('public')->delete($this->ktm);
+        }
+    }
+    
 }

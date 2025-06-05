@@ -4,7 +4,7 @@
         <div class="p-3">
             <h3 class="text-sm font-semibold truncate">{{ $prod->nama_produk }}</h3>
             <p class="text-xs text-gray-500">{{ $prod->created_at->format('d M Y') }}</p>
-            <p class="text-xs text-gray-500 mb-2">{{ $prod->kategori }}{{ $prod->kondisi != 'nocondition' ? ' - ' . $prod->kondisi : '' }}</p>
+            <p class="text-xs text-gray-500 mb-2 capitalize">{{ $prod->kategori }}{{ $prod->kondisi != 'nocondition' ? ' - ' . $prod->kondisi : '' }}</p>
             <p class="text-sm text-blue-700 font-bold mt-1"> {{$prod->harga_format }}</p>
             <p class="text-xs text-gray-500">{{ $prod->deskripsi_singkat }}</p>
         </div>

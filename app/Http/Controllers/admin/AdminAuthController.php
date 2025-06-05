@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminLoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,20 +22,8 @@ class AdminAuthController extends Controller
         return view('admin.loginadmin');
     }
 
-    public function loginAdmin(Request $request)
+    public function loginAdmin(AdminLoginRequest $request)
     {
-        $request->validate(
-            [
-                'admin_id' => 'required|exists:admins,admin_id',
-                'password' => 'required',
-            ],
-            [
-                'admin_id.required' => 'ID admin harus diisi',
-                'admin_id.exists' => 'ID admin tidak valid',
-                'password.required' => 'Password wajib diisi'
-            ]
-        );
-
         $credentials = $request->only('admin_id', 'password');
 
         if (Auth::guard('admins')->attempt($credentials)) {
@@ -44,8 +33,7 @@ class AdminAuthController extends Controller
 
         return back()->withErrors([
             'admin_id' => 'ID atau password salah.',
-            'password' => 'ID atau password salah'
-        ])->withInput();
+        ])->withInput($request->only('admin_id'));
     }
 
     public function logout(Request $request)
@@ -54,6 +42,6 @@ class AdminAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Anda berhasil logout');
     }
 }

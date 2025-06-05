@@ -2,8 +2,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -19,53 +19,22 @@ class RegisterController extends Controller
         return view('auth.register');
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'nim' => 'required|string|unique:users,nim',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'whatsapp' => 'required|string|regex:/^62\d{8,13}$/',
-            'instagram' => 'nullable|string',
-            'ktm' => 'required|image|mimes:jpeg,png,jpg|max:5120',
-            'alamat' => 'required|string',
-        ],[
-            'nama.required' => 'Nama wajib diisi',
-            'nim.required' => 'NIM wajib diisi',
-            'email.required' => 'Email wajib diisi',
-            'password.required' => 'Password wajib diisi',
-            'whatsapp.required' => 'Whatsapp wajib diisi',
-            'ktm.required' => 'Foto KTM wajib diunggah',
-            'email.email' => 'Format email salah, gunakan @',
-            'email.unique' => 'Email sudah digunakan',
-            'nim.unique' => 'NIM sudah digunakan',
-            'ktm.max' => 'Ukuran foto maksimal 5 mb',
-            'ktm.image' => 'File harus berupa foto',
-            'alamat.required' => 'Alamat wajib diisi',
-            'whatsapp.regex' => "Gunakan kode negara diawal"
-        ]);
-
-        if(!$request->hasFile('ktm')){
-            return back()->withErrors(['ktm' => 'File KTM wajib diunggah']);
-        }
-
         $ktmPath = $request->file('ktm')->store('ktm', 'public');
-        
-        if (!$ktmPath) {
-        return back()->withErrors(['ktm' => 'Gagal mengunggah file KTM.']);
-}
-        User::create([
-            'nama' => $request->nama,
-            'nim' => $request->nim,
-            'email' => $request->email,
-            'whatsapp' => $request->whatsapp,
-            'instagram' => $request->instagram,
-            'password' => Hash::make($request->password),
-            'ktm' => $ktmPath,
-            'alamat' => $request->alamat,
+        $data = $request->only([
+            'nama',
+            'nim',
+            'email',
+            'whatsapp',
+            'instagram',
+            'alamat',
         ]);
 
+        $data['password'] = Hash::make($request->password);
+        $data['ktm'] = $ktmPath;
+        
+        User::create($data);
         return redirect()->route('login.submit')->with('success', 'Registrasi berhasil. Silakan login.');
     }
 }

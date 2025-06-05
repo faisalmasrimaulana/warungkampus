@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,26 +16,14 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
-    {
+    public function showLoginForm(){
+        if(Auth::check()){
+            return redirect()->route('user.dashboard');
+        }
         return view('auth.login');
     }
 
-    public function login(Request $request)
-    {
-        $request->validate(
-            [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
-            ],
-            [
-                'email.required' => 'Email wajib diisi',
-                'email.email' => 'Format email harus benar, pastikan ada @',
-                'password.required' => 'Password harus diisi',
-                'password.min' => 'Password minimal 6 kata'
-            ]
-        );
-
+    public function login(LoginRequest $request){
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
@@ -45,7 +34,7 @@ class LoginController extends Controller
                 ]);
             }
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended(route('user.dashboard'));
         }
         
         return back()->withErrors([
