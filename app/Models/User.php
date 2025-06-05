@@ -42,7 +42,8 @@ class User extends Authenticatable
         'ktm',
         'alamat',
         'foto_profil',
-        'is_verified'
+        'is_verified',
+        'is_blocked',
     ];
 
     public function produk(){

@@ -13,7 +13,7 @@
         Sesama <span class="text-blue-500"> Mahasiswa </span> Bantu <br> Barang <span class="text-green-500"> Jasa </span> Laku
       </h1>
       <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-12">
-        Marketplace khusus mahasiswa untuk jual beli barang bekas dan jasa. 
+        Marketplace khusus mahasiswa untuk jual beli barang baru, barang bekas, bahkan menawarkan jasa. 
         Praktis, hemat, dan saling bantu antar sesama mahasiswa.
       </p>
     </section>

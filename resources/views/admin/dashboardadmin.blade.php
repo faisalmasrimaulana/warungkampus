@@ -13,9 +13,8 @@
         <div class="bg-gradient-to-br from-white to-slate-100 shadow transition-all duration-300 hover:-translate-y-1 hover:shadow-lg rounded-xl p-6">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500">Total Pengguna</p>
+              <p class="text-sm text-gray-500">Total Penjual</p>
               <h3 class="text-2xl font-bold text-gray-800">{{$totalUsers}}</h3>
-              <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 12.5% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-blue-100 text-blue-600">
               <i class="fas fa-users text-xl"></i>
@@ -27,9 +26,8 @@
         <div class="rounded-xl p-6 bg-gradient-to-br from-white to-slate-100 shadow transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500">Posting Aktif</p>
+              <p class="text-sm text-gray-500">Postingan Aktif</p>
               <h3 class="text-2xl font-bold text-gray-800">{{$totalActiveProduct}}</h3>
-              <p class="text-sm text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i> 8.3% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-green-100 text-green-600">
               <i class="fas fa-box-open text-xl"></i>
@@ -43,7 +41,6 @@
             <div>
               <p class="text-sm text-gray-500">Menunggu Verifikasi</p>
               <h3 class="text-2xl font-bold text-gray-800">{{$totalUnverified}}</h3>
-              <p class="text-sm text-red-500 mt-1"><i class="fas fa-arrow-down mr-1"></i> 5.2% dari bulan lalu</p>
             </div>
             <div class="p-3 rounded-full bg-purple-100 text-purple-600">
               <i class="fas fa-clock text-xl"></i>
@@ -54,51 +51,120 @@
       <!-- ./STATISTIK DASHBOARD -->
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <!-- AKTIVITAS TERKINI -->
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg font-semibold text-gray-800">Aktivitas Terkini</h2>
-            <a href="#" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
-          </div>
-          <div class="space-y-4">
-            <div class="flex items-start">
-              <div class="p-2 rounded-full bg-blue-100 text-blue-600 mr-4">
-                <i class="fas fa-user-plus"></i>
-              </div>
-              <div>
-                <p class="text-sm font-medium">User baru mendaftar</p>
-                <p class="text-xs text-gray-500">Faisal Masri Maulana mendaftar</p>
-                <p class="text-xs text-gray-400 mt-1">2 menit yang lalu</p>
-              </div>
-            </div>
-            <div class="flex items-start">
-              <div class="p-2 rounded-full bg-green-100 text-green-600 mr-4">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <div>
-                <p class="text-sm font-medium">Posting baru diverifikasi</p>
-                <p class="text-xs text-gray-500">"Buku Kalkulus edisi terbaru" telah disetujui</p>
-                <p class="text-xs text-gray-400 mt-1">15 menit yang lalu</p>
-              </div>
-            </div>
-            <div class="flex items-start">
-              <div class="p-2 rounded-full bg-red-100 text-red-600 mr-4">
-                <i class="fas fa-trash-alt"></i>
-              </div>
-              <div>
-                <p class="text-sm font-medium">Posting dihapus</p>
-                <p class="text-xs text-gray-500">"Jasa pembuatan skripsi" dihapus karena melanggar</p>
-                <p class="text-xs text-gray-400 mt-1">1 jam yang lalu</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- ./AKTIVITAS TERKINI -->
-
-        <!-- WAITING LIST UNVERIFIED USER -->
+        <!-- LIST USER -->
         <div class="bg-white rounded-xl shadow-sm p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-lg font-semibold text-gray-800">Verifikasi User</h2>
+            <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
+          </div>
+          @if(!$users->isEmpty())
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">KTM</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                @foreach($users as $user )
+                <tr class="hover:bg-gray-100">
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
+                      <div>
+                        <p class="text-sm font-medium">{{$user->nama}}</p>
+                        <p class="text-xs text-gray-500">{{$user->email}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    @if($user->is_verified==0)
+                    <x-badge status="pending"></x-badge>
+                    @elseif($user->is_blocked==1)
+                    <x-badge status="blocked"></x-badge>
+                    @else
+                    <x-badge status="verified"></x-badge>
+                    @endif
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <x-button class="view-ktm-btn" size="sm" data-ktm="{{asset('storage/' . $user->ktm)}}" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at->diffForHumans()}}">
+                      Lihat KTM
+                    </x-button>
+                  </td>
+                  
+                  <!-- VERIFIKASI USER -->
+                  @if(!$user->is_verified)
+                  <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
+                    @csrf
+                    @method('PUT')
+                        <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
+                        <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                    <form id="deleteForm-{{ $user->id }}" action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button onclick="deleteUser('{{ $user->id }}')" class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" title="Hapus User" type="button">
+                          <i class="fas fa-trash" ></i>
+                        </button>
+                    </form>
+                  </td>
+                  <!-- VERIFIKASI USER -->
+                  @else
+                  <!-- KELOLA USER -->
+                  <td class="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <!-- Lihat User -->
+                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                      <a href="{{route('user.publicprofile', ['user'=>$user->id])}}">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                    </button>
+                    @if(!$user->is_blocked)
+                    <!-- BLock/Unblock User -->
+                      <form id="blockForm-{{ $user->id }}" action="{{ route('admin.user.blokir', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('PUT')
+                        <button onclick="blockUser('{{ $user->id }}')" type="button" class="action-btn hover:cursor-pointer text-yellow-600 hover:text-red-900 mr-3" title="Blokir">
+                        <i class="fas fa-ban"></i>
+                        </button>
+                      </form>
+                    @else
+                        <form id="unblockForm-{{ $user->id }}" action="{{ route('admin.user.bukablokir', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="hover:cursor-pointer action-btn text-green-600 hover:text-green-900" title="Aktifkan Kembali">
+                            <i class="fas fa-redo mr-3"></i>
+                        </button>
+                      </form>
+                    @endif
+                    <!-- Delete User -->
+                    <form id="deleteForm-{{ $user->id }}" action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button onclick="deleteUser('{{ $user->id }}')" class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" title="Hapus User" type="button">
+                          <i class="fas fa-trash" ></i>
+                        </button>
+                    </form>
+                  </td>
+                  @endif
+                  <!-- ./KELOLA USER -->
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          @endif
+        </div>
+        <!-- ./LIST USER -->
+
+        <!-- LIST LANGGANAN -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-gray-800">Langganan User</h2>
             <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
           @if(!$users->isEmpty())
@@ -176,6 +242,250 @@
           </div>
           @endif
         </div>
-        <!-- ./WAITING LIST UNVERIFIED USER -->
+        <!-- ./LIST LANGGANAN -->
+
+        <!-- LIST POSTINGAN -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-gray-800">Postingan</h2>
+            <a href="{{route('admin.product.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
+          </div>
+          @if(!$products->isEmpty())
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produk</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                @foreach($products as $prod )
+                <tr class="hover:bg-gray-100">
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <img class="w-8 h-8 rounded-full mr-3" src="{{ asset('storage/' . $prod->thumbnail) }}" alt="User">
+                      <div>
+                        <p class="text-sm font-medium">{{$prod->nama_produk}}</p>
+                        <p class="text-xs text-gray-500">{{$prod->mahasiswa->nama}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <p class="text-sm font-medium capitalize">{{$prod->kategori}}</p>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <p class="text-sm font-medium">{{$prod->harga_format}}</p>
+                  </td>
+                  <td class="px-4 py-4 whitespace-nowrap text-left text-sm font-medium">
+                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                      <a href="{{route('produk.detail', ['id'=>$prod->id])}}">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                    </button>
+                    <form id="deleteProdForm-{{ $prod->id }}" action="{{ route('admin.product.delete', $prod->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" type="button" onclick="deleteProd('{{ $prod->id }}')" title="Hapus">
+                        <i class="fas fa-trash"></i></button>
+                    </form>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          @endif
+        </div>
+        <!-- ./LIST POSTINGAN -->
+
+        <!-- LIST LAPORAN -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-gray-800">Laporan</h2>
+            <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
+          </div>
+          @if(!$users->isEmpty())
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">KTM</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                @foreach($users as $user )
+                <tr class="hover:bg-gray-100">
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
+                      <div>
+                        <p class="text-sm font-medium">{{$user->nama}}</p>
+                        <p class="text-xs text-gray-500">{{$user->email}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    @if($user->is_verified==0)
+                    <x-badge status="pending"></x-badge>
+                    @else
+                    <x-badge status="verified"></x-badge>
+                    @endif
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <x-button class="view-ktm-btn" size="sm" data-ktm="{{asset('storage/' . $user->ktm)}}" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at->diffForHumans()}}">
+                      Lihat KTM
+                    </x-button>
+                  </td>
+                  @if(!$user->is_verified)
+                  <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
+                    @csrf
+                    @method('PUT')
+                        <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
+                        <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" type="submit" title="Tolak">
+                        <i class="fas fa-times"></i></button>
+                    </form>
+                  </td>
+                  @else
+                  <td class="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="action-btn text-yellow-600 hover:text-red-900 mr-3" title="Blokir">
+                      <i class="fas fa-ban"></i>
+                    </button>
+                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="action-btn text-red-600 hover:text-red-900" title="Hapus" type="submit">
+                          <i class="fas fa-trash" ></i>
+                        </button>
+                    </form>
+                  </td>
+                  @endif
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          @endif
+        </div>
+        <!-- ./LIST LAPORAN -->
       </div>
+
+<!-- Modal Confirm -->
+ <!--Blokir -->
+  <x-modalconfirm identity="confirmationModalBlock" title="Blokir User" message="Apakah kamu yakin untuk memblokir user ini?">
+    <x-button id="cancelBlock" onclick="cancelBlock()" color="primary" size="md">
+      Batalkan
+    </x-button>
+    <x-button id="confirmBlockButton" color="warning" size="md">
+      Blokir User
+    </x-button>
+  </x-modalconfirm>
+
+  <!-- Delete User-->
+  <x-modalconfirm identity="confirmationModalDelete" title="Hapus User" message="Apakah kamu yakin untuk menghapus user ini?">
+    <x-button id="cancelDelete" onclick="cancelDelete()" color="primary" size="md">
+      Batalkan
+    </x-button>
+    <x-button id="confirmDeleteButton" color="danger" size="md">
+      Hapus User
+    </x-button>
+  </x-modalconfirm>
+
+  <!-- Delete Produk -->
+  <x-modalconfirm identity="confirmationModalDeleteProd" title="Hapus Postingan" message="Apakah kamu yakin untuk menghapus postingan ini?">
+    <x-button id="cancelDeleteProd" onclick="cancelDeleteProd()" color="primary" size="md">
+      Batalkan
+    </x-button>
+    <x-button id="confirmDeleteProdButton" color="danger" size="md">
+      Hapus Postingan
+    </x-button>
+  </x-modalconfirm>
+
+<script>
+  let currentBlockId = null;
+  let currentDeleteId = null;
+  let currentDeleteProdId = null;
+
+  // Blokir User
+  function blockUser(id) {
+      currentBlockId = id;
+      document.getElementById('confirmationModalBlock').classList.remove('hidden');
+      document.getElementById('confirmationModalBlock').classList.add('flex');
+  }
+
+  // Konfirmasi Blokir
+  document.getElementById('confirmBlockButton').onclick = function(e) {
+      e.preventDefault();
+      if (currentBlockId) {
+          document.getElementById('blockForm-' + currentBlockId).submit();
+      }
+  }
+
+  // Batalkan Blokir
+  function cancelBlock() {
+      document.getElementById("confirmationModalBlock").classList.remove('flex');
+      document.getElementById("confirmationModalBlock").classList.add('hidden');
+      currentDeleteId = null;
+  }
+
+  // Hapus User
+  function deleteUser(id) {
+      currentDeleteId = id;
+      document.getElementById('confirmationModalDelete').classList.remove('hidden');
+      document.getElementById('confirmationModalDelete').classList.add('flex');
+  }
+
+  // Konfirmasi Hapus
+  document.getElementById('confirmDeleteButton').onclick = function(e) {
+      e.preventDefault();
+      if (currentDeleteId) {
+          document.getElementById('deleteForm-' + currentDeleteId).submit();
+      }
+  }
+
+  // Batalkan Hapus
+  function cancelDelete() {
+      document.getElementById("confirmationModalDelete").classList.remove('flex');
+      document.getElementById("confirmationModalDelete").classList.add('hidden');
+      currentDeleteId = null;
+  }
+
+  // Hapus Produk
+  function deleteProd(id) {
+      currentDeleteProdId = id;
+      document.getElementById('confirmationModalDeleteProd').classList.remove('hidden');
+      document.getElementById('confirmationModalDeleteProd').classList.add('flex');
+  }
+
+  // Konfirmasi Hapus Produk
+  document.getElementById('confirmDeleteProdButton').onclick = function(e) {
+      e.preventDefault();
+      if (currentDeleteProdId) {
+          document.getElementById('deleteProdForm-' + currentDeleteProdId).submit();
+      }
+  }
+
+  // Batalkan Hapus Produk
+  function cancelDeleteProd() {
+      document.getElementById("confirmationModalDeleteProd").classList.remove('flex');
+      document.getElementById("confirmationModalDeleteProd").classList.add('hidden');
+      currentDeleteProdId = null;
+  }
+</script>
+
 @endsection

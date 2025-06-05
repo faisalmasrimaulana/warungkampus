@@ -216,6 +216,20 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil ditandai sebagai terjual!');
     }
 
+    public function unmarkAsSold($id){
+        $product = Product::findOrFail($id);
+
+        if ($product->mahasiswa_id != Auth::id()) {
+            abort(403, "Unauthorized");
+        }
+
+        $product->is_sold = false;
+        $product->save();
+
+        return redirect()->back()->with('success', 'Produk berhasil diaktifkan kembali!');
+    }
+
+
     protected $midtrans;
 
     public function createTransaction()

@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\EditUserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MidtransWebhookController;
+use App\Models\Product;
 
 //INI MENGATUR SETIAP ROUTE DI WEBSITE INI
 
@@ -79,6 +80,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/produk/{id}/edit', [ProductController::class, 'edit'])->name('user.product.edit');
     Route::put('/produk/{id}', [ProductController::class, 'update'])->name('user.product.update');
     Route::post('/user/product/{id}/mark-sold', [ProductController::class, 'markAsSold'])->name('user.product.markAsSold');
+    Route::post('/product/{id}/unmark', [ProductController::class, 'unmarkAsSold'])->name('user.product.unmarkAsSold');
+
     Route::get('/user/edit/{user}', [EditUserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{user}', [EditUserController::class, 'update'])->name('user.update');
     Route::put('/password/update/{user}', [EditUserController::class, 'updatePassword'])->name('user.password.update');
@@ -90,8 +93,12 @@ Route::middleware(['auth:web'])->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth:admins'])->group(function () {
     Route::get('/dashboard', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/kelolaUser', [DashboardAdminController::class, 'kelolaUser'])->name('user.kelola');
+    Route::get('/kelolaPostingan', [DashboardAdminController::class, 'kelolaPostingan'])->name('product.kelola');
     Route::put('/verifikasi/{user}', [DashboardAdminController::class, 'verifikasi'])->name('user.verifikasi');
+    Route::put('/blokir/{user}', [DashboardAdminController::class, 'block'])->name('user.blokir');
+    Route::put('/bukablokir/{user}', [DashboardAdminController::class, 'unblock'])->name('user.bukablokir');
     Route::delete('/hapus/{user}', [DashboardAdminController::class, 'destroy'])->name('user.hapus');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+    Route::delete('/produkdelete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
 });
 

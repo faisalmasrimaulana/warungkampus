@@ -86,16 +86,17 @@
                   </x-button>
                 </form>
 
-                <form id="markForm-{{ $prod->id }}" action="{{ route('user.product.markAsSold', ['id' => $prod->id]) }}" method="POST">
-                  @csrf
-                    @if(!$prod->is_sold)
+                @if(!$prod->is_sold)
+                  <form id="markForm-{{ $prod->id }}" action="{{ route('user.product.markAsSold', ['id' => $prod->id]) }}" method="POST">
+                    @csrf
                     <x-button size="sm" type="button" color="success" onclick="markProduct('{{ $prod->id }}')">Tandai Terjual</x-button>
-                    @else
-                    <x-button size="sm" type="button" color="nonactive" disabled>
-                    Terjual
-                    </x-button>
-                    @endif
-                </form>
+                  </form>
+                @else
+                  <form id="openForm-{{ $prod->id }}" action="{{ route('user.product.unmarkAsSold', ['id' => $prod->id]) }}" method="POST">
+                    @csrf
+                    <x-button size="sm" type="button" color="secondary" onclick="openProduct('{{ $prod->id }}')">Aktifkan Lagi</x-button>
+                  </form>
+                @endif
               </div>
             </div>
           @endforeach
@@ -158,7 +159,7 @@
 </div>
 
 
-<!-- Konfirmasi Terjual -->
+<!-- Confirmation Modal -->
 <x-modalconfirm identity="confirmationModalDelete" title="Hapus Post" message="Apakah kamu yakin untuk menghapus postingan ini?">
       <x-button id="cancelDelete" onclick="cancelDelete()" color="primary" size="md">
         Batalkan
@@ -168,6 +169,14 @@
       </x-button>
 </x-modalconfirm>
 
+<x-modalconfirm identity="confirmationModalAvailable" title="Aktifkan Kembali" message="Apakah kamu yakin untuk mengaktifkan kembali produk ini?">
+      <x-button id="cancelOpen" onclick="cancelOpen()" color="danger" size="md">
+        Batalkan
+      </x-button>
+      <x-button id="confirmOpenButton" color="primary" size="md">
+        Aktifkan Produk
+      </x-button>
+</x-modalconfirm>
 
 <x-modalconfirm identity="confirmationModalSold"  title="Tandai sebagai terjual" message="Apakah kamu ingin menandai produk ini sebagai terjual?">
         <x-button id="cancelMark" onclick="cancelMark()" color="primary" size="md">
@@ -185,6 +194,7 @@
     // Simpan id produk yang akan dihapus/ditandai
     let currentDeleteId = null;
     let currentMarkId = null;
+    let currentOpenId = null;
 
   // Hapus produk
   function deleteProduct(id) {
@@ -193,7 +203,7 @@
       document.getElementById('confirmationModalDelete').classList.add('flex');
   }
 
-// Konfirmasi hapus
+  // Konfirmasi hapus
   document.getElementById('confirmDeleteButton').onclick = function(e) {
       e.preventDefault();
       if (currentDeleteId) {
@@ -228,6 +238,28 @@
       document.getElementById("confirmationModalSold").classList.remove('flex');
       document.getElementById("confirmationModalSold").classList.add('hidden');
       currentMarkId = null;
+  }
+
+  // Open kembali
+  function openProduct(id) {
+      currentOpenId = id;
+      document.getElementById('confirmationModalAvailable').classList.remove('hidden');
+      document.getElementById('confirmationModalAvailable').classList.add('flex');
+  }
+
+  // Konfirmasi open kembali
+  document.getElementById('confirmOpenButton').onclick = function(e) {
+      e.preventDefault();
+      if (currentOpenId) {
+          document.getElementById('openForm-' + currentOpenId).submit();
+      }
+  }
+
+  // Batalkan open kembali
+  function cancelOpen() {
+      document.getElementById("confirmationModalAvailable").classList.remove('flex');
+      document.getElementById("confirmationModalAvailable").classList.add('hidden');
+      currentOpenId = null;
   }
 </script>
 
