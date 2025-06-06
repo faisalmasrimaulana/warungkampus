@@ -46,7 +46,7 @@
         <!-- Product 1 -->
           @foreach($products as $prod)
             <div class="product-card bg-white rounded-xl p-4 transition hover:-translate-y-1 hover:shadow-lg shadow-sm">
-              <a href="{{ route('produk.detail', ['id' => $prod->id]) }}">
+              <a href="{{ route('produk.detail', ['product' => $prod->id]) }}">
               <div class="relative mb-4">
                 <img src="{{asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk))}}" alt="Produk" class="w-full h-48 object-cover rounded-lg">
                 

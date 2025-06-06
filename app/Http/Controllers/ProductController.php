@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
 use App\Models\FotoProduk;
 use App\Models\Product;
 use App\Models\User;
@@ -18,7 +19,7 @@ class ProductController extends Controller
         return view('product.daftarproduk', compact('products'));
     }
 
-    public function store(Request $request){
+    public function store(StoreProductRequest $request){
         $validated = $request->validated();
 
         $mahasiswaId = Auth::id();
@@ -47,8 +48,8 @@ class ProductController extends Controller
         return redirect()->route('produk.detail', $product->id)->with('success', 'Produk Berhasil Diposting');
     }
 
-    public function show($id){
-        $product = Product::with('fotoproduk', 'mahasiswa')->findOrFail($id);
+    public function show(Product $product){
+        $product->load('fotoproduk', 'mahasiswa');
         return view('product.detailproduk', compact('product'));
     }
 
@@ -78,6 +79,7 @@ class ProductController extends Controller
 
 
     public function cari(Request $request){
+        
         $keyword = $request->input('search', '');
 
         $products = Product::with('fotoproduk')
@@ -89,17 +91,13 @@ class ProductController extends Controller
                   ->orWhere('kondisi', 'like', "%{$keyword}%");
             });
         })
-        ->paginate(15);
+        ->paginate(15)->appends(request()->query());
 
         return view('product.daftarproduk', compact('products', 'keyword'));
     }
 
-    public function destroy($id){
-        $product = Product::with('fotoproduk')->find($id);
-
-        if(!$product){
-            return redirect()->back()->with('error', 'Produk tidak ditemukan');
-        }
+    public function destroy(Product $product){
+        $product->load('fotoproduk');
 
         foreach($product->fotoproduk as $foto){
             Storage::disk('public')->delete($foto->path_fotoproduk);
@@ -111,8 +109,8 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil dihapus');
     }
 
-    public function edit($id){
-        $product = Product::with('fotoproduk')->findOrFail($id);
+    public function edit(Product $product){
+        $product->load('fotoproduk');
 
         if($product->mahasiswa_id != Auth::id()){
             abort(403);
@@ -120,9 +118,8 @@ class ProductController extends Controller
         return view('product.editpost', compact('product'));
     }
 
-    public function update(Request $request, $id){
-        $product = Product::with('fotoproduk')->findOrFail($id);
-
+    public function update(Request $request,Product $product){
+        $product->load('fotoproduk');
         if($product->mahasiswa_id != Auth::id()){
             abort(403);
         }
@@ -163,7 +160,6 @@ class ProductController extends Controller
                 $foto = FotoProduk::find($fotoId);
                 if ($foto) {
                     Storage::delete($foto->path_fotoproduk);
-                    // Hapus record di DB
                     $foto->delete();
                 }
             }
@@ -173,52 +169,23 @@ class ProductController extends Controller
         return redirect()->route('produk.detail', $product->id)->with('success', 'produk berhasil di update');
     }
 
-    public function markAsSold($id){
-        $product = Product::findOrFail($id);
-        
-        // Pastikan user yang punya produk yang bisa update (cek otorisasi)
+    public function markAsSold(Product $product){
         if ($product->mahasiswa_id != Auth::id()) {
             abort(403, "Unauthorized");
         }
     
-        $product->is_sold = true;
-        $product->save();
+        $product->update(['is_sold' => true]);
     
         return redirect()->back()->with('success', 'Produk berhasil ditandai sebagai terjual!');
     }
 
-    public function unmarkAsSold($id){
-        $product = Product::findOrFail($id);
-
+    public function unmarkAsSold(Product $product){
         if ($product->mahasiswa_id != Auth::id()) {
             abort(403, "Unauthorized");
         }
 
-        $product->is_sold = false;
-        $product->save();
+        $product->update(['is_sold' =>false]);
 
         return redirect()->back()->with('success', 'Produk berhasil diaktifkan kembali!');
     }
-
-    protected $midtrans;
-
-    public function createTransaction()
-    {
-        $params = [
-            'transaction_details' => [
-                'order_id' => uniqid(),
-                'gross_amount' => 10000,
-            ],
-            'customer_details' => [
-                'first_name' => 'Budi',
-                'email' => 'budi.pra@example.com',
-                'phone' => '08111222333',
-            ],
-        ];
-
-        $snapToken = $this->midtrans->getSnapToken($params);
-
-        return view('payment.index', compact('snapToken'));
-    }
-
 }

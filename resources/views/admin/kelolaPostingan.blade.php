@@ -3,43 +3,54 @@
 
   <!-- Main Content -->
   <div class="flex-1 flex flex-col overflow-hidden">
-    <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto admin-gradient p-6">
 
     <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto p-6 mt-20 bg-gray-50">
-      <!-- Filter and Search -->
-      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div class="w-full md:w-1/3">
-            <input type="text" placeholder="Cari posting..." class="search-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div class="flex flex-col sm:flex-row gap-3">
-            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-              <option value="">Semua Kategori</option>
-              <option value="barang">Barang</option>
-              <option value="jasa">Jasa</option>
-            </select>
-            <!-- <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-              <option value="">Semua Status</option>
-              <option value="active">Aktif</option>
-              <option value="pending">Menunggu</option>
-              <option value="expired">Kadaluarsa</option>
-            </select>
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-              <i class="fas fa-filter mr-2"></i>Filter
-            </button> -->
-          </div>
-        </div>
-      </div>
-
+    <main class="flex-1 overflow-y-auto p-6 mt-20">
       <!-- Posts Table -->
       <div class="bg-white rounded-xl shadow-sm overflow-hidden">
         <div class="flex items-center justify-between p-6 border-b">
           <h2 class="text-lg font-semibold text-gray-800">Daftar Postingan</h2>
         </div>
+
+        <!-- FILTER DAN SEARCH -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <!-- SEARCH-->
+          <div class="w-full md:w-1/3 flex flex-row">
+            <form action="{{route('admin.product.search')}}" method="GET">
+              <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari posting..." class="search-input px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                <i class="fas fa-magnifying-glass mr-2"></i>Cari
+              </button>
+            </form>
+          </div>
+
+          <!-- FILTER -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <form method="GET" action="{{ route('admin.product.filter') }}">
+              <select name="kategori" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Kategori</option>
+                <option value="barang" {{ request('kategori') == 'barang' ? 'selected' : '' }}>Barang</option>
+                <option value="jasa" {{ request('kategori') == 'jasa' ? 'selected' : '' }}>Jasa</option>
+              </select>
+              <select name="harga"  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Harga</option>
+                <option value="Terendah" {{ request('harga') == 'Terendah' ? 'selected' : '' }}>Terendah</option>
+                <option value="Tertinggi" {{ request('harga') == 'Tertinggi' ? 'selected' : '' }}>Tertinggi</option>
+              </select>
+              <select name="waktu"  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Waktu</option>
+                <option value="Terbaru" {{ request('waktu') == 'Terbaru' ? 'selected' : '' }}>Terbaru</option>
+                <option value="Terlama" {{ request('waktu') == 'Terlama' ? 'selected' : '' }}>Terlama</option>
+              </select>
+              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                <i class="fas fa-filter mr-2"></i>Filter
+              </button>
+            </form>
+          </div>
+      </div>
         
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto mt-10">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
@@ -52,7 +63,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-            @foreach($products as $prod)
+            @forelse($products as $prod)
               <tr class="table-row">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
@@ -72,7 +83,7 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{$prod->created_at->format('d M Y')}}</td>
                 <td class="px-6 py-4 wrap text-sm font-medium">{{$prod->deskripsi_singkat}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail" data-nama="{{ $prod->nama_produk }}" data-deskripsi="{{ $prod->deskripsi_singkat }}"data-kategori="{{ $prod->kategori }}"data-harga="{{ $prod->harga_format }}"data-tanggal="{{ $prod->created_at->format('d M Y') }}" data-thumbnail="{{ asset('storage/' . $prod->thumbnail) }}" data-namauser="{{ $prod->mahasiswa->nama }}" data-emailuser="{{ $prod->mahasiswa->email }}" data-fotouser="{{ asset('storage/' . $prod->mahasiswa->foto_profil) }}" data-detailurl="{{ route('produk.detail', ['id'=>$prod->id]) }}">
+                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail" data-nama="{{ $prod->nama_produk }}" data-deskripsi="{{ $prod->deskripsi_singkat }}"data-kategori="{{ $prod->kategori }}"data-harga="{{ $prod->harga_format }}"data-tanggal="{{ $prod->created_at->format('d M Y') }}" data-thumbnail="{{ asset('storage/' . $prod->thumbnail) }}" data-namauser="{{ $prod->mahasiswa->nama }}" data-emailuser="{{ $prod->mahasiswa->email }}" data-fotouser="{{ $prod->mahasiswa->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $prod->mahasiswa->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff' }}" data-detailurl="{{ route('produk.detail', ['product'=>$prod->id]) }}">
                     <i class="fas fa-eye"></i>
                     </button>
                     <form id="deleteProdForm-{{ $prod->id }}" action="{{ route('admin.product.delete', $prod->id) }}" method="POST" class="inline">
@@ -83,7 +94,13 @@
                     </form>
                 </td>
               </tr>
-            @endforeach
+            @empty
+              <tr class="table-row">
+                <td class="text-center" colspan="6">
+                  <h3 class="p-6 text-gray-500">Belum ada postingan</h3>
+                </td>
+              </tr>
+            @endforelse
             </tbody>
           </table>
         </div>
@@ -91,6 +108,7 @@
         <div class="mt-4 px-6">{{$products->links()}}</div>
       </div>
     </main>
+    
   </div>
 
 <!-- Post Detail Modal -->

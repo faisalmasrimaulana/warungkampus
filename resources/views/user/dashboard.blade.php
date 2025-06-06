@@ -58,7 +58,7 @@
         <!-- Product 1 -->
           @foreach($products as $prod)
             <div class="product-card bg-white rounded-xl p-4 transition hover:-translate-y-1 hover:shadow-lg shadow-sm">
-              <a href="{{ route('produk.detail', ['id' => $prod->id]) }}">
+              <a href="{{ route('produk.detail', ['product' => $prod->id]) }}">
               <div class="relative mb-4">
                 <img src="{{asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk))}}" alt="Produk" class="w-full h-48 object-cover rounded-lg">
                 
@@ -72,13 +72,13 @@
               </div>
                 </a>
               <div class="flex justify-between items-center gap-3">
-                <form action="{{route('user.product.edit', ['id' => $prod->id])}}" method="GET">
+                <form action="{{route('user.product.edit', ['product' => $prod->id])}}" method="GET">
                 <x-button size="sm" type="submit" class="px-3 py-1" >
                   Edit
                 </x-button>
                 </form>
                 <!-- button hapus -->
-                <form id="deleteForm-{{ $prod->id }}" action="{{ route('user.product.delete', ['id' => $prod->id]) }}" method="POST">
+                <form id="deleteForm-{{ $prod->id }}" action="{{ route('user.product.delete', ['product' => $prod->id]) }}" method="POST">
                   @csrf
                   @method('DELETE')
                   <x-button size="sm" onclick="deleteProduct('{{ $prod->id }}')" type="button" color="danger">
@@ -87,16 +87,16 @@
                 </form>
 
                 @if(!$prod->is_sold)
-                  <form id="markForm-{{ $prod->id }}" action="{{ route('user.product.markAsSold', ['id' => $prod->id]) }}" method="POST">
+                  <form id="markForm-{{ $prod->id }}" action="{{ route('user.product.markAsSold', ['product' => $prod->id]) }}" method="POST">
                     @csrf
                     <x-button size="sm" type="button" color="success" onclick="markProduct('{{ $prod->id }}')">Tandai Terjual</x-button>
                   </form>
                 @else
-                  <form id="openForm-{{ $prod->id }}" action="{{ route('user.product.unmarkAsSold', ['id' => $prod->id]) }}" method="POST">
+                  <form id="openForm-{{ $prod->id }}" action="{{ route('user.product.unmarkAsSold', ['product' => $prod->id]) }}" method="POST">
                     @csrf
                     <x-button size="sm" type="button" color="secondary" onclick="openProduct('{{ $prod->id }}')">Aktifkan Lagi</x-button>
                   </form>
-                @endif
+                @endif 
               </div>
             </div>
           @endforeach

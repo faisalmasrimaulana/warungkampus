@@ -57,7 +57,6 @@
             <h2 class="text-lg font-semibold text-gray-800">Verifikasi User</h2>
             <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
-          @if(!$users->isEmpty())
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -68,8 +67,8 @@
                   <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
+            @forelse($users as $user )
               <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($users as $user )
                 <tr class="hover:bg-gray-100">
                   <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center">
@@ -94,7 +93,7 @@
                       Lihat KTM
                     </x-button>
                   </td>
-                  
+                
                   <!-- VERIFIKASI USER -->
                   @if(!$user->is_verified)
                   <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -153,11 +152,16 @@
                   @endif
                   <!-- ./KELOLA USER -->
                 </tr>
-                @endforeach
+                @empty
+                  <tr>
+                    <td colspan="4" class="text-center text-gray-500 p-6">
+                      Tidak ada User didatabase
+                    </td>
+                  </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
-          @endif
         </div>
         <!-- ./LIST USER -->
 
@@ -167,7 +171,6 @@
             <h2 class="text-lg font-semibold text-gray-800">Langganan User</h2>
             <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
-          @if(!$users->isEmpty())
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -179,68 +182,73 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($users as $user )
-                <tr class="hover:bg-gray-100">
-                  <td class="px-4 py-3 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
-                      <div>
-                        <p class="text-sm font-medium">{{$user->nama}}</p>
-                        <p class="text-xs text-gray-500">{{$user->email}}</p>
+                @forelse($users as $user )
+                  <tr class="hover:bg-gray-100">
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
+                        <div>
+                          <p class="text-sm font-medium">{{$user->nama}}</p>
+                          <p class="text-xs text-gray-500">{{$user->email}}</p>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td class="px-4 py-3 whitespace-nowrap">
-                    @if($user->is_verified==0)
-                    <x-badge status="pending"></x-badge>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      @if($user->is_verified==0)
+                      <x-badge status="pending"></x-badge>
+                      @else
+                      <x-badge status="verified"></x-badge>
+                      @endif
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      <x-button class="view-ktm-btn" size="sm" data-ktm="{{asset('storage/' . $user->ktm)}}" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at->diffForHumans()}}">
+                        Lihat KTM
+                      </x-button>
+                    </td>
+                    @if(!$user->is_verified)
+                    <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
+                      @csrf
+                      @method('PUT')
+                          <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
+                          <i class="fas fa-check"></i>
+                          </button>
+                      </form>
+                      <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                          @csrf
+                          @method('DELETE')
+                          <button class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" type="submit" title="Tolak">
+                          <i class="fas fa-times"></i></button>
+                      </form>
+                    </td>
                     @else
-                    <x-badge status="verified"></x-badge>
+                    <td class="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="action-btn text-yellow-600 hover:text-red-900 mr-3" title="Blokir">
+                        <i class="fas fa-ban"></i>
+                      </button>
+                      <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
+                          @csrf
+                          @method('DELETE')
+                          <button class="action-btn text-red-600 hover:text-red-900" title="Hapus" type="submit">
+                            <i class="fas fa-trash" ></i>
+                          </button>
+                      </form>
+                    </td>
                     @endif
+                  </tr>
+                @empty
+                  <tr>
+                  <td colspan="4" class="text-center text-gray-500 p-6">
+                    Tidak ada User yang berlangganan
                   </td>
-                  <td class="px-4 py-3 whitespace-nowrap">
-                    <x-button class="view-ktm-btn" size="sm" data-ktm="{{asset('storage/' . $user->ktm)}}" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at->diffForHumans()}}">
-                      Lihat KTM
-                    </x-button>
-                  </td>
-                  @if(!$user->is_verified)
-                  <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
-                    @csrf
-                    @method('PUT')
-                        <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
-                        <i class="fas fa-check"></i>
-                        </button>
-                    </form>
-                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" type="submit" title="Tolak">
-                        <i class="fas fa-times"></i></button>
-                    </form>
-                  </td>
-                  @else
-                  <td class="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="action-btn text-yellow-600 hover:text-red-900 mr-3" title="Blokir">
-                      <i class="fas fa-ban"></i>
-                    </button>
-                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="action-btn text-red-600 hover:text-red-900" title="Hapus" type="submit">
-                          <i class="fas fa-trash" ></i>
-                        </button>
-                    </form>
-                  </td>
-                  @endif
-                </tr>
-                @endforeach
+                  </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
-          @endif
         </div>
         <!-- ./LIST LANGGANAN -->
 
@@ -250,7 +258,6 @@
             <h2 class="text-lg font-semibold text-gray-800">Postingan</h2>
             <a href="{{route('admin.product.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
-          @if(!$products->isEmpty())
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -262,7 +269,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($products as $prod )
+                @forelse($products as $prod )
                 <tr class="hover:bg-gray-100">
                   <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center">
@@ -281,7 +288,7 @@
                   </td>
                   <td class="px-4 py-4 whitespace-nowrap text-left text-sm font-medium">
                     <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
-                      <a href="{{route('produk.detail', ['id'=>$prod->id])}}">
+                      <a href="{{route('produk.detail', ['product'=>$prod->id])}}">
                         <i class="fas fa-eye"></i>
                       </a>
                     </button>
@@ -293,11 +300,16 @@
                     </form>
                   </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                  <td colspan="4" class="text-center text-gray-500 p-6">
+                    Belum ada postingan
+                  </td>
+                </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
-          @endif
         </div>
         <!-- ./LIST POSTINGAN -->
 
@@ -307,7 +319,6 @@
             <h2 class="text-lg font-semibold text-gray-800">Laporan</h2>
             <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
-          @if(!$users->isEmpty())
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -319,7 +330,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($users as $user )
+                @forelse($users as $user )
                 <tr class="hover:bg-gray-100">
                   <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center">
@@ -376,11 +387,16 @@
                   </td>
                   @endif
                 </tr>
-                @endforeach
+                @empty
+                 <tr>
+                    <td colspan="4" class="text-center text-gray-500 p-6">
+                      Belum ada laporan
+                    </td>
+                  </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
-          @endif
         </div>
         <!-- ./LIST LAPORAN -->
       </div>

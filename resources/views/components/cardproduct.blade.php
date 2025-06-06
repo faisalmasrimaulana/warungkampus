@@ -1,4 +1,4 @@
-<a href="{{ route('produk.detail', ['id' => $prod->id]) }}">
+<a href="{{ route('produk.detail', ['product' => $prod->id]) }}">
     <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200 hover:scale-105">
         <img src="{{ asset('storage/' . $prod->thumbnail) }}" alt="{{ $prod->nama_produk }}" class="w-full h-32 object-cover">
         <div class="p-3">

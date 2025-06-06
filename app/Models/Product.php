@@ -28,7 +28,8 @@ class Product extends Model
         'harga',
         'deskripsi_singkat',
         'deskripsi_lengkap',
-        'mahasiswa_id'
+        'mahasiswa_id',
+        'is_sold',
     ];
 
     public function mahasiswa()

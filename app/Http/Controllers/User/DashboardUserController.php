@@ -29,7 +29,6 @@ class DashboardUserController extends Controller
         ]);
     }
 
-
     public function showPublic(User $user){
         $products = $user->produk()->where('is_sold', false)->with('fotoproduk')->latest()->paginate(10);
         return view('user.publicprofile', compact('user','products'));

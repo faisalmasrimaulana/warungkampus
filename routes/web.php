@@ -5,6 +5,7 @@ use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardAdminController;
+use App\Http\Controllers\Admin\ManageController;
 use App\Http\Controllers\User\DashboardUserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\EditUserController;
@@ -43,7 +44,7 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 Route::post('/register', [RegisterController::class, 'register'])->name('user.register.store');
 
 //PRODUCT
-Route::get('/detailproduk/{id}', [ProductController::class, 'show'])->name('produk.detail')->whereNumber('id');
+Route::get('/detailproduk/{product}', [ProductController::class, 'show'])->name('produk.detail')->whereNumber('product');
 
 Route::get('/daftarproduk', [ProductController::class, 'index'])->name('produk.list');
 
@@ -75,12 +76,12 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
-    Route::delete('/produk/{id}', [ProductController::class, 'destroy'])->name('user.product.delete');
+    Route::delete('/produk/{product}', [ProductController::class, 'destroy'])->name('user.product.delete');
 
-    Route::get('/produk/{id}/edit', [ProductController::class, 'edit'])->name('user.product.edit');
-    Route::put('/produk/{id}', [ProductController::class, 'update'])->name('user.product.update');
-    Route::post('/user/product/{id}/mark-sold', [ProductController::class, 'markAsSold'])->name('user.product.markAsSold');
-    Route::post('/product/{id}/unmark', [ProductController::class, 'unmarkAsSold'])->name('user.product.unmarkAsSold');
+    Route::get('/produk/{product}/edit', [ProductController::class, 'edit'])->name('user.product.edit');
+    Route::put('/produk/{product}', [ProductController::class, 'update'])->name('user.product.update');
+    Route::post('/user/product/{product}/mark-sold', [ProductController::class, 'markAsSold'])->name('user.product.markAsSold');
+    Route::post('/product/{product}/unmark', [ProductController::class, 'unmarkAsSold'])->name('user.product.unmarkAsSold');
 
     Route::get('/user/edit/{user}', [EditUserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{user}', [EditUserController::class, 'update'])->name('user.update');
@@ -98,7 +99,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admins'])->group(funct
     Route::put('/blokir/{user}', [DashboardAdminController::class, 'block'])->name('user.blokir');
     Route::put('/bukablokir/{user}', [DashboardAdminController::class, 'unblock'])->name('user.bukablokir');
     Route::delete('/hapus/{user}', [DashboardAdminController::class, 'destroy'])->name('user.hapus');
+    Route::get('/produk/filter', [ManageController::class, 'filterProduct'])->name('product.filter');
+    Route::get('/produk/searchx', [ManageController::class, 'searchProduct'])->name('product.search');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
-    Route::delete('/produkdelete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+    Route::delete('/produkdelete/{product}', [ProductController::class, 'destroy'])->name('product.delete');
 });
 
