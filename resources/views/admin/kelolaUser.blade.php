@@ -41,22 +41,41 @@
     <x-modalktm/>
 
     <section class="flex-1 overflow-y-auto p-6 mt-20">
-      <!-- FILTER DAN PENCARIAN -->
-      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div class="w-full md:w-1/3">
-            <input type="text" placeholder="Cari user..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div class="flex flex-col sm:flex-row gap-3">
-            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-              <option value="">Semua Status</option>
-              <option value="active">Aktif</option>
-              <option value="pending">Menunggu</option>
-              <option value="banned">Diblokir</option>
-            </select>
-          </div>
+              <!-- FILTER DAN SEARCH -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex flex-col w-full sm:flex-row">
+              <form action="{{route('admin.user.filter')}}" method="GET" class="flex w-full justify-between">
+                <div class="flex space-x-2">
+                  <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari User..." class="search-input px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                  <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    <i class="fas fa-magnifying-glass mr-2"></i>Cari
+                  </button>
+                </div>
+
+                <div class="flex space-x-2">
+                  <select name="verifikasi" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Verifikiasi</option>
+                    <option value="true" {{ request('verifikasi') == 'true' ? 'selected' : '' }}>Terverifikasi</option>
+                    <option value="false" {{ request('verifikasi') == 'false' ? 'selected' : '' }}>Belum diverifikasi</option>
+                  </select>
+                  <select name="blokir" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Blokir</option>
+                    <option value="true" {{ request('blokir') == 'true' ? 'selected' : '' }}>Diblokir</option>
+                    <option value="false" {{ request('blokir') == 'false' ? 'selected' : '' }}>Aman</option>
+                  </select>
+                  <select name="waktu"  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Waktu</option>
+                    <option value="Terbaru" {{ request('waktu') == 'Terbaru' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="Terlama" {{ request('waktu') == 'Terlama' ? 'selected' : '' }}>Terlama</option>
+                  </select>
+                  <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    <i class="fas fa-filter mr-2"></i>Filter
+                  </button>
+                </div>
+              </form>
+            </div>
         </div>
-      </div>
 
       <!-- TABEL USERS -->
       <div class="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -91,9 +110,7 @@
                   </td>
                   <td class="py-4 whitespace-nowrap text-sm text-gray-500">{{$user->email}}</td>
                   <td class="py-4 whitespace-nowrap">
-                    <x-button size="sm" class="view-ktm-btn" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-ktm="{{asset('storage/' . $user->ktm)}}" data-date="{{$user->created_at}}">
-                      Lihat KTM
-                    </x-button>
+                    <x-button size="sm" class="view-ktm-btn" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-ktm="{{asset('storage/' . $user->ktm)}}" data-date="{{$user->created_at}}">Lihat KTM</x-button>
                   </td>
                   <td class="py-3 whitespace-nowrap">
                     @if($user->is_verified==0)
@@ -107,7 +124,7 @@
                   <td class="py-4 whitespace-nowrap text-sm text-gray-500">{{$user->created_at->format('d M Y')}}</td>
 
                   @if(!$user->is_verified)
-                  <td class="py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td class="py-4 whitespace-nowrap text-left text-sm font-medium">
                     <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
                     @csrf
                     @method('PUT')

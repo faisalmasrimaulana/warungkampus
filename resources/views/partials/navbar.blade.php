@@ -57,7 +57,6 @@
             <li>
               <a href="{{route('user.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Dashboard User</a>
             </li>
-            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Whislist</a></li>
             <li><a href="{{route('user.langganan')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Langganan</a></li>
             <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Bantuan </a></li>
           </ul>
@@ -85,9 +84,10 @@
             <li>
               <a href="{{route('admin.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Dashboard Admin</a>
             </li>
-            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Kelola Postingan</a></li>
-            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Langganan</a></li>
-            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Bantuan </a></li>
+            <li><a href="{{route('admin.user.kelola')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Kelola User</a></li>
+            <li><a href="{{route('admin.product.kelola')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Kelola Postingan</a></li>
+            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Kelola Langganan</a></li>
+            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Kelola Laporan</a></li>
           </ul>
           <div class="pt-4 border-t border-gray-100">
             <form method="POST" action="{{ route('admin.logout') }}">

@@ -15,37 +15,35 @@
         <!-- FILTER DAN SEARCH -->
       <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <!-- SEARCH-->
-          <div class="w-full md:w-1/3 flex flex-row">
-            <form action="{{route('admin.product.search')}}" method="GET">
-              <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari posting..." class="search-input px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                <i class="fas fa-magnifying-glass mr-2"></i>Cari
-              </button>
-            </form>
-          </div>
+          <div class="flex flex-col w-full sm:flex-row">
+            <form action="{{route('admin.product.filter')}}" method="GET" class="flex w-full justify-between">
+              <div class="flex space-x-2">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari posting..." class="search-input px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  <i class="fas fa-magnifying-glass mr-2"></i>Cari
+                </button>
+              </div>
 
-          <!-- FILTER -->
-          <div class="flex flex-col sm:flex-row gap-3">
-            <form method="GET" action="{{ route('admin.product.filter') }}">
-              <select name="kategori" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                <option value="">Kategori</option>
-                <option value="barang" {{ request('kategori') == 'barang' ? 'selected' : '' }}>Barang</option>
-                <option value="jasa" {{ request('kategori') == 'jasa' ? 'selected' : '' }}>Jasa</option>
-              </select>
-              <select name="harga"  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                <option value="">Harga</option>
-                <option value="Terendah" {{ request('harga') == 'Terendah' ? 'selected' : '' }}>Terendah</option>
-                <option value="Tertinggi" {{ request('harga') == 'Tertinggi' ? 'selected' : '' }}>Tertinggi</option>
-              </select>
-              <select name="waktu"  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                <option value="">Waktu</option>
-                <option value="Terbaru" {{ request('waktu') == 'Terbaru' ? 'selected' : '' }}>Terbaru</option>
-                <option value="Terlama" {{ request('waktu') == 'Terlama' ? 'selected' : '' }}>Terlama</option>
-              </select>
-              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                <i class="fas fa-filter mr-2"></i>Filter
-              </button>
+              <div class="flex space-x-2">
+                <select name="kategori" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                  <option value="">Kategori</option>
+                  <option value="barang" {{ request('kategori') == 'barang' ? 'selected' : '' }}>Barang</option>
+                  <option value="jasa" {{ request('kategori') == 'jasa' ? 'selected' : '' }}>Jasa</option>
+                </select>
+                <select name="harga"  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                  <option value="">Harga</option>
+                  <option value="Terendah" {{ request('harga') == 'Terendah' ? 'selected' : '' }}>Terendah</option>
+                  <option value="Tertinggi" {{ request('harga') == 'Tertinggi' ? 'selected' : '' }}>Tertinggi</option>
+                </select>
+                <select name="waktu"  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                  <option value="">Waktu</option>
+                  <option value="Terbaru" {{ request('waktu') == 'Terbaru' ? 'selected' : '' }}>Terbaru</option>
+                  <option value="Terlama" {{ request('waktu') == 'Terlama' ? 'selected' : '' }}>Terlama</option>
+                </select>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  <i class="fas fa-filter mr-2"></i>Filter
+                </button>
+              </div>
             </form>
           </div>
       </div>

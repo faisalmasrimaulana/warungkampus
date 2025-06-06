@@ -51,12 +51,8 @@
       </div>
 
       <!-- List Produk -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @if($products->isEmpty())
-        <p>Tidak ada Produk</p>
-        @else
-        <!-- Product 1 -->
-          @foreach($products as $prod)
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">   
+          @forelse($products as $prod)
             <div class="product-card bg-white rounded-xl p-4 transition hover:-translate-y-1 hover:shadow-lg shadow-sm">
               <a href="{{ route('produk.detail', ['product' => $prod->id]) }}">
               <div class="relative mb-4">
@@ -99,8 +95,9 @@
                 @endif 
               </div>
             </div>
-          @endforeach
-         @endif
+          @empty
+          <p class="text-gray-500">Tidak ada Produk</p>
+          @endforelse
       </div>
 
     </div>

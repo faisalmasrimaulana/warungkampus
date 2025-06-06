@@ -132,7 +132,6 @@
   </div>
 
   <!-- Modal Checkout -->
-  <!-- Modal Checkout -->
 <div id="checkoutModal" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center">
   <form id="checkoutForm" class="bg-white rounded-lg p-6 space-y-4 w-96">
       <h1 class="text-black font-semibold text-center capitalize">Informasi Pelanggan</h1>
@@ -155,7 +154,6 @@
       </div>
   </form>
 </div>
-
     <!-- ./Modal -->
 
   <!-- Load Swiper JS -->
@@ -265,5 +263,5 @@
       });
     });
   </script>
-  
+
   @endsection

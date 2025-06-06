@@ -1,10 +1,3 @@
-<script>
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('hidden');
-}
-</script>
-
 <div class="flex justify-end space-x-2">
     <form id="filterForm" method="GET" action="{{ route('produk.filter') }}">
         <div  id="sidebar" class="overflow-y-auto max-h-[70vh] hidden absolute z-10 top-[110px] left-8 w-64 bg-white rounded shadow-lg p-4">

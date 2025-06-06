@@ -44,9 +44,9 @@
                     
                     <x-input id="email" label="Email*" name="email" type="text" placeholder="email@example.com"/>
 
-                    <x-input id="whatsapp" label="Whatsapp*" name="whatsapp" type="text" placeholder="62812345678"/>
+                    <x-input id="whatsapp" label="Whatsapp*" name="whatsapp" pattern="^62\d{8,15}$" type="text" placeholder="62812345678"/>
                     
-                    <label for="instagram" class="block text-sm font-medium text-gray-700 mb-1">Username Instagram</label>
+                    <label for="instagram" pattern="^[^@ \t\r\n][a-zA-Z0-9._]" class="block text-sm font-medium text-gray-700 mb-1">Username Instagram</label>
                     <div class="flex">
                         <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">@
                         </span>
@@ -82,8 +82,7 @@
                     <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat*</label>
                     <textarea id="alamat" name="alamat" rows="2"
                                 class="input-field w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
-                                placeholder="Alamat lengkap (termasuk asrama/kos jika ada)">{{old('alamat')}}
-                    </textarea>
+                                placeholder="Alamat lengkap (termasuk asrama/kos jika ada)">{{old('alamat')}}</textarea>
                     @error('alamat')
                         <p class="text-xs text-red-500">{{$message}}</p>
                     @enderror

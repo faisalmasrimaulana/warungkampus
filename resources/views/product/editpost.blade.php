@@ -100,7 +100,7 @@
   
           <div>
             <label for="deskripsi_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Lengkap</label>
-            <textarea id="fullDescription" name="deskripsi_lengkap" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Jelaskan detail produk, spesifikasi, kelebihan, dll." name="fullDescription">{{$product->deskripsi_lengkap}}</textarea>
+            <textarea id="fullDescription" name="deskripsi_lengkap" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Jelaskan detail produk, spesifikasi, kelebihan, dll.">{{$product->deskripsi_lengkap}}</textarea>
           </div>
   
   
@@ -234,9 +234,9 @@
         const container = button.parentElement;
         const checkbox = container.querySelector('.delete-checkbox');
         if (checkbox) {
-          checkbox.checked = true; // tandai supaya backend hapus gambar ini
+          checkbox.checked = true;
         }
-        container.style.display = 'none'; // sembunyikan dari UI
+        container.style.display = 'none';
       }
   </script>
 

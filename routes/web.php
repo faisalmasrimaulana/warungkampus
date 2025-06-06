@@ -20,6 +20,10 @@ use App\Models\Product;
 // =======================
 
 //REGULAR
+Route::fallback(function () {
+    return view('errors.404');
+});
+
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -100,7 +104,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admins'])->group(funct
     Route::put('/bukablokir/{user}', [DashboardAdminController::class, 'unblock'])->name('user.bukablokir');
     Route::delete('/hapus/{user}', [DashboardAdminController::class, 'destroy'])->name('user.hapus');
     Route::get('/produk/filter', [ManageController::class, 'filterProduct'])->name('product.filter');
-    Route::get('/produk/searchx', [ManageController::class, 'searchProduct'])->name('product.search');
+    Route::get('/user/filter', [ManageController::class, 'filterUser'])->name('user.filter');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
     Route::delete('/produkdelete/{product}', [ProductController::class, 'destroy'])->name('product.delete');
 });
