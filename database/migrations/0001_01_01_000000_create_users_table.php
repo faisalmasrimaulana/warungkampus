@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('instagram')->nullable();
             $table->string('ktm');
             $table->string('alamat')->nullable();
-            $table->string('foto_profil')->nullable();
             $table->string('password');
+            $table->boolean('is_verified')->default(false);
+            $table->boolean('is_blocked')->default(0);
+            $table->string('foto_profil')->default('fotoprofil.jpg');
             $table->timestamps();
             $table->rememberToken();
         });
