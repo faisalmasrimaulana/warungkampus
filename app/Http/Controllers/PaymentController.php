@@ -87,7 +87,6 @@ class PaymentController extends Controller
 
     public function success(Request $request)
 {
-    // Ambil order_id dari query param, misal ?order_id=ORDER-xxxx
     $orderId = $request->query('order_id');
 
     if (!$orderId) {

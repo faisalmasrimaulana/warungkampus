@@ -16,16 +16,11 @@ class Order extends Model
         'harga',
         'status',
         'catatan',
+        'nama_produk'
     ];
 
         public function product()
     {
         return $this->belongsTo(Product::class);
     }
-
-    public function paymentHistories()
-    {
-        return $this->hasMany(PaymentHistory::class, 'order_id', 'order_id');
-    }
-    
 }
