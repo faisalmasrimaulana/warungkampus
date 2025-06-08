@@ -1,6 +1,6 @@
-@include('partials.navbar')
+
 <!-- Main Content -->>
-  <head>
+<head>
   @include('partials.head')
   <style>
     .package-card {
@@ -22,8 +22,8 @@
   </style>
 </head>
 
-<body>
 <!-- Main Content -->
+@include('partials.navbar')
 <main class=" min-h-screen py-12 px-4 mt-10 sm:px-6 lg:px-8">
   <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <!-- Header Section -->
@@ -155,7 +155,7 @@
               </div>
             </div>
             <div class="flex">
-              <x-button onclick="openMonthlyModal()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+              <x-button onclick="openMonthlyModal()" class="w-full justify-center">
                 Pilih Paket
               </x-button>
             </div>
@@ -296,9 +296,9 @@
           </div>
         </div>
         
-        <x-button onclick="processWeeklyPayment()" class="w-full justify-center">
+        <button onclick="processWeeklyPayment()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
           Lanjutkan Pembayaran
-        </x-button>
+        </button>
       </div>
     </div>
   </div>
