@@ -58,7 +58,7 @@
             </div>
           @empty
           <p class="text-gray-500">Tidak ada Produk</p>
-          @endforeach
+          @endforelse 
       </div>
     </div>
   </div>

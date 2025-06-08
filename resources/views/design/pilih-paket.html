@@ -1,8 +1,49 @@
-@include('partials.navbar')
-<!-- Main Content -->>
-  <head>
-  @include('partials.head')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pilih Paket Promosi - WarungKampus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .nav-button {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-button:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-button.active {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+    .nav-button.active::after {
+      transform: scaleX(1);
+    }
+    .profile-img {
+      transition: all 0.3s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
     .package-card {
       transition: all 0.3s ease;
       border: 2px solid transparent;
@@ -21,150 +62,88 @@
     }
   </style>
 </head>
-
-<body>
-<!-- Main Content -->
-<main class=" min-h-screen py-12 px-4 mt-10 sm:px-6 lg:px-8">
-  <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <!-- Header Section -->
-    <div class="text-center mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-        <span class="text-blue-500">Promosikan</span> Produkmu di <x-logo></x-logo>
-      </h1>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-        Tingkatkan penjualan dengan mempromosikan produk Anda ke lebih banyak orang!
-      </p>
-    </div>
+<body class="bg-blue-50 min-h-screen">
 
 
-    <!-- Advertising Packages -->
-    <div class="grid md:grid-cols-3 gap-6 mb-12">
-      <!-- Basic Package -->
-      <div id="basicPackage" class="bg-white rounded-xl p-6 shadow-md cursor-pointer">
-        <div class="flex flex-col h-full justify-between">
-          <div class="flex flex-col">
-            <div class="flex justify-between mb-4">
-              <div>
-                <h2 class="text-xl font-bold text-blue-600">Paket Basic</h2>
-                <p class="text-gray-500">Tanpa promosi</p>
-              </div>
-              <div>
-                <p class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg text-sm font-medium">Rp 0</p>
-              </div>
-              </div>
-              <div>
-                <ul class="mb-6 text-gray-700">
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Tampil di halaman produk
-                  </li>
-                </ul>
-              </div>  
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Pilih Paket Promosi</h1>
+      <p class="text-center text-gray-600 mb-8">Tingkatkan visibilitas produk Anda dengan paket promosi kami</p>
+      
+      <!-- Package Options -->
+      <div class="grid md:grid-cols-2 gap-6 mb-12">
+        <!-- Weekly Package -->
+        <div id="weeklyPackage" class="package-card bg-white rounded-xl p-6 shadow-md cursor-pointer selected">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 class="text-xl font-bold text-blue-600">Paket Mingguan</h2>
+              <p class="text-gray-500">Promosi 1 produk</p>
+            </div>
+            <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Rp 50.000</div>
           </div>
-          <div class="flex">
-            <x-button class="w-full justify-center">
-              Paket Saat ini
-            </x-button>
+          <ul class="space-y-2 mb-6 text-gray-700">
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Promosi selama 7 hari
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Tampil di bagian rekomendasi produk
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Peningkatan traffic hingga 3x lipat
+            </li>
+          </ul>
+          <button onclick="openWeeklyModal()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+            Pilih Paket
+          </button>
+        </div>
+
+        <!-- Monthly Package -->
+        <div id="monthlyPackage" class="package-card bg-white rounded-xl p-6 shadow-md cursor-pointer">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 class="text-xl font-bold text-blue-600">Paket Bulanan</h2>
+              <p class="text-gray-500">Promosi 2 produk + banner toko</p>
+            </div>
+            <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Rp 150.000</div>
           </div>
+          <ul class="space-y-2 mb-6 text-gray-700">
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Promosi selama 30 hari
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Tampil di bagian rekomendasi produk dan banner utama
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Peningkatan traffic hingga 10x lipat
+            </li>
+          </ul>
+          <button onclick="openMonthlyModal()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+            Pilih Paket
+          </button>
         </div>
       </div>
 
-
-      <!-- Weekly Package -->
-        <div id="weeklyPackage" class="package-card bg-white rounded-xl p-6 shadow-md cursor-pointer selected">
-          <div class="flex flex-col h-full justify-between">
-            <div class="flex flex-col">
-              <div class="flex justify-between mb-4">
-                <div>
-                  <h2 class="text-xl font-bold text-blue-600">Paket Mingguan</h2>
-                  <p class="text-gray-500">Promosi 1 produk</p>
-                </div>
-                <div>
-                  <p class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg text-sm font-medium">Rp 50.000</p>
-                </div>
-              </div>
-              <div>
-                <ul class="text-gray-700">
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Promosi selama 7 hari
-                  </li>
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Tampil di bagian rekomendasi produk
-                  </li>
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Peningkatan traffic hingga 3x lipat
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex">
-              <x-button onclick="openWeeklyModal()" class="w-full justify-center">
-                Pilih Paket
-              </x-button>
-            </div>
-          </div>
-        </div>
-
-      <!-- Monthly Package -->
-        <div id="monthlyPackage" class="package-card bg-white rounded-xl p-6 shadow-md cursor-pointer">
-          <div class="flex flex-col h-full justify-between">
-            <div class="flex flex-col">
-              <div class="flex justify-between mb-4">
-                <div>
-                    <h2 class="text-xl font-bold text-blue-600">Paket Bulanan</h2>
-                    <p class="text-gray-500">Promosi 2 produk</p>
-                </div>
-                <div>
-                    <p class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg text-sm font-medium">Rp 150.000</p>
-                </div>
-              </div>
-              <div class="mb-4">
-                <ul class="text-gray-700">
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Promosi selama 1 bulan
-                  </li>
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>Tampil di banner utama
-                  </li>
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Tampil di bagian promosi   produk
-                  </li>
-                  <li class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Peningkatan traffic hingga 10x lipat
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex">
-              <x-button onclick="openMonthlyModal()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                Pilih Paket
-              </x-button>
-            </div>
-          </div>
-        </div>
-    </div>
-
-    <!-- How It Works -->
-    <div class="bg-white rounded-xl p-6 shadow-md mb-12">
+      <!-- How It Works Section -->
+      <div class="bg-white rounded-xl p-6 shadow-md mb-12">
         <h2 class="text-xl font-bold text-gray-800 mb-4">Cara Kerja Promosi</h2>
         <div class="grid md:grid-cols-3 gap-4">
           <div class="text-center p-4">
@@ -190,42 +169,11 @@
           </div>
         </div>
       </div>
-
-    <!-- Testimonials -->
-    <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Apa Kata Pengguna?</h2>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-blue-50 p-6 rounded-xl">
-          <div class="flex items-center mb-4">
-            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
-            <div>
-              <h4 class="font-semibold">Dina Rahmawati</h4>
-              <p class="text-sm text-gray-600">Mahasiswa Bisnis</p>
-            </div>
-          </div>
-          <p class="text-gray-700">"Setelah pakai paket Sorotan Utama, produk jualan saya laku 3x lebih banyak! Worth it banget buat mahasiswa yang jualan sampingan kayak saya."</p>
-        </div>
-        <div class="bg-green-50 p-6 rounded-xl">
-          <div class="flex items-center mb-4">
-            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
-            <div>
-              <h4 class="font-semibold">Rizky Pratama</h4>
-              <p class="text-sm text-gray-600">UKM Kampus</p>
-            </div>
-          </div>
-          <p class="text-gray-700">"Paket Eksklusif sangat membantu promosi kaos organisasi kami. Dalam 1 minggu sudah dapat 50+ pesanan dari berbagai fakultas."</p>
-        </div>
-      </div>
     </div>
-
-    <!-- Final CTA -->
-    <div class="text-center">
-      <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Mulai promosikan produk Anda sekarang dan jangkau lebih banyak pembeli di WarungKampus</p>
-    </div>
-  </div>
+  </main>
 
   <!-- Weekly Package Modal -->
-  <div id="weeklyModal" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
+  <div id="weeklyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
       <div class="p-6">
         <div class="flex justify-between items-center mb-4">
@@ -296,15 +244,15 @@
           </div>
         </div>
         
-        <x-button onclick="processWeeklyPayment()" class="w-full justify-center">
+        <button onclick="processWeeklyPayment()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
           Lanjutkan Pembayaran
-        </x-button>
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Monthly Package Modal -->
-  <div id="monthlyModal" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
+  <div id="monthlyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
       <div class="p-6">
         <div class="flex justify-between items-center mb-4">
@@ -387,11 +335,25 @@
       </div>
     </div>
   </div>
-</main>
+
+  <!-- Payment Success Modal -->
+  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6 text-center">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-gray-800 mb-2">Pembayaran Berhasil!</h2>
+      <p class="text-gray-600 mb-6">Promosi Anda akan segera aktif. Produk akan muncul di bagian rekomendasi.</p>
+      <button onclick="closeModal('successModal')" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+        Kembali ke Beranda
+      </button>
+    </div>
+  </div>
 
 <script>
   // Package Selection
-
   const weeklyPackage = document.getElementById('weeklyPackage');
   const monthlyPackage = document.getElementById('monthlyPackage');
 
@@ -408,19 +370,16 @@
   // Modal Functions
   function openWeeklyModal() {
     document.getElementById('weeklyModal').classList.remove('hidden');
-    document.getElementById('weeklyModal').classList.add('flex');
     document.body.style.overflow = 'hidden';
   }
 
   function openMonthlyModal() {
     document.getElementById('monthlyModal').classList.remove('hidden');
-     document.getElementById('monthlyModal').classList.add('flex');
     document.body.style.overflow = 'hidden';
   }
 
   function closeModal(modalId) {
     document.getElementById(modalId).classList.add('hidden');
-    document.getElementById(modalId).classList.remove('flex');
     document.body.style.overflow = 'auto';
   }
 
@@ -483,3 +442,4 @@
 </script>
 
 </body>
+</html>
