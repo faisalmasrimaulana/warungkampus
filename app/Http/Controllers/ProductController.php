@@ -77,6 +77,17 @@ class ProductController extends Controller
         return view('product.daftarproduk', compact('products'));
     }
 
+    public function modalProduk(Request $request)
+    {
+        $user = Auth::user();
+        $products = Product::where('mahasiswa_id', $user->id)
+            ->with('fotoproduk')
+            ->latest()
+            ->paginate(10); 
+
+        return view('user.langganan', compact('products'));
+    }
+
 
     public function cari(Request $request){
         

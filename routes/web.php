@@ -70,10 +70,6 @@ Route::middleware(['auth:web'])->group(function () {
         return view('product.posting');
     })->name('user.post');
 
-    Route::get('langganan', function(){
-        return view('user.langganan');
-    })->name('user.langganan');
-
     Route::post('/postingproduk', [ProductController::class, 'store'])->name('user.product.posting');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
@@ -88,6 +84,11 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/user/edit/{user}', [EditUserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{user}', [EditUserController::class, 'update'])->name('user.update');
     Route::put('/password/update/{user}', [EditUserController::class, 'updatePassword'])->name('user.password.update');
+
+    Route::get('/produksubscribe', [ProductController::class , 'modalProduk'])->name('user.langganan');
+    Route::post('/weekly-subscription-process', [PaymentController::class, 'weeklySubscriptionProcess']);
+    Route::get('/weeklysub/success', [PaymentController::class, 'weeklySubSuccess'])->name('weeklysub.success');
+
 });
 
 // =======================

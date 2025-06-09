@@ -20,6 +20,7 @@
       background-color: #f0f7ff;
     }
   </style>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 </head>
 
 <!-- Main Content -->
@@ -195,7 +196,7 @@
     <div class="mb-12">
       <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Apa Kata Pengguna?</h2>
       <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-blue-50 p-6 rounded-xl">
+        <div class="bg-blue-200 p-6 rounded-xl">
           <div class="flex items-center mb-4">
             <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
             <div>
@@ -205,7 +206,7 @@
           </div>
           <p class="text-gray-700">"Setelah pakai paket Sorotan Utama, produk jualan saya laku 3x lebih banyak! Worth it banget buat mahasiswa yang jualan sampingan kayak saya."</p>
         </div>
-        <div class="bg-green-50 p-6 rounded-xl">
+        <div class="bg-green-200 p-6 rounded-xl">
           <div class="flex items-center mb-4">
             <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
             <div>
@@ -227,7 +228,7 @@
   <!-- Weekly Package Modal -->
   <div id="weeklyModal" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-      <div class="p-6">
+      <div class="p-6"> 
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-bold text-blue-600">Paket Mingguan</h2>
           <button onclick="closeModal('weeklyModal')" class="text-gray-500 hover:text-gray-700">
@@ -236,70 +237,48 @@
             </svg>
           </button>
         </div>
-        
-        <div class="mb-6">
-          <h3 class="font-medium mb-2">Pilih 1 Produk untuk Dipromosikan</h3>
-          <div class="space-y-3">
-            <!-- Product 1 -->
-            <label class="block">
-              <input type="checkbox" class="product-checkbox hidden" name="weeklyProduct" value="1">
-              <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
-                <div class="flex items-center">
-                  <img src="sepatu.jpg" alt="Sepatu" class="w-12 h-12 object-cover rounded mr-3">
-                  <div>
-                    <h4 class="font-medium">Sepatu Casual Unisex</h4>
-                    <p class="text-sm text-gray-500">Rp 250.000</p>
+
+        <form action="">
+          @csrf
+          <div class="mb-6">
+            <h3 class="font-medium mb-2">Pilih 1 Produk untuk Dipromosikan</h3>
+            <div class="space-y-3">
+              @forelse($products as $prod)
+              <label class="block">
+                <input type="checkbox" class="product-checkbox hidden" name="weeklyProduct" value="{{$prod->id}}">
+                <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
+                  <div class="flex items-center">
+                    <img src="{{asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk))}}" alt="{{$prod->nama_produk}}" class="w-12 h-12 object-cover rounded mr-3">
+                    <div>
+                      <h4 class="font-medium">{{$prod->nama_produk}}</h4>
+                      <p class="text-sm text-gray-500">{{$prod->harga_format}}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </label>
-            
-            <!-- Product 2 -->
-            <label class="block">
-              <input type="checkbox" class="product-checkbox hidden" name="weeklyProduct" value="2">
-              <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
-                <div class="flex items-center">
-                  <img src="tas.jpg" alt="Tas" class="w-12 h-12 object-cover rounded mr-3">
-                  <div>
-                    <h4 class="font-medium">Tas Kuliah Elegan</h4>
-                    <p class="text-sm text-gray-500">Rp 320.000</p>
-                  </div>
-                </div>
-              </div>
-            </label>
-            
-            <!-- Product 3 -->
-            <label class="block">
-              <input type="checkbox" class="product-checkbox hidden" name="weeklyProduct" value="3">
-              <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
-                <div class="flex items-center">
-                  <img src="buku.jpg" alt="Buku" class="w-12 h-12 object-cover rounded mr-3">
-                  <div>
-                    <h4 class="font-medium">Buku Keren</h4>
-                    <p class="text-sm text-gray-500">Rp 50.000</p>
-                  </div>
-                </div>
-              </div>
-            </label>
+              </label>
+              @empty
+             <p>Belum ada produk</p> 
+              @endforelse
+            </div>
           </div>
+          
+          <div class="bg-blue-50 p-4 rounded-lg mb-6">
+            <h3 class="font-medium mb-2">Ringkasan Pembayaran</h3>
+            <div class="flex justify-between mb-1">
+              <span>Paket Mingguan</span>
+              <span>Rp 50.000</span>
+            </div>
+            <div class="flex justify-between font-bold">
+              <span>Total</span>
+              <span>Rp 50.000</span>
+            </div>
+          </div>
+          
+          <x-button onclick="processWeeklyPayment()" class="w-full flex justify-center">
+            Lanjutkan Pembayaran
+          </x-button>
+        </form>
         </div>
-        
-        <div class="bg-blue-50 p-4 rounded-lg mb-6">
-          <h3 class="font-medium mb-2">Ringkasan Pembayaran</h3>
-          <div class="flex justify-between mb-1">
-            <span>Paket Mingguan</span>
-            <span>Rp 50.000</span>
-          </div>
-          <div class="flex justify-between font-bold">
-            <span>Total</span>
-            <span>Rp 50.000</span>
-          </div>
-        </div>
-        
-        <button onclick="processWeeklyPayment()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-          Lanjutkan Pembayaran
-        </button>
-      </div>
     </div>
   </div>
 
@@ -319,47 +298,22 @@
         <div class="mb-6">
           <h3 class="font-medium mb-2">Pilih 2 Produk untuk Dipromosikan</h3>
           <div class="space-y-3">
-            <!-- Product 1 -->
+            @forelse($products as $prod)
             <label class="block">
               <input type="checkbox" class="product-checkbox hidden" name="monthlyProduct" value="1">
               <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
                 <div class="flex items-center">
-                  <img src="sepatu.jpg" alt="Sepatu" class="w-12 h-12 object-cover rounded mr-3">
+                  <img src="{{asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk))}}" alt="{{$prod->nama_produk}}" alt="{{$prod->nama}}" class="w-12 h-12 object-cover rounded mr-3">
                   <div>
-                    <h4 class="font-medium">Sepatu Casual Unisex</h4>
-                    <p class="text-sm text-gray-500">Rp 250.000</p>
+                    <h4 class="font-medium">{{$prod->nama}}</h4>
+                    <p class="text-sm text-gray-500">{{$prod->harga_format}}</p>
                   </div>
                 </div>
               </div>
             </label>
-            
-            <!-- Product 2 -->
-            <label class="block">
-              <input type="checkbox" class="product-checkbox hidden" name="monthlyProduct" value="2">
-              <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
-                <div class="flex items-center">
-                  <img src="tas.jpg" alt="Tas" class="w-12 h-12 object-cover rounded mr-3">
-                  <div>
-                    <h4 class="font-medium">Tas Kuliah Elegan</h4>
-                    <p class="text-sm text-gray-500">Rp 320.000</p>
-                  </div>
-                </div>
-              </div>
-            </label>
-            
-            <!-- Product 3 -->
-            <label class="block">
-              <input type="checkbox" class="product-checkbox hidden" name="monthlyProduct" value="3">
-              <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
-                <div class="flex items-center">
-                  <img src="buku.jpg" alt="Buku" class="w-12 h-12 object-cover rounded mr-3">
-                  <div>
-                    <h4 class="font-medium">Buku Keren</h4>
-                    <p class="text-sm text-gray-500">Rp 50.000</p>
-                  </div>
-                </div>
-              </div>
-            </label>
+            @empty
+            <p>Belum ada produk</p>
+            @endforelse
           </div>
         </div>
         
@@ -410,6 +364,7 @@
     document.getElementById('weeklyModal').classList.remove('hidden');
     document.getElementById('weeklyModal').classList.add('flex');
     document.body.style.overflow = 'hidden';
+    
   }
 
   function openMonthlyModal() {
@@ -456,14 +411,48 @@
 
   // Payment Processing
   function processWeeklyPayment() {
-    const selectedProduct = document.querySelector('input[name="weeklyProduct"]:checked');
-    if (!selectedProduct) {
-      alert('Silakan pilih 1 produk untuk dipromosikan');
-      return;
-    }
-    closeModal('weeklyModal');
-    document.getElementById('successModal').classList.remove('hidden');
+      const selectedProduct = document.querySelector('input[name="weeklyProduct"]:checked');
+      if (!selectedProduct) {
+        alert('Silakan pilih 1 produk untuk dipromosikan');
+        return;
+      }
+
+      const productId = selectedProduct.value;
+
+      fetch('/weekly-subscription-process', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        },
+        body: JSON.stringify({
+          product_id: selectedProduct.value
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.snapToken) {
+          snap.pay(data.snapToken, {
+            onSuccess: function(result) {
+              window.location.href = `/weeklysub/success?order_id=${result.order_id}`;
+            },
+            onPending: function(result) {
+               console.log("Menunggu pembayaran:", result);
+            },
+            onError: function(result) {
+              alert('Pembayaran gagal. Coba lagi nanti.');
+            }
+          });
+        } else {
+          alert('Gagal mendapatkan token pembayaran');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Terjadi kesalahan saat memproses pembayaran.');
+      });
   }
+
 
   function processMonthlyPayment() {
     const selectedProducts = document.querySelectorAll('input[name="monthlyProduct"]:checked');
