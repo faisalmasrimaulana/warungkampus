@@ -20,10 +20,6 @@ use App\Models\Product;
 // =======================
 
 //REGULAR
-Route::fallback(function () {
-    return view('errors.404');
-});
-
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -31,6 +27,10 @@ Route::get('/', function () {
 Route::get('/cancel', function(){
     return redirect('/');
 })->name('cancel');
+
+Route::get('/bantuan', function(){
+    return view('user.bantuan');
+})->name('bantuan');
 
 Route::get('/userprofile/{user}', [DashboardUserController::class, 'showPublic'])->name('user.publicprofile');
 
@@ -88,7 +88,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/produksubscribe', [ProductController::class , 'modalProduk'])->name('user.langganan');
     Route::post('/weekly-subscription-process', [PaymentController::class, 'weeklySubscriptionProcess']);
     Route::get('/weeklysub/success', [PaymentController::class, 'weeklySubSuccess'])->name('weeklysub.success');
-
+    Route::post('/monthly-subscription-process', [PaymentController::class, 'monthlySubscriptionProcess']);
+    Route::get('/monthlysub/success', [PaymentController::class, 'monthlySubSuccess'])->name('monthlysub.success');
 });
 
 // =======================

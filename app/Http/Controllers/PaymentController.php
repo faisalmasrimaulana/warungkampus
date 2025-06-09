@@ -8,8 +8,10 @@ use Midtrans\Config;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\WeeklySubscribe;
+use App\Models\MonthlySubscribe;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log; 
+use Exception;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
@@ -30,19 +32,16 @@ class PaymentController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
-        $pemilik = Auth::user();
+        $user = Auth::user();
 
         $orderId = 'ORDER-' . uniqid();
-        $harga = 50000; // Harga paket mingguan tetap
-
-        // Simpan ke tabel weekly_subscribes
+        $harga = 50000;
         $langganan = WeeklySubscribe::create([
             'order_id' => $orderId,
             'product_id' => $product->id,
-            'nama_pemilik_produk' => $pemilik->nama,
-            'email_pemilik_produk' => $pemilik->email,
+            'user_id' => $user->id,
             'harga' => $harga,
-            'status' => 'pending',
+            'payment_status' => 'pending',
         ]);
 
         $params = [
@@ -51,8 +50,8 @@ class PaymentController extends Controller
                 'gross_amount' => $harga,
             ],
             'customer_details' => [
-                'first_name' => $pemilik->nama,
-                'email' => $pemilik->email,
+                'first_name' => $user->nama,
+                'email' => $user->email,
             ]
         ];
 
@@ -78,7 +77,7 @@ class PaymentController extends Controller
             return redirect('/')->with('error', 'Order tidak ditemukan');
         }
 
-        $order->status = 'success';
+        $order->payment_status = 'success';
         $order->save();
 
         return view('payment.weeklysubsuccess', compact('order'));
@@ -87,40 +86,53 @@ class PaymentController extends Controller
     public function monthlySubscriptionProcess(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:produk,id',
+        'product_1_id' => 'required|different:product_2_id|exists:produk,id',
+        'product_2_id' => 'required|exists:produk,id',
+        'promo_message' => 'required|string|max:255'
         ]);
 
-        $product = Product::findOrFail($request->product_id);
-        $pemilik = Auth::user();
+        $user = Auth::user();
 
-        $orderId = 'ORDER-' . uniqid();
-        $harga = 50000;
+        $orderId = 'MONTHLY-' . uniqid();
 
-        // Simpan ke tabel weekly_subscribes
-        $langganan = WeeklySubscribe::create([
+        // Simpan dulu data langganan ke DB
+        $subscribe = MonthlySubscribe::create([
+            'user_id' => $user->id,
+            'product_1_id' => $request->product_1_id,
+            'product_2_id' => $request->product_2_id,
+            'promo_message' => $request->promo_message,
             'order_id' => $orderId,
-            'product_id' => $product->id,
-            'nama_pemilik_produk' => $pemilik->nama,
-            'email_pemilik_produk' => $pemilik->email,
-            'harga' => $harga,
-            'status' => 'pending',
+            'harga' => 150000,
+            'payment_status' => 'pending',
         ]);
 
+        // Buat Snap token dari Midtrans
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
-                'gross_amount' => $harga,
+                'gross_amount' => 150000,
             ],
             'customer_details' => [
-                'first_name' => $pemilik->nama,
-                'email' => $pemilik->email,
-            ]
+                'first_name' => $user->nama,
+                'email' => $user->email,
+            ],
         ];
 
         try {
             $snapToken = Snap::getSnapToken($params);
             return response()->json(['snapToken' => $snapToken]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            dd($e->getMessage());
+            Log::error('Gagal memproses pembayaran monthly subscription', [
+                'error_message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString(),
+                'request_data' => $request->all(),
+            ]);
+
+            return response()->json([
+                'error' => 'Gagal memulai pembayaran',
+                'message' => $e->getMessage(),
+            ], 500);
             return response()->json(['error' => 'Gagal memulai pembayaran: ' . $e->getMessage()], 500);
         }
     }
@@ -133,16 +145,16 @@ class PaymentController extends Controller
             return redirect('/')->with('error', 'Order ID tidak ditemukan');
         }
 
-        $order = WeeklySubscribe::where('order_id', $orderId)->first();
+        $order = MonthlySubscribe::where('order_id', $orderId)->first();
 
         if (!$order)     {
             return redirect('/')->with('error', 'Order tidak ditemukan');
         }
 
-        $order->status = 'success';
+        $order->payment_status = 'success';
         $order->save();
 
-        return view('payment.weeklysubsuccess', compact('order'));
+        return view('payment.monthlysubsuccess', compact('order'));
     }
 
     public function process(Request $request){

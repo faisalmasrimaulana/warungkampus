@@ -65,7 +65,7 @@
       <div class="grid md:grid-cols-2 gap-8">
         <div class="bg-blue-50 p-6 rounded-xl">
           <div class="flex items-start mb-4">
-            <img src="{{ asset('./assets/testi1.jpg') }}" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
+            <img src="https://avatar.iran.liara.run/public" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
             <div>
               <h4 class="font-semibold">Faisal Masri Maulana</h4>
               <p class="text-sm text-gray-500">Mahasiswa Pendidikan Matematika</p>
@@ -76,7 +76,7 @@
         
         <div class="bg-green-50 p-6 rounded-xl">
           <div class="flex items-start mb-4">
-            <img src="{{ asset('./assets/testi2.jpg') }}" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
+            <img src="https://avatar.iran.liara.run/public" alt="Testimonial" class="w-12 h-12 rounded-full mr-4">
             <div>
               <h4 class="font-semibold">M. Fauzi Gafar</h4>
               <p class="text-sm text-gray-500">Mahasiswa Sistem Informasi </p>

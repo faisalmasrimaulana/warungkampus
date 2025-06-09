@@ -8,15 +8,17 @@ class WeeklySubscribe extends Model
 {
     protected $fillable = [
         'order_id',
+        'user_id',
         'product_id',
-        'nama_pemilik_produk',
-        'email_pemilik_produk',
         'harga',
-        'status',
+        'payment_status',
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

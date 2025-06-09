@@ -14,13 +14,12 @@ return new class extends Migration
     Schema::create('weekly_subscribes', function (Blueprint $table) {
         $table->id();
         $table->string('order_id')->unique();
+        $table->unsignedBigInteger('user_id');
         $table->unsignedBigInteger('product_id');
-        $table->string('nama_pemilik_produk');
-        $table->string('email_pemilik_produk');
         $table->integer('harga');
-        $table->string('status')->default('pending');
+        $table->string('payment_status')->default('pending');
         $table->timestamps();
-
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         $table->foreign('product_id')->references('id')->on('produk')->onDelete('cascade');
     });
 }

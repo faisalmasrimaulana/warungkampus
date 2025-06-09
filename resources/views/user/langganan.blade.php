@@ -238,7 +238,7 @@
           </button>
         </div>
 
-        <form action="">
+        <form>
           @csrf
           <div class="mb-6">
             <h3 class="font-medium mb-2">Pilih 1 Produk untuk Dipromosikan</h3>
@@ -294,50 +294,52 @@
             </svg>
           </button>
         </div>
-        
-        <div class="mb-6">
-          <h3 class="font-medium mb-2">Pilih 2 Produk untuk Dipromosikan</h3>
-          <div class="space-y-3">
-            @forelse($products as $prod)
-            <label class="block">
-              <input type="checkbox" class="product-checkbox hidden" name="monthlyProduct" value="1">
-              <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
-                <div class="flex items-center">
-                  <img src="{{asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk))}}" alt="{{$prod->nama_produk}}" alt="{{$prod->nama}}" class="w-12 h-12 object-cover rounded mr-3">
-                  <div>
-                    <h4 class="font-medium">{{$prod->nama}}</h4>
-                    <p class="text-sm text-gray-500">{{$prod->harga_format}}</p>
+        <form>
+          @csrf
+          <div class="mb-6">
+            <h3 class="font-medium mb-2">Pilih 2 Produk untuk Dipromosikan</h3>
+            <div class="space-y-3">
+              @forelse($products as $prod)
+              <label class="block">
+                <input type="checkbox" class="product-checkbox hidden" name="monthlyProduct" value="{{$prod->id}}">
+                <div class="product-card border rounded-lg p-3 hover:border-blue-400 cursor-pointer">
+                  <div class="flex items-center">
+                    <img src="{{asset('storage/' . ($prod->fotoproduk->first()->path_fotoproduk))}}" alt="{{$prod->nama_produk}}" class="w-12 h-12 object-cover rounded mr-3">
+                    <div>
+                      <h4 class="font-medium">{{$prod->nama_produk}}</h4>
+                      <p class="text-sm text-gray-500">{{$prod->harga_format}}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </label>
-            @empty
-            <p>Belum ada produk</p>
-            @endforelse
+              </label>
+              @empty
+              <p>Belum ada produk</p>
+              @endforelse
+            </div>
           </div>
-        </div>
-        
-        <div class="mb-6">
-          <h3 class="font-medium mb-2">Buat Kalimat Promosi Toko</h3>
-          <textarea class="w-full border rounded-lg p-3 focus:border-blue-400 focus:ring-blue-400" rows="3" placeholder="Contoh: 'Diskon 20% untuk semua produk selama bulan ini!'"></textarea>
-          <p class="text-sm text-gray-500 mt-1">Kalimat ini akan muncul di banner promosi toko Anda</p>
-        </div>
-        
-        <div class="bg-blue-50 p-4 rounded-lg mb-6">
-          <h3 class="font-medium mb-2">Ringkasan Pembayaran</h3>
-          <div class="flex justify-between mb-1">
-            <span>Paket Bulanan</span>
-            <span>Rp 150.000</span>
+          
+          <div class="mb-6">
+            <h3 class="font-medium mb-2">Buat Kalimat Promosi Toko</h3>
+            <textarea id="promoMessage" name="promo_message" class="w-full border rounded-lg p-3 focus:border-blue-400 focus:ring-blue-400" rows="3" placeholder="Contoh: 'Diskon 20% untuk semua produk selama bulan ini!'"></textarea>
+            <p class="text-sm text-gray-500 mt-1">Kalimat ini akan muncul di banner promosi toko Anda</p>
           </div>
-          <div class="flex justify-between font-bold">
-            <span>Total</span>
-            <span>Rp 150.000</span>
+          
+          <div class="bg-blue-50 p-4 rounded-lg mb-6">
+            <h3 class="font-medium mb-2">Ringkasan Pembayaran</h3>
+            <div class="flex justify-between mb-1">
+              <span>Paket Bulanan</span>
+              <span>Rp 150.000</span>
+            </div>
+            <div class="flex justify-between font-bold">
+              <span>Total</span>
+              <span>Rp 150.000</span>
+            </div>
           </div>
-        </div>
-        
-        <button onclick="processMonthlyPayment()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-          Lanjutkan Pembayaran
-        </button>
+          
+          <x-button onclick="processMonthlyPayment()" class="w-full flex justify-center">
+            Lanjutkan Pembayaran
+          </x-button>
+        </form>
       </div>
     </div>
   </div>
@@ -423,7 +425,7 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+          'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
         },
         body: JSON.stringify({
           product_id: selectedProduct.value
@@ -455,20 +457,48 @@
 
 
   function processMonthlyPayment() {
-    const selectedProducts = document.querySelectorAll('input[name="monthlyProduct"]:checked');
-    if (selectedProducts.length !== 2) {
-      alert('Silakan pilih 2 produk untuk dipromosikan');
+    const checkboxes = document.querySelectorAll('input[name="monthlyProduct"]:checked');
+    if (checkboxes.length !== 2) {
+      alert("Pilih 2 produk untuk dipromosikan yaa!");
       return;
     }
-    const promoText = document.querySelector('#monthlyModal textarea').value.trim();
-    if (!promoText) {
-      alert('Silakan isi kalimat promosi untuk toko Anda');
-      return;
-    }
-    closeModal('monthlyModal');
-    document.getElementById('successModal').classList.remove('hidden');
-  }
 
+    const selectedProducts = [...checkboxes].map(cb => cb.value);
+    const promoMessage = document.getElementById('promoMessage').value;
+
+    fetch('/monthly-subscription-process', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+        },
+        body: JSON.stringify({
+          product_1_id: selectedProducts[0],
+          product_2_id: selectedProducts[1],
+          promo_message: promoMessage
+        })
+      }).then(res => res.json())
+        .then(data => {
+          if (data.snapToken) {
+            snap.pay(data.snapToken, {
+              onSuccess: function(result) {
+                window.location.href = `/monthlysub/success?order_id=${result.order_id}`;
+              },
+              onPending: function(result) {
+                alert("Pembayaran masih pending");
+              },
+              onError: function(result) {
+                alert("Pembayaran gagal...");
+              }
+            });
+          } else {
+            alert("Gagal memproses transaksi");
+          }
+        }).catch(err => {
+        console.error(err);
+        alert('Terjadi kesalahan saat memproses pembayaran.');
+      });
+      }
 </script>
 
 </body>
