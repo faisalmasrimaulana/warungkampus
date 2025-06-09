@@ -2,6 +2,9 @@
 
 @section('content')
     <!-- MODAL KTM USER -->
+    @if(session('success'))
+      <x-successmodal></x-successmodal>
+    @endif
     <x-modalktm/>
 
     <!-- MAIN CONTENT -->
@@ -176,68 +179,38 @@
               <thead class="bg-gray-50">
                 <tr>
                   <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paket</th>
                   <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">KTM</th>
-                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produk</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($users as $user )
+                @forelse($subscriptions as $sub )
                   <tr class="hover:bg-gray-100">
                     <td class="px-4 py-3 whitespace-nowrap">
                       <div class="flex items-center">
-                        <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
+                        <img class="w-8 h-8 rounded-full mr-3" src="{{ $sub->user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $week->user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
                         <div>
-                          <p class="text-sm font-medium">{{$user->nama}}</p>
-                          <p class="text-xs text-gray-500">{{$user->email}}</p>
+                          <p class="text-sm font-medium">{{$sub->user->nama}}</p>
+                          <p class="text-xs text-gray-500">{{$sub->user->email}}</p>
                         </div>
                       </div>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap">
-                      @if($user->is_verified==0)
-                      <x-badge status="pending"></x-badge>
-                      @else
-                      <x-badge status="verified"></x-badge>
-                      @endif
+                    <td class="px-4 py-3 text-sm whitespace-nowrap">
+                      {{$sub->type}}
                     </td>
                     <td class="px-4 py-3 whitespace-nowrap">
-                      <x-button class="view-ktm-btn" size="sm" data-ktm="{{asset('storage/' . $user->ktm)}}" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at->diffForHumans()}}">
-                        Lihat KTM
-                      </x-button>
+                       @if($sub->expired_at > now())
+                          <x-badge status="active"></x-badge>
+                        @else
+                          <x-badge status="expired"></x-badge>
+                        @endif
                     </td>
-                    @if(!$user->is_verified)
-                    <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
-                      @csrf
-                      @method('PUT')
-                          <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
-                          <i class="fas fa-check"></i>
-                          </button>
-                      </form>
-                      <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
-                          @csrf
-                          @method('DELETE')
-                          <button class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" type="submit" title="Tolak">
-                          <i class="fas fa-times"></i></button>
-                      </form>
+                    <td>
+                      @foreach($sub->products as $prod)
+                        <p class="text-sm">{{$prod}}</p>
+                      @endforeach
                     </td>
-                    @else
-                    <td class="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button class="action-btn text-yellow-600 hover:text-red-900 mr-3" title="Blokir">
-                        <i class="fas fa-ban"></i>
-                      </button>
-                      <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
-                          @csrf
-                          @method('DELETE')
-                          <button class="action-btn text-red-600 hover:text-red-900" title="Hapus" type="submit">
-                            <i class="fas fa-trash" ></i>
-                          </button>
-                      </form>
-                    </td>
-                    @endif
                   </tr>
                 @empty
                   <tr>
@@ -324,68 +297,32 @@
               <thead class="bg-gray-50">
                 <tr>
                   <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">KTM</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detail laporan</th>
                   <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($users as $user )
+                @forelse($laporans as $lapor)
                 <tr class="hover:bg-gray-100">
                   <td class="px-4 py-3 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <img class="w-8 h-8 rounded-full mr-3" src="{{ $user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
-                      <div>
-                        <p class="text-sm font-medium">{{$user->nama}}</p>
-                        <p class="text-xs text-gray-500">{{$user->email}}</p>
-                      </div>
-                    </div>
+                      <p class="text-sm font-medium">{{$lapor->nama}}</p>
                   </td>
-                  <td class="px-4 py-3 whitespace-nowrap">
-                    @if($user->is_verified==0)
-                    <x-badge status="pending"></x-badge>
-                    @else
-                    <x-badge status="verified"></x-badge>
-                    @endif
+                  <td class="px-4 py-3 wrap">
+                      <p class="text-sm font-medium">{{$lapor->email}}</p>
                   </td>
-                  <td class="px-4 py-3 whitespace-nowrap">
-                    <x-button class="view-ktm-btn" size="sm" data-ktm="{{asset('storage/' . $user->ktm)}}" data-name="{{$user->nama}}" data-email="{{$user->email}}" data-date="{{$user->created_at->diffForHumans()}}">
-                      Lihat KTM
-                    </x-button>
+                  <td class="px-4 py-3 wrap">
+                      <button title="Detail_laporan" data-nama="{{ $lapor->nama}}" data-detail="{{ $lapor->detail_laporan}}"data-email="{{ $lapor->email}}" data-tanggal="{{ $lapor->created_at->format('d M Y') }}" data-bukti="{{ $lapor->bukti ? asset('storage/' . $lapor->bukti) : ''}}" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md shadow-lg hover:shadow-xl transition hover:from-blue-600 hover:to-blue-700 hover:cursor-pointer px-4 py-2 text-xs font-semibold">Detail</button>
                   </td>
-                  @if(!$user->is_verified)
                   <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <form action="{{ route('admin.user.verifikasi', $user->id) }}" method="POST" class="inline">
-                    @csrf
-                    @method('PUT')
-                        <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
-                        <i class="fas fa-check"></i>
-                        </button>
-                    </form>
-                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="action-btn text-red-600 hover:text-red-900 hover:cursor-pointer" type="submit" title="Tolak">
-                        <i class="fas fa-times"></i></button>
+                    <form method="POST" class="inline">
+                      @csrf
+                      @method('PUT')
+                      <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
+                      <i class="fas fa-check"></i>
+                      </button>
                     </form>
                   </td>
-                  @else
-                  <td class="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Detail">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="action-btn text-yellow-600 hover:text-red-900 mr-3" title="Blokir">
-                      <i class="fas fa-ban"></i>
-                    </button>
-                    <form action="{{ route('admin.user.hapus', $user->id) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="action-btn text-red-600 hover:text-red-900" title="Hapus" type="submit">
-                          <i class="fas fa-trash" ></i>
-                        </button>
-                    </form>
-                  </td>
-                  @endif
                 </tr>
                 @empty
                  <tr>
@@ -400,6 +337,33 @@
         </div>
         <!-- ./LIST LAPORAN -->
       </div>
+
+<!-- Modal Detail Laporan -->
+<div id="modalLaporan" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 w-2xl h-80vh">
+    <div class="flex justify-between items-baseline">
+      <h2 class="text-2xl font-bold text-gray-800">Detail Laporan</h2>
+    </div>
+    <div class="flex flex-col gap-6">
+      <div class="flex items-center flex-col">
+        <img id="modal-bukti" src="" alt="Bukti Laporan" class="h-60 object-cover rounded-lg">
+        <p id="foto-fallback" class="text-gray-500 mt-2 hidden">Tidak ada foto</p>
+      </div>
+      <div class="flex gap-2" id="detail_laporan">
+        <h2 class="font-semibold">Detail laporan:</h2>
+        <p id="modal-detail" class="text-md"></p>
+      </div  >
+      <div  class="flex flex-col">
+        <p id="modal-nama" class="text-md capitalize font-semibold"></p>
+        <p id="modal-email" class="text-md text-gray-500"></p>
+      </div>
+    <div class="mt-6 flex justify-end space-x-3">
+      <x-button id="closeModalBtn" color="danger">
+        Tutup
+      </x-button>
+    </div>
+  </div>
+</div>
 
 <!-- Modal Confirm -->
  <!--Blokir -->
@@ -500,8 +464,53 @@
   function cancelDeleteProd() {
       document.getElementById("confirmationModalDeleteProd").classList.remove('flex');
       document.getElementById("confirmationModalDeleteProd").classList.add('hidden');
-      currentDeleteProdId = null;
-  }
+      currentDeleteProdId = null;}
+
+  //Modal Laporan
+    const fallbackText = document.getElementById('foto-fallback');
+    const modalLaporan = document.getElementById('modalLaporan');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const detailButtons = document.querySelectorAll('[title="Detail_laporan"]');
+    
+    detailButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const nama = button.dataset.nama;
+      const email = button.dataset.email;
+      const bukti = button.dataset.bukti;
+      const detail_laporan = button.dataset.detail;
+
+      const imgElement = document.getElementById('modal-bukti');
+      const namaEl = document.getElementById('modal-nama');
+      const emailEl = document.getElementById('modal-email');
+      const detailEl = document.getElementById('modal-detail');
+      const detailTxt = document.getElementById('detail_laporan');
+
+      namaEl.textContent = nama;
+      emailEl.textContent = email;
+      detailEl.textContent = detail_laporan;
+
+      if (bukti == '') {
+        imgElement.classList.add('hidden');
+        imgElement.alt = 'Tidak ada foto';
+        detailTxt.classList.add('flex-col');
+        detailTxt.classList.remove('flex-row');
+      } else {
+        imgElement.src = bukti;
+        imgElement.classList.remove('hidden');
+        imgElement.alt = 'Bukti Laporan';
+        detailTxt.classList.add('flex-row');
+        detailTxt.classList.remove('flex-col');
+      }
+
+      modalLaporan.classList.remove('hidden');
+      modalLaporan.classList.add('flex');
+    });
+
+  });
+
+    closeModalBtn.addEventListener('click', function() {
+      modalLaporan.classList.add('hidden');
+    });
 </script>
 
 @endsection

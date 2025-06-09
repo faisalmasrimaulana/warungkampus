@@ -1,4 +1,4 @@
-
+@extends("layouts.app")
 <head>
   <title>Bantuan</title>
   @include("partials.head")
@@ -21,8 +21,13 @@
 </head>
 
 @section("content")
+
+    @if(session('success'))
+      <x-successmodal></x-successmodal>
+    @endif
+
 <!-- Main Content -->
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-8 mt-20">
   <!-- FAQ Section -->
   <div class="bg-white rounded-lg shadow p-6 mb-8">
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Pertanyaan yang Sering Diajukan</h2>
@@ -104,30 +109,29 @@
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Formulir Laporan</h2>
     <p class="text-gray-600 mb-6">Silakan isi form berikut untuk melaporkan masalah yang Anda temui.</p>
     
-    <form id="helpForm" class="space-y-4">
+    <form method="POST" action="{{route('bantuan.process')}}" enctype="multipart/form-data" class="space-y-4">
+      @csrf
       <!-- Name Field -->
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-        <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <x-input type="text" name="nama" label="Nama Lengkap*"/>
       </div>
       
       <!-- Email Field -->
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <x-input type="email"  name="email" label="Email *" />
       </div>
       
       <!-- Message Field -->
       <div>
-        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Detail Laporan</label>
-        <textarea id="message" name="message" rows="5" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Jelaskan masalah Anda secara detail..." required></textarea>
+        <label for="detail_laporan" class="block text-sm font-medium text-gray-700 mb-1">Detail Laporan</label>
+        <textarea id="detail_laporan" name="detail_laporan" rows="5" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Jelaskan masalah Anda secara detail..." >{{old('detail_laporan')}}</textarea>
       </div>
       
       <!-- File Upload -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Upload Bukti</label>
         <div class="file-upload rounded-lg p-4 text-center cursor-pointer">
-          <input type="file" id="evidence" name="evidence" accept="image/*,.pdf" class="hidden" required>
+          <input type="file" id="bukti" name="bukti" accept="image/*,.pdf" class="hidden">
           <div class="flex flex-col items-center">
             <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
             <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
@@ -140,13 +144,13 @@
       </div>
       
       <!-- Action Buttons -->
-      <div class="flex space-x-4 pt-2">
-        <button type="button" id="cancelButton" class="w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+      <div class="flex space-x-4 justify-end pt-2">
+        <x-button type="button" href="{{route('cancel')}}" color="danger">
           Batal
-        </button>
-        <button type="submit" class="w-1/2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        </x-button>
+        <x-button type="submit">
           Kirim Laporan
-        </button>
+        </x-button>
       </div>
     </form>
   </div>
@@ -176,7 +180,7 @@
     
     // File upload functionality
     const fileUpload = document.querySelector('.file-upload');
-    const fileInput = document.getElementById('evidence');
+    const fileInput = document.getElementById('bukti');
     const filePreview = document.getElementById('filePreview');
     const fileName = document.getElementById('fileName');
     
@@ -189,27 +193,6 @@
         fileName.textContent = this.files[0].name;
         filePreview.classList.remove('hidden');
       } else {
-        filePreview.classList.add('hidden');
-      }
-    });
-    
-    // Form submission
-    const helpForm = document.getElementById('helpForm');
-    const cancelButton = document.getElementById('cancelButton');
-    
-    helpForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Simulate form submission
-      alert('Terima kasih! Laporan Anda telah terkirim. Kami akan menghubungi Anda segera.');
-      this.reset();
-      filePreview.classList.add('hidden');
-    });
-    
-    // Cancel button functionality
-    cancelButton.addEventListener('click', function() {
-      if (confirm('Apakah Anda yakin ingin membatalkan? Semua data yang telah diisi akan hilang.')) {
-        helpForm.reset();
         filePreview.classList.add('hidden');
       }
     });

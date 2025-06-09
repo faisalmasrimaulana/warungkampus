@@ -97,6 +97,7 @@ function setupRadioHighlight(selector) {
             }
         });
     });
+    
     // Highlight default
     const selected = document.querySelector(selector + ':checked');
     if (selected) {

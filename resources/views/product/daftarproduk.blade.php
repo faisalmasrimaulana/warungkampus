@@ -116,7 +116,7 @@
       </div>
   </div>
   @include('partials.sidebarfilter')
-    <!-- Banner Promosi -->
+  <!-- Banner Promosi -->
   <!-- Banner Carousel -->
   <div class="px-4 py-6">
     <div class="carousel mx-auto max-w-5xl relative">
@@ -169,15 +169,33 @@
     </div>
   </div>
   <main class="p-6">
-    @if($products->count() > 0)
+    <!-- DAFTAR PRODUK REKOMENDASI -->
+    @if(!empty($showPromotions) && $showPromotions && $subscriptions->count())
+      <div><h3 class="text-lg font-bold mb-2">Promosi</h3></div>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        @foreach($subscriptions as $sub)
+          @foreach($sub->products as $prod)
+            <x-cardproduct :prod="$prod" />
+          @endforeach
+        @endforeach
+      </div>
+
+      <div class="mt-4 mb-10">
+        {{ $subscriptions->appends(request()->except('page'))->links() }}
+      </div>
+    @endif
+
+
+    <!-- DAFTAR PRODUK REGULER -->
+    @if($products->count() > 0)
+    <div><h3 class="text-lg font-bold mb-2">Produk</h3></div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         @foreach($products as $prod)
-          @if(!$prod->is_sold)
+        @if(!$prod->is_sold)
             <x-cardproduct :prod="$prod" />
           @endif
         @endforeach
       </div>
-
       <div class="mt-4">
         {{ $products->appends(request()->except('page'))->links() }}
       </div>

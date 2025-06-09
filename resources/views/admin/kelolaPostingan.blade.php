@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
 
+    @if(session('success'))
+      <x-successmodal></x-successmodal>
+    @endif
   <!-- Main Content -->
   <div class="flex-1 flex flex-col overflow-hidden">
 

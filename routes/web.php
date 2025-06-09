@@ -6,6 +6,7 @@ use App\Http\Controllers\auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardAdminController;
 use App\Http\Controllers\Admin\ManageController;
+use App\Http\Controllers\BantuanController;
 use App\Http\Controllers\User\DashboardUserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\EditUserController;
@@ -59,6 +60,9 @@ Route::get('/produk/cari', [ProductController::class, 'cari'])->name('produk.car
 // PAYMENT
 Route::post('/checkout', [PaymentController::class, 'process'])->name('payment.process');
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+
+//BANTUAN
+Route::post('/bantuan/proses', [BantuanController::class, 'store'])->name('bantuan.process');
 
 // =======================
 // ROUTE UNTUK USER/MAHASISWA

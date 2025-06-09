@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('content')
+    @if(session('success'))
+      <x-successmodal></x-successmodal>
+    @endif
+    
     <style>
       .stat-card {
       transition: all 0.3s ease;

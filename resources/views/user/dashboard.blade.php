@@ -1,6 +1,9 @@
 <!-- DASHBOARD USER-->
 @extends('layouts.app')
 @section('content')
+@if(session('success'))
+  <x-successmodal></x-successmodal>
+@endif
 
 <!-- Main Content -->
 <div class="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8">
