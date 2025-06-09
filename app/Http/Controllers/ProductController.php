@@ -6,17 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\FotoProduk;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\MonthlySubscribe;
+use App\Models\WeeklySubscribe;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class ProductController extends Controller
 {
     public function index() {
         $products = Product::with('fotoproduk')->latest()->paginate(15);
-        return view('product.daftarproduk', compact('products'));
+        $subscriptions = $this->getSubscriptions();
+
+        return view('product.daftarproduk', [
+            'products' => $products,
+            'subscriptions' => $subscriptions,
+            'showPromotions' => true,
+        ]);
     }
 
     public function store(StoreProductRequest $request){
@@ -45,7 +53,7 @@ class ProductController extends Controller
                 'path_fotoproduk' => $path,
             ]);
         }
-        return redirect()->route('produk.detail', $product->id)->with('success', 'Produk Berhasil Diposting');
+        return redirect()->route('produk.detail', $product->id)->with('success', 'Laporan berhasil terkirim');
     }
 
     public function show(Product $product){
@@ -74,20 +82,15 @@ class ProductController extends Controller
         })
         ->paginate(15);
 
-        return view('product.daftarproduk', compact('products'));
+        $noFilter = !$request->filled('kategori') && !$request->filled('harga') && !$request->filled('waktu');
+
+        $subscriptions = $noFilter ? $this->getSubscriptions() : null;
+        return view('product.daftarproduk', [
+            'products' => $products,
+            'subscriptions' => $subscriptions,
+            'showPromotions' => $noFilter
+        ]);
     }
-
-    public function modalProduk(Request $request)
-    {
-        $user = Auth::user();
-        $products = Product::where('mahasiswa_id', $user->id)
-            ->with('fotoproduk')
-            ->latest()
-            ->paginate(10); 
-
-        return view('user.langganan', compact('products'));
-    }
-
 
     public function cari(Request $request){
         
@@ -103,8 +106,27 @@ class ProductController extends Controller
             });
         })
         ->paginate(15)->appends(request()->query());
+        $showPromotions = empty($keyword);
 
-        return view('product.daftarproduk', compact('products', 'keyword'));
+        $subscriptions = $showPromotions ? $this->getSubscriptions() : null;
+
+        return view('product.daftarproduk', [
+            'products' => $products,
+            'subscriptions' => $subscriptions,
+            'keyword' => $keyword,
+            'showPromotions' => $showPromotions
+        ]);
+    }
+
+    public function modalProduk(Request $request)
+    {
+        $user = Auth::user();
+        $products = Product::where('mahasiswa_id', $user->id)
+            ->with('fotoproduk')
+            ->latest()
+            ->paginate(10); 
+
+        return view('user.langganan', compact('products'));
     }
 
     public function destroy(Product $product){
@@ -199,4 +221,43 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Produk berhasil diaktifkan kembali!');
     }
+
+    private function getSubscriptions()
+    {
+        $weekly = WeeklySubscribe::with(['user', 'product'])->latest()->get()->map(function ($item) {
+            return (object)[
+                'user' => $item->user,
+                'products' => [$item->product],
+                'type' => 'Mingguan',
+                'created_at' => $item->created_at,
+                'expired_at' => $item->created_at->addDays(7),
+            ];
+        });
+
+        $monthly = MonthlySubscribe::with(['user', 'product1', 'product2'])->latest()->get()->map(function ($item) {
+            return (object)[
+                'user' => $item->user,
+                'products' => [
+                    $item->product1,
+                    $item->product2,
+                ],
+                'type' => 'Bulanan',
+                'created_at' => $item->created_at,
+                'expired_at' => $item->created_at->addDays(30),
+            ];
+        });
+
+        $subscriptions = $weekly->merge($monthly)->sortByDesc('created_at');
+
+        $perPage = 6;
+        $currentPage = request()->get('page', 1);
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $subscriptions->forPage($currentPage, $perPage),
+            $subscriptions->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+    }
+
 }
