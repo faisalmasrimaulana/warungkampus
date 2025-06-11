@@ -65,8 +65,6 @@
       z-index: 2;
       height: 100%;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       padding: 20px;
     }
     .promo-banner::before {
@@ -125,48 +123,62 @@
         <div class="carousel-item">
           <a href="{{route('user.langganan')}}">
             <div class="promo-banner cursor-pointer">
-              <div class="promo-content text-center">
+              <div class="promo-content justify-center flex-col text-center">
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Ingin produkmu dijangkau lebih banyak orang?</h2>
                 <p class="text-lg md:text-xl font-semibold text-yellow-300">Ayo klik di sini!</p>
               </div>
             </div>
           </a>
         </div>
-        
-        <!-- Slide 2 -->
-        <div class="carousel-item">
-          <a href="{{route('user.langganan')}}">
-            <div class="promo-banner cursor-pointer" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
-              <div class="promo-content text-center">
-                <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Tingkatkan penjualan produkmu!</h2>
-                <p class="text-lg md:text-xl font-semibold text-yellow-300">Promosikan di sini</p>
+
+
+      @if($showPromotions)
+        @php
+              $monthlySubs = $subscriptions->filter(fn($s) => $s->type == 'Bulanan')->values();
+        @endphp 
+        <!-- Slide selanjutnya (promosi) -->
+      @foreach($monthlySubs as $sub)
+        @if($sub->type === 'Bulanan')
+          <div class="carousel-item">
+            <a href="{{ route('user.publicprofile', ['user' => $sub->user->id]) }}">
+              <div class="promo-banner cursor-pointer bg-white shadow-lg">
+                <div class="promo-content justify-evenly items-center w-full px-6 py-4">
+                  <div class="flex flex-col">
+                    <h2 class="text-xl md:text-2xl font-bold text-white">
+                      {{ $sub->user->nama }}
+                    </h2>
+                    <p class="text-lg md:text-xl font-semibold text-yellow-300">
+                      {{ $sub->promosi }}
+                    </p>
+                  </div>
+                  <div class="flex gap-2">
+                    @if(isset($sub->products[0]))
+                      <img src="{{ asset('storage/' . $sub->products[0]->thumbnail) }}"
+                        class="h-20 w-20 object-cover rounded-md shadow-md" alt="Product 1">
+                    @endif
+                    @if(isset($sub->products[1]))
+                      <img src="{{ asset('storage/' . $sub->products[1]->thumbnail) }}"
+                        class="h-20 w-20 object-cover rounded-md shadow-md" alt="Product 2">
+                    @endif
+                  </div>
+                </div>
               </div>
-            </div>
-          </a>
-        </div>
-        
-        <!-- Slide 3 -->
-        <div class="carousel-item">
-          <a href="{{route('user.langganan')}}">
-            <div class="promo-banner cursor-pointer" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%);">
-              <div class="promo-content text-center">
-                <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Jangkau ribuan mahasiswa!</h2>
-                <p class="text-lg md:text-xl font-semibold text-yellow-300">Iklankan produkmu sekarang</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
+            </a>
+          </div>
+        @endif
+      @endforeach
       
       <button class="carousel-control prev" onclick="prevSlide()">❮</button>
       <button class="carousel-control next" onclick="nextSlide()">❯</button>
       
       <div class="carousel-indicators">
-        <div class="carousel-indicator active" onclick="goToSlide(0)"></div>
-        <div class="carousel-indicator" onclick="goToSlide(1)"></div>
-        <div class="carousel-indicator" onclick="goToSlide(2)"></div>
+        @foreach($monthlySubs as $i => $sub)
+          <div class="carousel-indicator {{ $i === 0 ? 'active' : '' }}" onclick="goToSlide(`{{ $i }}`)"></div>
+        @endforeach
       </div>
     </div>
+    @endif
+
   </div>
   <main class="p-6">
     <!-- DAFTAR PRODUK REKOMENDASI -->
@@ -215,7 +227,7 @@
 
 
   <script>
-            // Carousel functionality
+    // Carousel functionality
     let currentSlide = 0;
     const slides = document.querySelectorAll('.carousel-item');
     const indicators = document.querySelectorAll('.carousel-indicator');

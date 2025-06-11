@@ -103,6 +103,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admins'])->group(funct
     Route::get('/dashboard', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/kelolaUser', [DashboardAdminController::class, 'kelolaUser'])->name('user.kelola');
     Route::get('/kelolaPostingan', [DashboardAdminController::class, 'kelolaPostingan'])->name('product.kelola');
+    Route::get('/kelolaLangganan', [DashboardAdminController::class, 'kelolaLangganan'])->name('subscribe.kelola');
     Route::put('/verifikasi/{user}', [DashboardAdminController::class, 'verifikasi'])->name('user.verifikasi');
     Route::put('/blokir/{user}', [DashboardAdminController::class, 'block'])->name('user.blokir');
     Route::put('/bukablokir/{user}', [DashboardAdminController::class, 'unblock'])->name('user.bukablokir');

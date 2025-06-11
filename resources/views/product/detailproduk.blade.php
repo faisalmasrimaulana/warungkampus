@@ -56,12 +56,7 @@
       <h3 class="font-semibold text-lg mb-4">Tentang Penjual</h3>
       <a href="{{Auth::check() && Auth::id() === $product->mahasiswa->id ? route('user.dashboard') :  route('user.publicprofile', ['user'=>$product->mahasiswa->id])}}">
         <div class="flex items-center space-x-4">
-          @if($product->mahasiswa && $product->mahasiswa->foto_profil != 'fotoprofil.jpg')
-            <img src="{{$product->mahasiswa->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . $product->mahasiswa->foto_profil) : asset('assets/fotoprofil.jpg')}}" alt="Foto Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
-          @else
-            <img src="{{ asset('assets/fotoprofil.jpg') }}" alt="Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
-          @endif
-  
+            <img src="{{$product->mahasiswa->foto_profil!= 'fotoprofil.jpg' ? asset('storage/' . $product->mahasiswa->foto_profil) : 'https://avatar.iran.liara.run/public'}}" alt="Foto Penjual" class="w-12 h-12 rounded-full border-2 border-blue-100" />
           <div>
             <h4 class="font-medium text-black">{{ $product->mahasiswa->nama }}</h4>
             <p class="text-sm text-gray-500">Mahasiswa Sistem Informasi</p>

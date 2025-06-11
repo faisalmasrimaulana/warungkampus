@@ -121,13 +121,38 @@ class ProductController extends Controller
     public function modalProduk(Request $request)
     {
         $user = Auth::user();
+        
         $products = Product::where('mahasiswa_id', $user->id)
             ->with('fotoproduk')
             ->latest()
             ->paginate(10); 
 
-        return view('user.langganan', compact('products'));
+        // Cek langganan mingguan
+        $weekly = WeeklySubscribe::where('user_id', $user->id)
+            ->latest()
+            ->first();
+
+        $isWeeklyActive = $weekly && $weekly->created_at->addDays(7)->isFuture();
+
+        // Cek langganan bulanan
+        $monthly = MonthlySubscribe::where('user_id', $user->id)
+            ->latest()
+            ->first();
+
+        $isMonthlyActive = $monthly && $monthly->created_at->addDays(30)->isFuture();
+
+        // Status langganan
+        if ($isWeeklyActive) {
+            $subscriptionStatus = 'mingguan';
+        } elseif ($isMonthlyActive) {
+            $subscriptionStatus = 'bulanan';
+        } else {
+            $subscriptionStatus = 'tidak_langganan';
+        }
+
+        return view('user.langganan', compact('products', 'subscriptionStatus'));
     }
+
 
     public function destroy(Product $product){
         $product->load('fotoproduk');
@@ -244,6 +269,7 @@ class ProductController extends Controller
                 'type' => 'Bulanan',
                 'created_at' => $item->created_at,
                 'expired_at' => $item->created_at->addDays(30),
+                'promosi' => $item->promo_message
             ];
         });
 

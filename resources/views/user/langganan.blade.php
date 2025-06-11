@@ -37,8 +37,6 @@
       </p>
     </div>
 
-
-    <!-- Advertising Packages -->
     <div class="grid md:grid-cols-3 gap-6 mb-12">
       <!-- Basic Package -->
       <div id="basicPackage" class="bg-white rounded-xl p-6 shadow-md cursor-pointer">
@@ -65,9 +63,15 @@
               </div>  
           </div>
           <div class="flex">
-            <x-button class="w-full justify-center">
-              Paket Saat ini
-            </x-button>
+            @if($subscriptionStatus == 'tidak_langganan')
+              <x-button class="w-full justify-center">
+                Paket Saat ini
+              </x-button>
+            @else
+              <x-button class="w-full justify-center" color="disable">
+                Tidak dipakai
+              </x-button>
+            @endif
           </div>
         </div>
       </div>
@@ -110,9 +114,15 @@
               </div>
             </div>
             <div class="flex">
-              <x-button onclick="openWeeklyModal()" class="w-full justify-center">
-                Pilih Paket
-              </x-button>
+              @if($subscriptionStatus == 'mingguan')
+                <x-button class="w-full justify-center" color="disable">
+                  Paket Saat Ini
+                </x-button>
+              @else
+                <x-button onclick="openWeeklyModal()" class="w-full justify-center">
+                  Pilih Paket
+                </x-button>
+              @endif
             </div>
           </div>
         </div>
@@ -156,9 +166,15 @@
               </div>
             </div>
             <div class="flex">
-              <x-button onclick="openMonthlyModal()" class="w-full justify-center">
-                Pilih Paket
-              </x-button>
+              @if($subscriptionStatus == 'bulanan')
+                <x-button class="w-full justify-center" color="disable">
+                  Paket Saat Ini
+                </x-button>
+              @else
+                <x-button onclick="openMonthlyModal()" class="w-full justify-center">
+                  Pilih Paket
+                </x-button>
+              @endif
             </div>
           </div>
         </div>

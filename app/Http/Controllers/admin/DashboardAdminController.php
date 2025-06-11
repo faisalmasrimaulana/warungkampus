@@ -63,13 +63,37 @@ class DashboardAdminController extends Controller
         return view('admin.kelolaUser', compact('users'));
     }
 
+    public function kelolaLangganan(){
+        $users = User::latest()->paginate(10);
+        $weekly = WeeklySubscribe::with(['user', 'product'])->latest()->get()->map(function ($item) {
+            return (object)[
+                'user' => $item->user,
+                'products' => [$item->product],
+                'type' => 'Mingguan',
+                'created_at' => $item->created_at,
+                'expired_at' => $item->created_at->addDays(7),
+            ];
+        });
+
+        $monthly = MonthlySubscribe::with(['user', 'product1', 'product2'])->latest()->get()->map(function ($item) {
+            return (object)[
+                'user' => $item->user,
+                'products' => [
+                    $item->product1,
+                    $item->product2
+                ],
+                'type' => 'Bulanan',
+                'created_at' => $item->created_at,
+                'expired_at' => $item->created_at->addDays(30),
+            ];
+        });
+        $subscriptions = $weekly->merge($monthly)->sortByDesc('created_at');
+        return view('admin.kelolaLangganan', compact('subscriptions'));
+    }
+
     public function kelolaPostingan(){
         $products = Product::latest()->paginate(10);
         return view('admin.kelolaPostingan', compact('products'));
-    }
-
-    public function kelolaLangganan(){
-
     }
 
     public function verifikasi(User $user)

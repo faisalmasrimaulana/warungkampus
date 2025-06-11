@@ -172,7 +172,7 @@
         <div class="bg-white rounded-xl shadow-sm p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-lg font-semibold text-gray-800">Langganan User</h2>
-            <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
+            <a href="{{route('admin.subscribe.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -189,7 +189,7 @@
                   <tr class="hover:bg-gray-100">
                     <td class="px-4 py-3 whitespace-nowrap">
                       <div class="flex items-center">
-                        <img class="w-8 h-8 rounded-full mr-3" src="{{ $sub->user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $week->user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
+                        <img class="w-8 h-8 rounded-full mr-3" src="{{ $sub->user->foto_profil != 'fotoprofil.jpg' ? asset('storage/' . $sub->user->foto_profil) : 'https://ui-avatars.com/api/?background=3b82f6&color=fff'}}" alt="User">
                         <div>
                           <p class="text-sm font-medium">{{$sub->user->nama}}</p>
                           <p class="text-xs text-gray-500">{{$sub->user->email}}</p>
@@ -246,7 +246,7 @@
                 <tr class="hover:bg-gray-100">
                   <td class="px-4 py-3 whitespace-nowrap">
                     <div class="flex items-center">
-                      <img class="w-8 h-8 rounded-full mr-3" src="{{ asset('storage/' . $prod->thumbnail) }}" alt="User">
+                      <img class="w-8 h-8 rounded-md mr-3" src="{{ asset('storage/' . $prod->thumbnail) }}" alt="User">
                       <div>
                         <p class="text-sm font-medium">{{$prod->nama_produk}}</p>
                         <p class="text-xs text-gray-500">{{$prod->mahasiswa->nama}}</p>
@@ -338,33 +338,6 @@
         <!-- ./LIST LAPORAN -->
       </div>
 
-<!-- Modal Detail Laporan -->
-<div id="modalLaporan" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-xl p-6 w-2xl h-80vh">
-    <div class="flex justify-between items-baseline">
-      <h2 class="text-2xl font-bold text-gray-800">Detail Laporan</h2>
-    </div>
-    <div class="flex flex-col gap-6">
-      <div class="flex items-center flex-col">
-        <img id="modal-bukti" src="" alt="Bukti Laporan" class="h-60 object-cover rounded-lg">
-        <p id="foto-fallback" class="text-gray-500 mt-2 hidden">Tidak ada foto</p>
-      </div>
-      <div class="flex gap-2" id="detail_laporan">
-        <h2 class="font-semibold">Detail laporan:</h2>
-        <p id="modal-detail" class="text-md"></p>
-      </div  >
-      <div  class="flex flex-col">
-        <p id="modal-nama" class="text-md capitalize font-semibold"></p>
-        <p id="modal-email" class="text-md text-gray-500"></p>
-      </div>
-    <div class="mt-6 flex justify-end space-x-3">
-      <x-button id="closeModalBtn" color="danger">
-        Tutup
-      </x-button>
-    </div>
-  </div>
-</div>
-
 <!-- Modal Confirm -->
  <!--Blokir -->
   <x-modalconfirm identity="confirmationModalBlock" title="Blokir User" message="Apakah kamu yakin untuk memblokir user ini?">
@@ -395,6 +368,32 @@
       Hapus Postingan
     </x-button>
   </x-modalconfirm>
+
+  <div id="modalLaporan" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 w-2xl h-80vh">
+    <div class="flex justify-between items-baseline">
+      <h2 class="text-2xl font-bold text-gray-800">Detail Laporan</h2>
+    </div>
+    <div class="flex flex-col gap-6">
+      <div class="flex items-center flex-col">
+        <img id="modal-bukti" src="" alt="Bukti Laporan" class="h-60 object-cover rounded-lg">
+        <p id="foto-fallback" class="text-gray-500 mt-2 hidden">Tidak ada foto</p>
+      </div>
+      <div class="flex gap-2" id="detail_laporan">
+        <h2 class="font-semibold">Detail laporan:</h2>
+        <p id="modal-detail" class="text-md"></p>
+      </div  >
+      <div  class="flex flex-col">
+        <p id="modal-nama" class="text-md capitalize font-semibold"></p>
+        <p id="modal-email" class="text-md text-gray-500"></p>
+      </div>
+    <div class="mt-6 flex justify-end space-x-3">
+      <x-button id="closeModalBtn" color="danger">
+        Tutup
+      </x-button>
+    </div>
+  </div>
+</div>
 
 <script>
   let currentBlockId = null;
@@ -465,9 +464,11 @@
       document.getElementById("confirmationModalDeleteProd").classList.remove('flex');
       document.getElementById("confirmationModalDeleteProd").classList.add('hidden');
       currentDeleteProdId = null;}
+    
+</script>
 
-  //Modal Laporan
-    const fallbackText = document.getElementById('foto-fallback');
+<script>
+const fallbackText = document.getElementById('foto-fallback');
     const modalLaporan = document.getElementById('modalLaporan');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const detailButtons = document.querySelectorAll('[title="Detail_laporan"]');
