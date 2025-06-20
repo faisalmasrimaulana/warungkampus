@@ -9,6 +9,7 @@
         'active' => 'text-xs px-2 py-1 rounded-full bg-green-100 text-green-800',
         'available' => 'text-xs px-2 py-1 rounded-full bg-green-300 text-green-800',
         'sold' => 'text-xs px-2 py-1 rounded-full bg-gray-300 text-gray-600',
+        'complete' => 'text-xs px-2 py-1 rounded-full bg-green-100 text-green-800',
     ];
     $label = [
         'pending' => 'Menunggu',
@@ -17,7 +18,8 @@
         'expired' => 'Kadaluarsa',
         'active' => 'Aktif',
         'available' => 'Tersedia',
-        'sold' => 'Terjual',
+        'sold' => 'Stok Habis',
+        'complete' => 'Selesai',
     ];
     $class = $color[$status] ?? 'bg-gray-200 text-gray-800';
 @endphp

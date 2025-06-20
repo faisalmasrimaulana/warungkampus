@@ -12,5 +12,10 @@ class Bantuan extends Model
         'email',
         'detail_laporan',
         'bukti',
+        'is_complete'
     ];
+
+    public function complete(){
+        $this->update(['is_complete' => true]);
+    }
 }

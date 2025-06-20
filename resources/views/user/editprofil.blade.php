@@ -1,6 +1,9 @@
 @extends('layouts.app')
-
+@if(session('success'))
+      <x-successmodal></x-successmodal>
+    @endif
 @section('content')
+
 <style>
     .input-field {
         transition: all 0.3s ease;

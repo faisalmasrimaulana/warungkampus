@@ -14,7 +14,7 @@ class BantuanController extends Controller
             'nama' => "required|string",
             'email' => "required|email",
             'detail_laporan' => "required|string",
-            'bukti' => "nullable|mimes:jpg,png,jpeg,pdf|max:5120"
+            'bukti' => "nullable|mimes:jpg,png,jpeg,pdf|max:5120",
         ]);
 
         $path = null;
@@ -27,6 +27,7 @@ class BantuanController extends Controller
             'email' => $validate['email'],
             'detail_laporan' => $validate['detail_laporan'],
             'bukti' => $path,
+            'is_complete' => false,
         ]);
          return redirect()->route('bantuan')->with('success', 'Laporan berhasil dikirimkan');
     }    

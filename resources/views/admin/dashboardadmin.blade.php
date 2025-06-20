@@ -290,7 +290,7 @@
         <div class="bg-white rounded-xl shadow-sm p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-lg font-semibold text-gray-800">Laporan</h2>
-            <a href="{{route('admin.user.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
+            <a href="{{route('admin.laporan.kelola')}}" class="text-sm text-blue-600 hover:underline">Lihat Semua</a>
           </div>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -315,13 +315,17 @@
                       <button title="Detail_laporan" data-nama="{{ $lapor->nama}}" data-detail="{{ $lapor->detail_laporan}}"data-email="{{ $lapor->email}}" data-tanggal="{{ $lapor->created_at->format('d M Y') }}" data-bukti="{{ $lapor->bukti ? asset('storage/' . $lapor->bukti) : ''}}" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md shadow-lg hover:shadow-xl transition hover:from-blue-600 hover:to-blue-700 hover:cursor-pointer px-4 py-2 text-xs font-semibold">Detail</button>
                   </td>
                   <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <form method="POST" class="inline">
+                    @if(!$lapor->is_complete)
+                    <form id="completeReportForm-{{$lapor->id}}" method="POST" action="{{ route('admin.report.complete', $lapor->id) }}" class="inline">
                       @csrf
                       @method('PUT')
-                      <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Setujui">
+                      <button class="action-btn text-green-600 hover:text-green-900 mr-2 hover:cursor-pointer" type="submit" title="Selesaikan" onclick="completeReport('{{ $lapor->id }}')">
                       <i class="fas fa-check"></i>
                       </button>
                     </form>
+                    @else
+                    <x-badge status="complete"></x-badge>
+                    @endif
                   </td>
                 </tr>
                 @empty
@@ -369,6 +373,16 @@
     </x-button>
   </x-modalconfirm>
 
+  <!-- Complete -->
+  <x-modalconfirm identity="confirmationModalCompleteReport" title="Tandai Selesai" message="Apakah kamu telah menyelesaikan laporan ini?">
+    <x-button id="cancelReport" onclick="cancelReport()" color="danger" size="md">
+      Batalkan
+    </x-button>
+    <x-button id="confirmReportButton" color="primary" size="md">
+      Tandai Selesai
+    </x-button>
+  </x-modalconfirm>
+
   <div id="modalLaporan" class="fixed inset-0 bg-black/50 items-center justify-center z-50 hidden">
   <div class="bg-white rounded-xl p-6 w-2xl h-80vh">
     <div class="flex justify-between items-baseline">
@@ -399,6 +413,28 @@
   let currentBlockId = null;
   let currentDeleteId = null;
   let currentDeleteProdId = null;
+  let currentReportId = null;
+
+  // Complete Laporan
+  function completeReport(id) {
+      currentReportId = id;
+      document.getElementById('confirmationModalCompleteReport').classList.remove('hidden');
+      document.getElementById('confirmationModalCompleteReport').classList.add('flex');
+  }
+
+  // Konfirmasi Selesaikan Laporan
+  document.getElementById('confirmReportButton').onclick = function(e) {
+      e.preventDefault();
+      if (currentReportId) {
+          document.getElementById('completeReportForm-' + currentReportId).submit();
+      }
+  }
+
+  // Batalkan Selesaikan Laporan
+  function cancelReport() {
+      document.getElementById("confirmationModalCompleteReport").classList.remove('flex');
+      document.getElementById("confirmationModalCompleteReport").classList.add('hidden');
+      currentReportId = null;}
 
   // Blokir User
   function blockUser(id) {

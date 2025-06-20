@@ -58,7 +58,7 @@
               <a href="{{route('user.dashboard')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Dashboard User</a>
             </li>
             <li><a href="{{route('user.langganan')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Langganan</a></li>
-            <li><a href="#" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Bantuan </a></li>
+            <li><a href="{{route('bantuan')}}" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Bantuan </a></li>
           </ul>
           <div class="pt-4 border-t border-gray-100">
             <form method="POST" action="{{ route('user.logout') }}">

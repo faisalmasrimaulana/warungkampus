@@ -85,24 +85,7 @@
       </div>
     </div>
 
-    <!-- FAQ Item 4 -->
-    <div class="accordion-item mb-4 border-b border-gray-200 pb-4">
-      <button class="accordion-header w-full flex justify-between items-center text-left font-medium text-lg text-gray-800 hover:text-blue-600 focus:outline-none">
-        <span>Bagaimana cara menghapus akun?</span>
-        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-      </button>
-      <div class="accordion-content mt-2 text-gray-600">
-        <p>Untuk menghapus akun permanen:</p>
-        <ol class="list-decimal pl-5 mt-2 space-y-1">
-          <li>Login ke akun Anda</li>
-          <li>Buka menu Profil > Pengaturan Akun</li>
-          <li>Scroll ke bagian bawah dan pilih "Hapus Akun"</li>
-          <li>Ikuti instruksi verifikasi yang muncul</li>
-        </ol>
-        <p class="mt-2 text-yellow-600">Perhatian: Penghapusan akun bersifat permanen dan tidak dapat dibatalkan.</p>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Help Form Section -->
   <div class="bg-white rounded-lg shadow p-6">

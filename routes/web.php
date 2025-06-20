@@ -29,10 +29,6 @@ Route::get('/cancel', function(){
     return redirect('/');
 })->name('cancel');
 
-Route::get('/bantuan', function(){
-    return view('user.bantuan');
-})->name('bantuan');
-
 Route::get('/userprofile/{user}', [DashboardUserController::class, 'showPublic'])->name('user.publicprofile');
 
 // AUTH
@@ -63,6 +59,9 @@ Route::get('/payment/success', [PaymentController::class, 'success'])->name('pay
 
 //BANTUAN
 Route::post('/bantuan/proses', [BantuanController::class, 'store'])->name('bantuan.process');
+Route::get('/bantuan', function(){
+    return view('user.bantuan');
+    })->name('bantuan');
 
 // =======================
 // ROUTE UNTUK USER/MAHASISWA
@@ -104,6 +103,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admins'])->group(funct
     Route::get('/kelolaUser', [DashboardAdminController::class, 'kelolaUser'])->name('user.kelola');
     Route::get('/kelolaPostingan', [DashboardAdminController::class, 'kelolaPostingan'])->name('product.kelola');
     Route::get('/kelolaLangganan', [DashboardAdminController::class, 'kelolaLangganan'])->name('subscribe.kelola');
+    Route::get('/kelolaLaporan', function(){
+        return view('admin.kelolaLaporan');
+    })->name('laporan.kelola');
     Route::put('/verifikasi/{user}', [DashboardAdminController::class, 'verifikasi'])->name('user.verifikasi');
     Route::put('/blokir/{user}', [DashboardAdminController::class, 'block'])->name('user.blokir');
     Route::put('/bukablokir/{user}', [DashboardAdminController::class, 'unblock'])->name('user.bukablokir');
@@ -112,5 +114,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admins'])->group(funct
     Route::get('/user/filter', [ManageController::class, 'filterUser'])->name('user.filter');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
     Route::delete('/produkdelete/{product}', [ProductController::class, 'destroy'])->name('product.delete');
+    Route::put('/laporancomplete/{bantuan}', [DashboardAdminController::class, 'complete'])->name('report.complete');
 });
 

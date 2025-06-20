@@ -165,7 +165,7 @@
               </div>
             </a>
           </div>
-        @endif
+          @endif
       @endforeach
       
       <button class="carousel-control prev" onclick="prevSlide()">❮</button>

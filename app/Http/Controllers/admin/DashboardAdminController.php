@@ -102,6 +102,12 @@ class DashboardAdminController extends Controller
         return back()->with('success', 'User berhasil diverifikasi.');
     }
 
+    public function complete(Bantuan $bantuan)
+    {
+        $bantuan->complete();
+        return back()->with('success', 'Laporan berhasil diselesaikan.');
+    }
+
     public function block(User $user)
     {
         $user->block();
