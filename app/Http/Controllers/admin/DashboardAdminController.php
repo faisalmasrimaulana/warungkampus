@@ -30,27 +30,31 @@ class DashboardAdminController extends Controller
         $products = Product::latest()->paginate(3);
         $weekly = WeeklySubscribe::with(['user', 'product'])->latest()->get()->map(function ($item) {
             return (object)[
+                'id' => $item->id,
                 'user' => $item->user,
                 'products' => [$item->product->nama_produk ?? '-'],
                 'type' => 'Mingguan',
                 'created_at' => $item->created_at,
-                'expired_at' => $item->created_at->addDays(7),
+                'expired_at' => $item->created_at->copy()->addDays(7),
             ];
         });
 
         $monthly = MonthlySubscribe::with(['user', 'product1', 'product2'])->latest()->get()->map(function ($item) {
-            return (object)[
-                'user' => $item->user,
-                'products' => [
-                    $item->product1->nama_produk ?? '-',
-                    $item->product2->nama_produk ?? '-',
-                ],
-                'type' => 'Bulanan',
-                'created_at' => $item->created_at,
-                'expired_at' => $item->created_at->addDays(30),
-            ];
-        });
-        $subscriptions = $weekly->merge($monthly)->sortByDesc('created_at');
+        return (object)[
+            'id' => $item->id,
+            'user' => $item->user,
+            'products' => [
+                $item->product1->nama_produk ?? '-',
+                $item->product2->nama_produk ?? '-',
+            ],
+            'type' => 'Bulanan',
+            'created_at' => $item->created_at,
+            'expired_at' => $item->created_at->copy()->addDays(30),
+        ];
+    });
+
+        $subscriptions = collect($weekly)->merge($monthly)->sortByDesc('created_at');
+
         $totalUsers = User::count();
         $totalUnverified = User::where('is_verified', false)->count();
         $totalActiveProduct = Product::where('is_sold', false)->count();

@@ -273,7 +273,8 @@ class ProductController extends Controller
             ];
         });
 
-        $subscriptions = $weekly->merge($monthly)->sortByDesc('created_at');
+        $subscriptions = collect($weekly)->merge($monthly)->sortByDesc('created_at');
+
 
         $perPage = 6;
         $currentPage = request()->get('page', 1);
