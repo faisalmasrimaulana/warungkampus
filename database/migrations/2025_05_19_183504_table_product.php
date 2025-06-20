@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('deskripsi_singkat');
             $table->string('deskripsi_lengkap');
             $table->timestamps();
-            $table->string('path_fotoproduk');
             $table->boolean('is_sold')->default(false);
         });
     }
